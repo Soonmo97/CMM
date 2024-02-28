@@ -225,4 +225,4 @@ desc user
 
 INSERT INTO USER VALUES(null,'admin', '1234', '어드민', 'admin@test.com', '010-0000-0000');
 
-
+SELECT * FROM user

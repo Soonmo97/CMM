@@ -5,6 +5,6 @@
         "database": "testproject",
         "host": "127.0.0.1",
         "dialect": "mysql",
-        "config": "+09:00"
+        "timezone": "+09:00"
     }
 }

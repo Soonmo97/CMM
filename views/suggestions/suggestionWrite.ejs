@@ -3,15 +3,63 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>건의사항 작성</title>
+        <title>건의 | 글쓰기</title>
+        <script src="https://cdn.jsdelivr.net/npm/suneditor@2.45.1/dist/suneditor.min.js"></script>
+        <link
+            href="https://cdn.jsdelivr.net/npm/suneditor@2.45.1/dist/css/suneditor.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/lang/ko.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/plugins/modules/[dialog, resizing].js"></script>
         <%- include('../include/head.ejs') %>
     </head>
     <body>
         <form action="/suggestion/writePost" method="post">
             <input type="text" name="title" /><br />
-            <input type="text" name="content" /><br />
+            <textarea id="editor" name="content"></textarea>
             <button>등록</button>
         </form>
         <a href="/suggestion/list?page=1"> <input type="button" value="목록" /></a>
+        <script>
+            const div = document.getElementById("content-div");
+            const editor = document.getElementById("editor");
+
+            const suneditor = SUNEDITOR.create("editor", {
+                font: ["Arial", "tahoma", "Courier New,Courier"],
+                fontSize: [8, 10, 14, 18, 24, 36],
+                colorList: [
+                    ["#ccc", "#dedede", "OrangeRed", "Orange", "RoyalBlue", "SaddleBrown"],
+                    ["SlateGray", "BurlyWood", "DeepPink", "FireBrick", "Gold", "SeaGreen"],
+                ],
+                width: "100%",
+                maxWidth: "800px",
+                minWidth: 400,
+                height: "auto",
+                imageWidth: 150,
+                popupDisplay: "local",
+                resizingBar: false,
+                buttonList: [
+                    [
+                        "font",
+                        "fontSize",
+                        "fontColor",
+                        "hiliteColor",
+                        "indent",
+                        "outdent",
+                        "align",
+                        "list",
+                        "table",
+                        "fullScreen",
+                        "codeView",
+                    ],
+                ],
+                lang: SUNEDITOR_LANG["ko"],
+                height: 500,
+            });
+
+            suneditor.onChange = (contents, core) => {
+                suneditor.save();
+            };
+        </script>
     </body>
 </html>

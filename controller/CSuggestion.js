@@ -1,5 +1,4 @@
 const { Op } = require("sequelize");
-const models = require("../models/index");
 const { sequelize, User, Suggestions, Suggest_Like } = require("../models/index");
 
 exports.listPage = async (req, res) => {
@@ -73,12 +72,13 @@ exports.writePage = (req, res) => {
 
 exports.writeSuggestion = async (req, res) => {
     try {
-        await models.Suggestions.create({
+        const postInfo = await Suggestions.create({
             user_index: 1,
             title: req.body.title,
             content: req.body.content,
         });
-        res.redirect("list?page=1");
+        const { sug_index } = postInfo.dataValues;
+        res.redirect("post/" + sug_index);
     } catch (err) {
         console.log(err);
     }
@@ -87,7 +87,7 @@ exports.writeSuggestion = async (req, res) => {
 exports.getPost = async (req, res) => {
     const { postId } = req.params;
     try {
-        const postInfo = await models.Suggestions.findOne({
+        const postInfo = await Suggestions.findOne({
             where: { sug_index: postId },
             attributes: [
                 "sug_index",

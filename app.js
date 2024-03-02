@@ -21,6 +21,9 @@ app.use(
     })
 );
 
+const suggestRouter = require("./routes/suggestion.js");
+app.use("/suggestion", suggestRouter);
+
 app.get("/", (req, res) => {
     res.render("index");
 });

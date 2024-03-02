@@ -30,14 +30,14 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button type="button" id="like">
+                        <button type="button" id="like" onclick="like()">
                             <%= postInfo.dataValues.like_count %>
                         </button>
                     </td>
                 </tr>
             </table>
         </div>
-        <a href="/suggestion/list"><button type="button">목록</button></a>
+        <a href="/suggestion/list?page=1"><button type="button">목록</button></a>
         <script></script>
     </body>
 </html>

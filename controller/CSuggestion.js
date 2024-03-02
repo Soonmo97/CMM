@@ -3,11 +3,51 @@ const models = require("../models/index");
 const { sequelize, User, Suggestions, Suggest_Like } = require("../models/index");
 
 exports.listPage = async (req, res) => {
+    const limit = 5;
+    const pageLimit = 3;
+    let { page: currentPage } = req.query;
+
+    // 전체 페이지 수 구하기
+    const [{ totalPosts }] = await Suggestions.findAll({
+        attributes: [[sequelize.fn("count", sequelize.col("sug_index")), "totalPosts"]],
+        raw: true,
+    });
+
+    const totalPage = Math.ceil(totalPosts / limit); // 전체 페이지 수
+
+    // 예외사항
+    if (!currentPage || currentPage < 0) {
+        currentPage = 1;
+    } else if (currentPage > totalPage) {
+        currentPage = totalPage;
+    }
+
+    let offset = 0 + (currentPage - 1) * limit;
+
+    const startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1; // 현재 페이지 단위의 시작 페이지
+    let endPage = startPage + pageLimit - 1; // 현재 페이지 단위의 끝 페이지
+
+    if (endPage > totalPage) {
+        endPage = totalPage;
+    }
+
+    const pageInfo = {
+        pageLimit: pageLimit,
+        currentPage: currentPage,
+        totalPage: totalPage,
+        startPage: startPage,
+        endPage: endPage,
+    };
+
+    console.log("pageInfo:", pageInfo);
+
     const sugList = await Suggestions.findAll({
+        limit: limit,
+        offset: offset,
         attributes: [
             "sug_index",
             "title",
-            "created_at",
+            [sequelize.fn("date_format", sequelize.col("created_at"), "%Y-%m-%d"), "created_at"],
             [sequelize.fn("COUNT", sequelize.col("Suggest_Likes.sug_index")), "like_count"],
         ],
         include: [
@@ -18,13 +58,13 @@ exports.listPage = async (req, res) => {
             {
                 model: Suggest_Like,
                 attributes: [],
+                duplicating: false,
             },
         ],
         group: ["Suggestions.sug_index", "User.user_index"],
-        order: [["created_at", "DESC"]],
+        order: [["sug_index", "DESC"]],
     });
-    console.log(sugList);
-    res.render("suggestions/suggestionList", { sugList: sugList });
+    res.render("suggestions/suggestionList", { sugList: sugList, pageInfo: pageInfo });
 };
 
 exports.writePage = (req, res) => {
@@ -38,7 +78,7 @@ exports.writeSuggestion = async (req, res) => {
             title: req.body.title,
             content: req.body.content,
         });
-        res.redirect("list");
+        res.redirect("list?page=1");
     } catch (err) {
         console.log(err);
     }
@@ -53,7 +93,10 @@ exports.getPost = async (req, res) => {
                 "sug_index",
                 "title",
                 "content",
-                "created_at",
+                [
+                    sequelize.fn("date_format", sequelize.col("created_at"), "%Y-%m-%d"),
+                    "created_at",
+                ],
                 [sequelize.fn("COUNT", sequelize.col("Suggest_Likes.sug_index")), "like_count"],
             ],
             include: [
@@ -68,12 +111,7 @@ exports.getPost = async (req, res) => {
             ],
             group: ["Suggestions.sug_index", "User.user_index"],
         });
-        const recommender = await models.Suggest_Like.findAll({
-            where: { sug_index: postId },
-            attributes: ["user_index"],
-        });
 
-        console.log("추천인", recommender);
         console.log("글 정보", postInfo);
         res.render("suggestions/suggestionPost", { postInfo });
     } catch (err) {

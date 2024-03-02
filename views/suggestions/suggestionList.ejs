@@ -31,11 +31,23 @@
                 <td><%= sugList[i].sug_index %></td>
                 <td><a href="post/<%=sugList[i].sug_index%>"><%= sugList[i].title %></a></td>
                 <td><%= sugList[i].User.nickname %></td>
-                <td><%= sugList[i].dataValues.created_at.toDateString() %></td>
+                <td><%= sugList[i].dataValues.created_at %></td>
                 <td><%= sugList[i].dataValues.like_count %></td>
             </tr>
             <% } %>
-        <!-- 페이지네이션 추가 -->
+            <tr>
+                <td>
+                    <% if(pageInfo.startPage > pageInfo.pageLimit){ %>
+                        [<a href="list?page=<%=pageInfo.startPage-1%>">◀</a>]
+                        <% } %>
+                    <% for(let i=pageInfo.startPage; i<=pageInfo.endPage; i++){ %>
+                        [<a href="list?page=<%=i%>"><%= i %></a>]
+                    <% } %>
+                    <% if(pageInfo.endPage < pageInfo.totalPage){ %>
+                        [<a href="list?page=<%=pageInfo.endPage+1%>">▶</a>]
+                        <% } %>
+                </td>
+            </tr>
         </table>
         <a href="/suggestion/write"><button type="button">글쓰기</button></a>
     </body>

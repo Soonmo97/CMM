@@ -4,6 +4,7 @@ const controller = require("../controller/CSuggestion");
 
 router.get("/list", controller.listPage);
 router.get("/write", controller.writePage);
+router.get("/post/:postId", controller.getPost);
 
 router.post("/writePost", controller.writeSuggestion);
 

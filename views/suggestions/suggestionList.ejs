@@ -5,6 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>건의사항</title>
         <%- include('../include/head.ejs') %>
+        <style>
+            table {
+                border: 1px solid black
+            }
+            td{
+                width: 20%;
+            }
+            tr{
+                border-bottom:1px solid black
+            }
+        </style>
     </head>
     <body>
         <table>
@@ -18,13 +29,14 @@
         <% for(let i=0; i<sugList.length; i++){ %>
             <tr>
                 <td><%= sugList[i].sug_index %></td>
-                <td><a href=""><%= sugList[i].title %></a></td>
+                <td><a href="post/<%=sugList[i].sug_index%>"><%= sugList[i].title %></a></td>
                 <td><%= sugList[i].User.nickname %></td>
                 <td><%= sugList[i].dataValues.created_at.toDateString() %></td>
                 <td><%= sugList[i].dataValues.like_count %></td>
             </tr>
             <% } %>
+        <!-- 페이지네이션 추가 -->
         </table>
-
+        <a href="/suggestion/write"><button type="button">글쓰기</button></a>
     </body>
 </html>

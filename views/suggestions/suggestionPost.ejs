@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>건의 | <%= postInfo.title%></title>
+        <%- include('../include/head') %>
+        <style>
+            #table-div {
+                width: 600px;
+            }
+            #table-div tr:nth-child(3) {
+                height: 300px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="table-div">
+            <table class="table table-striped">
+                <tr>
+                    <td><%= postInfo.sug_index %></td>
+                    <td><%= postInfo.title %></td>
+                </tr>
+                <tr>
+                    <td><%= postInfo.dataValues.created_at %></td>
+                    <td><%= postInfo.User.nickname %></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><%= postInfo.content %></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="button" id="like">
+                            <%= postInfo.dataValues.like_count %>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <a href="/suggestion/list"><button type="button">목록</button></a>
+        <script></script>
+    </body>
+</html>

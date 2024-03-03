@@ -85,8 +85,8 @@ exports.writeSuggestion = async (req, res) => {
 };
 
 exports.getPost = async (req, res) => {
-    const { postId } = req.params;
     try {
+        const { postId } = req.params;
         const postInfo = await Suggestions.findOne({
             where: { sug_index: postId },
             attributes: [
@@ -111,9 +111,31 @@ exports.getPost = async (req, res) => {
             ],
             group: ["Suggestions.sug_index", "User.user_index"],
         });
-
+        if (postInfo) {
+            res.render("suggestions/suggestionPost", { postInfo });
+        } else {
+            res.send(
+                '<script>alert("해당 포스트가 존재하지 않습니다."); document.location.href="/suggestion/list?page=1"</script>'
+            );
+        }
         console.log("글 정보", postInfo);
-        res.render("suggestions/suggestionPost", { postInfo });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+exports.deletePost = async (req, res) => {
+    try {
+        const { post } = req.query;
+        console.log("지울 번호: ", post);
+        const result = await Suggestions.destroy({
+            where: { sug_index: post },
+        });
+        if (result) {
+            console.log("삭제 성공!");
+            res.redirect("list?page=1");
+            console.log("redirect?");
+        }
     } catch (err) {
         console.log(err);
     }

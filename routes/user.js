@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controller/Cuser");
-const session = require("express-session");
 
 // 렌더링, get요청
 router.get("/", controller.main);

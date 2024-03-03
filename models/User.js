@@ -14,7 +14,7 @@ const User = (Sequelize, DataTypes) => {
           allowNull: false,
         },
         pw: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(30),
             allowNull: false,
         },
         nickname: {
@@ -25,11 +25,6 @@ const User = (Sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: false,
         },
-        phone: {
-            type: DataTypes.STRING(15),
-            allowNull: false,
-        },
-
       },
       {
         freezeTableName: true,

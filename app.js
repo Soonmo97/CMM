@@ -13,7 +13,7 @@ app.use(express.json());
 
 // 라우터
 const userRouter = require("./routes/user.js");
-app.use("/user", userRouter);
+app.use("/", userRouter);
 
 
 db.sequelize.sync({force: false}).then((result)=>{

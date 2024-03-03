@@ -1,27 +1,26 @@
 const { Op } = require("sequelize")
-const models = require("../models");
+// const models = require("../models");
 const express = require("express");
-const session = require("express-session");
-const app = express();
-// const { User } = require("../models");
+const { session }  = require("../session");
+const { User } = require("../models");
+const bcrypt = require('bcrypt');
+
 
 // GET /
 exports.main = (req, res) => {
     res.render("index");
 
-    // console.log("유저 정보 >> ", user);
-    // if(user){
-    //     res.render("index", { isLogin:true, user:user });
+    const user = req.session.user;
+    // console.log("유저 정보>> ",user);
+    // if(user) {
+    //     // 세션에 user 라는 키가 있다면 로그인된 상태
+    //     res.render("index", { isLogin:true, user:user });  // user에 세션 정보가 담겨져 있음(hc)
     // }
-    // else {
-    //     res.render("index", {isLogin:false});
-    // }
-    
+    // else { res.render("index", { isLogin:false }); }
 };
 
 // GET /login
 exports.getLogin = (req, res) => {
-    const sess = req.session;
     console.log("로그인 요청입니다");
     res.render("login");
 };
@@ -32,63 +31,43 @@ exports.getJoin = (req, res) => {
 };
 
 // POST /login
-// {id,pw} = req.body
-exports.postLogin = (req, res) => {
-    models.User.findOne({
-        where: {
-            id: req.body.id,
-            pw: req.body.pw,
-        }
-    })
-    .then ((result) => {
-        if (result == null || result == undefined) {
-            console.log("로그인 자료가 없습니다.")
-            
-            const result = {success: false, msg: "로그인 정보가 정확하지 않습니다."};
-            res.json(result);
-            return;
-            // req.session.user = req.body.id;
-            // res.send(true);
-        }
+exports.postLogin = async (req, res) => {
+    const { id, pw, hashV } = req.body;
 
-        if (result.pw != req.body.pw) {
-            console.log("로그인 암호가 틀립니다.")
-            const result = {success: false, msg: "로그인 정보가 정확하지 않습니다. #2"};
-            res.json(result);
-
+    try {
+        const user = await User.findOne({ where: { id: req.body.id } });
+        if (user && await bcrypt.compare(pw, user.pw)) {
+            // console.log("로그인 세션 >> ", req.session);
+            // req.session.id = user.id;
+            res.send('Login 성공');
+        } else {
+            res.status(401).send('아이디 혹은 비밀번호가 잘못되었습니다.');
         }
-        else {
-            console.log("로그인 성공되었습니다.", req.session);
-            
-            req.session.user = req.body.id;
-            console.log(req.session);
-            res.json(result);
-        }
-        // else {
-        //     res.send(`
-        //     <script>
-        //         alert("아이디 또는 비밀번호가 일치하지 않습니다.다시 시도해주세요.");
-        //         document.location.href='/login';
-        //     </script>`);
-        // }
-    })
-    .catch((err) => {
-        console.log("로그인 프로세스 오류 : ", err);
-    })
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('로그인 오류');
+    }
 };
 
 // POST /join
-exports.postJoin = (req, res) => {
-    models.User.create({
-        id : req.body.id,
-        pw : req.body.pw,
-        name : req.body.name,
-        nickname : req.body.nickname,
-        email : req.body.email,
-        phone : req.body.phone, 
-    })
-    .then((result) => {
-        console.log("회원가입 완료", result.id);
-        res.render("index");
-    })
+exports.postJoin = async (req, res) => {
+    const { id, pw } = req.body;
+    try {
+        const hashedPassword = await bcrypt.hash(pw, 10);
+        await User.create({
+            id: req.body.id,
+            pw: hashedPassword,
+            name: req.body.name,
+            nickname: req.body.nickname,
+            email: req.body.email,
+        })
+            .then((result) => {
+                console.log("회원가입 완료", result.id);
+                res.render("index");
+            })
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('회원가입 실패');
+    }
+
 };

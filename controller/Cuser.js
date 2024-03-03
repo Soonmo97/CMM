@@ -10,11 +10,10 @@ const bcrypt = require('bcrypt');
 exports.main = (req, res) => {
     res.render("index");
 
-    const user = req.session.user;
+    // const user = req.session.user;
     // console.log("유저 정보>> ",user);
     // if(user) {
-    //     // 세션에 user 라는 키가 있다면 로그인된 상태
-    //     res.render("index", { isLogin:true, user:user });  // user에 세션 정보가 담겨져 있음(hc)
+    //     res.render("index", { isLogin:true, user:user });
     // }
     // else { res.render("index", { isLogin:false }); }
 };

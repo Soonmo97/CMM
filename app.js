@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const PORT = 8080;
 const session = require("express-session");
+const db = require("./models");
+const router = require("./routes/RestDetail");
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -22,7 +24,15 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", {});
+});
+
+// 식당 상세페이지 라우터
+app.use("/restaurantDetail", router);
+
+db.sequelize.sync({ force: false }).then((result) => {
+    // console.log(result);
+    console.log("DB연결 성공");
 });
 
 app.listen(PORT, () => {

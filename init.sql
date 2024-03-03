@@ -1,228 +1,46 @@
-CREATE TABLE `User` (
-	`user_index`	INTEGER	AUTO_INCREMENT PRIMARY KEY,
-	`id`	VARCHAR(10)	NOT NULL,
-	`pw`	VARCHAR(20)	NOT NULL,
-	`nickname`	VARCHAR(10)	NOT NULL,
-	`email`	VARCHAR(50)	NOT NULL,
-	`phone`	VARCHAR(15)	NOT NULL
-);
+create database cmm DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;use cmm;
 
-CREATE TABLE `Restaurant` (
-	`rest_index`	INTEGER	AUTO_INCREMENT PRIMARY KEY,
-	`category_index`	INTEGER	NOT NULL,
-	`rest_name`	VARCHAR(20)	NOT NULL,
-	`rating`	INTEGER	NULL,
-	`rest_desc`	VARCHAR(255)	NULL,
-	`rest_address`	VARCHAR(128)	NOT NULL,
-	`rest_number`	VARCHAR(15)	NULL,
-	`rest_time`	VARCHAR(128)	NULL,
-	`rest_img`	VARCHAR(50)	NULL,
-	`latitude`	VARCHAR(150)	NOT NULL,
-	`longitude`	VARCHAR(150)	NOT NULL
-);
+show DATABASES
 
-CREATE TABLE `Review` (
-	`review_index`	INTEGER	AUTO_INCREMENT PRIMARY KEY,
-	`user_index`	INTEGER	NOT NULL,
-	`rest_index`	INTEGER	NOT NULL,
-	`category_index`	INTEGER	NOT NULL,
-	`review_content`	VARCHAR(255)	NOT NULL,
-	`created_at`	DATETIME	NOT NULL
-);
+use cmm
 
-CREATE TABLE `Category` (
-	`category_index`	INTEGER	AUTO_INCREMENT PRIMARY KEY,
-	`category_name`	VARCHAR(20)	NOT NULL
-);
+show tables
 
-CREATE TABLE `Suggestions` (
-	`sug_index`	INTEGER	AUTO_INCREMENT PRIMARY KEY,
-	`user_index`	INTEGER	NOT NULL,
-	`title`	VARCHAR(20)	NOT NULL,
-	`content`	VARCHAR(255)	NOT NULL,
-	`created_at`	DATETIME	NOT NULL,
-	`updated_at`	DATETIME	NOT NULL
-);
+desc Category;
+desc LikeList;
+desc Menu;
+desc Restaurant;
+desc Review;
+desc User
 
-CREATE TABLE `LikeList` (
-	`like_index`	INTEGER	AUTO_INCREMENT PRIMARY KEY,
-	`user_index`	INTEGER	NOT NULL,
-	`rest_index`	INTEGER	NOT NULL,
-	`category_index`	INTEGER	NOT NULL
-);
+insert into restaurant values(null,'마쯔무라',null, '저희 마쯔무라 돈가스전문점 창동본점은 1997년 8월 15일 개업하여 오늘에 이르기까지 고객의 꾸준한 사랑을 받으며 나날이 성장해 왔습니다. 진심으로 감사드리며 앞으로도 수익보다는 고객 한 분 한 분들에게 만족을 느끼게 하는데 최선을 다할 것임을 약속합니다.
+', '서울 도봉구 노해로63길 84 지하1층', '02-990-9801', '화~금 09:30 ~ 18:00, 토 09:30 ~ 18:00');
 
-CREATE TABLE `Email_Confirm` (
-	`email_index`	INTEGER	AUTO_INCREMENT PRIMARY KEY,
-	`user_index`	INTEGER	NOT NULL,
-	`expiration`	DATETIME	NULL,
-	`secret_key`	VARCHAR(255)	NULL
-);
 
-CREATE TABLE `Menu` (
-	`menu_id`	INTEGER	AUTO_INCREMENT PRIMARY KEY,
-	`rest_index`	INTEGER	NOT NULL,
-	`category_index`	INTEGER	NOT NULL,
-	`menu`	VARCHAR(30)	NULL,
-	`price`	INTEGER	NULL
-);
+insert into Category values(null, '일식', 1);
 
-CREATE TABLE `Suggest_like` (
-	`suggest_like_index`	INTEGER AUTO_INCREMENT PRIMARY KEY,
-	`sug_index`	INTEGER	NOT NULL,
-	`user_index`	INTEGER	NOT NULL,
-	`user_index2`	INTEGER	NOT NULL
-);
+insert into user values(null, 'test', '1234', '테스트', 'test123@gmail.com')
 
-ALTER TABLE `User` ADD CONSTRAINT `PK_USER` PRIMARY KEY (
-	`user_index`
-);
+insert into LikeList values(null, 1, 1);
 
-ALTER TABLE `Restaurant` ADD CONSTRAINT `PK_RESTAURANT` PRIMARY KEY (
-	`rest_index`,
-	`category_index`
-);
+insert into menu values(null, '로스(등심) 까스', 10500, 1);
+insert into menu values(null, '히레(안심) 까스', 11000, 1);
+insert into menu values(null, '치즈 까스', 12000, 1);
 
-ALTER TABLE `Review` ADD CONSTRAINT `PK_REVIEW` PRIMARY KEY (
-	`review_index`,
-	`user_index`,
-	`rest_index`,
-	`category_index`
-);
+insert into review values(null, '창동역 근처 최고의 맛집입니다.
+제가 먹어봤던 음식 중 제일 맛있네요. 가격도 싸고 가게도 깨끗해서 재방문 의사가 있습니다. 꼭 방문해보시길...',now(), 1, 1)
 
-ALTER TABLE `Category` ADD CONSTRAINT `PK_CATEGORY` PRIMARY KEY (
-	`category_index`
-);
 
-ALTER TABLE `Suggestions` ADD CONSTRAINT `PK_SUGGESTIONS` PRIMARY KEY (
-	`sug_index`,
-	`user_index`
-);
+Select * from restaurant
 
-ALTER TABLE `LikeList` ADD CONSTRAINT `PK_LIKELIST` PRIMARY KEY (
-	`like_index`,
-	`user_index`,
-	`rest_index`,
-	`category_index`
-);
+select * from category
 
-ALTER TABLE `Email_Confirm` ADD CONSTRAINT `PK_EMAIL_CONFIRM` PRIMARY KEY (
-	`email_index`,
-	`user_index`
-);
+select * from user
 
-ALTER TABLE `Menu` ADD CONSTRAINT `PK_MENU` PRIMARY KEY (
-	`menu_id`,
-	`rest_index`,
-	`category_index`
-);
+select * from menu
 
-ALTER TABLE `Suggest_like` ADD CONSTRAINT `PK_SUGGEST_LIKE` PRIMARY KEY (
-	`suggest_like_index`,
-	`sug_index`,
-	`user_index`,
-	`user_index2`
-);
+select * from likelist
 
-ALTER TABLE `Restaurant` ADD CONSTRAINT `FK_Category_TO_Restaurant_1` FOREIGN KEY (
-	`category_index`
-)
-REFERENCES `Category` (
-	`category_index`
-);
+select * from review
 
-ALTER TABLE `Review` ADD CONSTRAINT `FK_User_TO_Review_1` FOREIGN KEY (
-	`user_index`
-)
-REFERENCES `User` (
-	`user_index`
-);
 
-ALTER TABLE `Review` ADD CONSTRAINT `FK_Restaurant_TO_Review_1` FOREIGN KEY (
-	`rest_index`
-)
-REFERENCES `Restaurant` (
-	`rest_index`
-);
-
-ALTER TABLE `Review` ADD CONSTRAINT `FK_Restaurant_TO_Review_2` FOREIGN KEY (
-	`category_index`
-)
-REFERENCES `Restaurant` (
-	`category_index`
-);
-
-ALTER TABLE `Suggestions` ADD CONSTRAINT `FK_User_TO_Suggestions_1` FOREIGN KEY (
-	`user_index`
-)
-REFERENCES `User` (
-	`user_index`
-);
-
-ALTER TABLE `LikeList` ADD CONSTRAINT `FK_User_TO_LikeList_1` FOREIGN KEY (
-	`user_index`
-)
-REFERENCES `User` (
-	`user_index`
-);
-
-ALTER TABLE `LikeList` ADD CONSTRAINT `FK_Restaurant_TO_LikeList_1` FOREIGN KEY (
-	`rest_index`
-)
-REFERENCES `Restaurant` (
-	`rest_index`
-);
-
-ALTER TABLE `LikeList` ADD CONSTRAINT `FK_Restaurant_TO_LikeList_2` FOREIGN KEY (
-	`category_index`
-)
-REFERENCES `Restaurant` (
-	`category_index`
-);
-
-ALTER TABLE `Email_Confirm` ADD CONSTRAINT `FK_User_TO_Email_Confirm_1` FOREIGN KEY (
-	`user_index`
-)
-REFERENCES `User` (
-	`user_index`
-);
-
-ALTER TABLE `Menu` ADD CONSTRAINT `FK_Restaurant_TO_Menu_1` FOREIGN KEY (
-	`rest_index`
-)
-REFERENCES `Restaurant` (
-	`rest_index`
-);
-
-ALTER TABLE `Menu` ADD CONSTRAINT `FK_Restaurant_TO_Menu_2` FOREIGN KEY (
-	`category_index`
-)
-REFERENCES `Restaurant` (
-	`category_index`
-);
-
-ALTER TABLE `Suggest_like` ADD CONSTRAINT `FK_Suggestions_TO_Suggest_like_1` FOREIGN KEY (
-	`sug_index`
-)
-REFERENCES `Suggestions` (
-	`sug_index`
-);
-
-ALTER TABLE `Suggest_like` ADD CONSTRAINT `FK_Suggestions_TO_Suggest_like_2` FOREIGN KEY (
-	`user_index2`
-)
-REFERENCES `Suggestions` (
-	`user_index`
-);
-
-ALTER TABLE `Suggest_like` ADD CONSTRAINT `FK_User_TO_Suggest_like_1` FOREIGN KEY (
-	`user_index`
-)
-REFERENCES `User` (
-	`user_index`
-);
-
-desc user
-
-INSERT INTO USER VALUES(null,'admin', '1234', '어드민', 'admin@test.com', '010-0000-0000');
-
-SELECT * FROM user

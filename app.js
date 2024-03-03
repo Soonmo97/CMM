@@ -15,8 +15,6 @@ app.use(express.json());
 const indexRouter = require("./routes");
 app.use("/", indexRouter);
 
-const userRouter = require("./routes/user");
-app.use("/user", userRouter);
 
 db.sequelize.sync({force: false}).then((result)=>{
     console.log("DB 연결 성공");

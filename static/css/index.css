@@ -1,0 +1,35 @@
+.restaurantMenu {
+    justify-content: center;
+    display: flex;
+}
+
+.imageContainer {
+    position: relative; /* 상대적인 위치 설정 */
+    display: inline-block; /* 요소들을 인라인 블록으로 배치 */
+}
+
+.label {
+    position: absolute; /* 절대적인 위치 설정 */
+    top: 10px; /* 이미지 상단에서 10px 떨어진 위치에 배치 */
+    left: 10px; /* 이미지 왼쪽에서 10px 떨어진 위치에 배치 */
+    background-color: rgba(0, 0, 0, 0.5); /* 배경색 지정 */
+    color: white; /* 텍스트 색상 지정 */
+    padding: 5px; /* 안쪽 여백 지정 */
+    border-radius: 5px; /* 테두리 모서리를 둥글게 설정 */
+}
+
+.RestaurantImage {
+    width: 400px;
+    height: 400px;
+    border-radius: 25px;
+}
+
+body {
+    padding-top: 230px;
+}
+
+.table1 {
+    /* border-collapse: separate; */
+    border-spacing: 50px;
+    /* border-color: black; */
+}

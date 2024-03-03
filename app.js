@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = 8080;
 const session = require("express-session");
+const { sequelize } = require("./models");
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -28,6 +29,11 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
-app.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`);
-});
+sequelize
+    .sync()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`http://localhost:${PORT}`);
+        });
+    })
+    .catch((err) => console.log(err));

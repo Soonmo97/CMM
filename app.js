@@ -12,8 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // 라우터
-const indexRouter = require("./routes");
-app.use("/", indexRouter);
+const userRouter = require("./routes/user.js");
+app.use("/user", userRouter);
 
 
 db.sequelize.sync({force: false}).then((result)=>{
@@ -33,7 +33,6 @@ const sessionConfig = {
 };
 
 app.use(session(sessionConfig));
-
 
 app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);

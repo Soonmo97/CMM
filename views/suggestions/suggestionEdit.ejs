@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>건의 | 수정</title>
+        <script src="https://cdn.jsdelivr.net/npm/suneditor@2.45.1/dist/suneditor.min.js"></script>
+        <link
+            href="https://cdn.jsdelivr.net/npm/suneditor@2.45.1/dist/css/suneditor.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/lang/ko.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/plugins/modules/[dialog, resizing].js"></script>
+        <%- include('../include/head.ejs') %>
+        <style>
+            #i-title {
+                width: 100%;
+            }
+            a {
+                text-decoration: none;
+            }
+            .form-container {
+                width: 80%;
+                margin: 0 auto;
+            }
+            .btn-group {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="form-container">
+            <form action="/suggestion/editPost?post=<%=postInfo.sug_index%>" method="post">
+                <input
+                    type="text"
+                    name="title"
+                    id="i-title"
+                    maxlength="32"
+                    value="<%= postInfo.title %>"
+                /><br />
+                <textarea id="editor" name="content"><%- postInfo.content %></textarea>
+                <button onclick="return editPost()">등록</button>
+            </form>
+            <div class="btn-group">
+                <a href="/suggestion/list?page=1" onclick="return confirmOut()"
+                    ><button type="button">목록</button></a
+                >
+            </div>
+        </div>
+        <script>
+            const editor = document.getElementById("editor");
+
+            // suneditor 생성
+            const suneditor = SUNEDITOR.create("editor", {
+                width: "80%",
+                minWidth: "800px",
+                height: "auto",
+                charCounter: true,
+                popupDisplay: "local",
+                buttonList: [
+                    ["undo", "redo", "formatBlock", "fontSize"],
+                    ["bold", "underline", "italic", "strike", "removeFormat"],
+                    ["fontColor", "hiliteColor", "indent", "outdent", "align", "list", "table"],
+                ],
+                lang: SUNEDITOR_LANG["ko"],
+                height: 500,
+            });
+
+            suneditor.onChange = (contents, core) => {
+                suneditor.save();
+            };
+
+            function editPost() {
+                let content = suneditor.getContents(editor.innerHTML);
+                let textCount = suneditor.getCharCount(content);
+                if (textCount > 750) {
+                    alert("입력 가능한 글자수를 초과하였습니다. (최대 750자)");
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            function confirmOut() {
+                const isOut = confirm("글을 작성 중입니다. 정말 나가시겠습니까?");
+                if (isOut) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,11 +1,12 @@
 {
-  "development": {
-    "username": "sesac",
-    "password": "1234",
-    "database": "CMM",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
+    "development": {
+        "username": "sesac",
+        "password": "1234",
+        "database": "CMM",
+        "host": "127.0.0.1",
+        "dialect": "mysql",
+        "timezone": "+09:00"
+    }
   "test": {},
   "production": {}
 }

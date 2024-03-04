@@ -3,7 +3,6 @@ const app = express();
 const PORT = 8080;
 const { sequelize } = require('./models');
 const session = require("express-session");
-const userRouter = require("./routes/user.js");
 
 
 // 미들웨어
@@ -12,7 +11,6 @@ app.set("views", "./views");
 app.use("/static", express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 
 // 세션
 app.use(session({
@@ -25,6 +23,9 @@ app.use(session({
     }})
 )
  
+const userRouter = require("./routes/user.js");
+const suggestRouter = require("./routes/suggestion.js");
+app.use("/suggestion", suggestRouter);
 app.use("/", userRouter);
     
 sequelize.sync()

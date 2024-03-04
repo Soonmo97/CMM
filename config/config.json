@@ -8,5 +8,12 @@
         "timezone": "+09:00"
     },
     "test": {},
-    "production": {}
+    "prod": {
+        "username": "sesac",
+        "password": "1234",
+        "database": "CMM",
+        "host": "115.85.183.171",
+        "dialect": "mysql",
+        "timezone": "+09:00"
+    }
 }

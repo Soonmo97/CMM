@@ -46,3 +46,12 @@ exports.getRestDetail = async (req, res) => {
         res.status(500).send("sever error");
     }
 };
+
+// POST /restaurantDetail/:restIndex/review
+// 리뷰 생성
+
+// POST /restaurantDetail/:restIndex/likeList
+// 즐겨찾기 생성
+
+// DELETE /restaurantDetail/:restIndex/likeList/delete
+// 즐겨찾기 삭제

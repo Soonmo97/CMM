@@ -12,6 +12,8 @@ router.get("/join", controller.getJoin);
 router.post("/login", controller.postLogin);
 // POST /join
 router.post("/join", controller.postJoin);
+// GET /logout
+router.get("/logout", controller.getLogout);
 
 
 module.exports = router;

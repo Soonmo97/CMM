@@ -1,21 +1,17 @@
 const { Op } = require("sequelize")
-// const models = require("../models");
-const express = require("express");
-const { session }  = require("../session");
+// const { session }  = require("../session");
 const { User } = require("../models");
 const bcrypt = require('bcrypt');
 
 
 // GET /
 exports.main = (req, res) => {
-    res.render("index");
-
-    // const user = req.session.user;
-    // console.log("유저 정보>> ",user);
-    // if(user) {
-    //     res.render("index", { isLogin:true, user:user });
-    // }
-    // else { res.render("index", { isLogin:false }); }
+    const user = req.session.user;
+    console.log("유저 정보>> ",user);
+    if(user) {
+        res.render("index", { isLogin:true, user:user });
+    }
+    else { res.render("index", { isLogin:false }); }
 };
 
 // GET /login
@@ -31,26 +27,30 @@ exports.getJoin = (req, res) => {
 
 // POST /login
 exports.postLogin = async (req, res) => {
-    const { id, pw, hashV } = req.body;
+    const { id, pw } = req.body;
 
     try {
         const user = await User.findOne({ where: { id: req.body.id } });
         if (user && await bcrypt.compare(pw, user.pw)) {
-            // console.log("로그인 세션 >> ", req.session);
-            // req.session.id = user.id;
-            res.send('Login 성공');
-        } else {
-            res.status(401).send('아이디 혹은 비밀번호가 잘못되었습니다.');
+            req.session.user = user.id;            
+            return res.send('Login 성공'); // 바로 리턴하여 함수를 종료합니다.
+        } 
+        else {
+            return res.status(401).send('아이디 혹은 비밀번호가 잘못되었습니다.');
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send('로그인 오류');
+        return res.status(500).send('로그인 오류'); // 바로 리턴하여 함수를 종료합니다.
     }
 };
 
 // POST /join
 exports.postJoin = async (req, res) => {
     const { id, pw } = req.body;
+
+    const checkId = await User.findOne({ where: { id: req.body.id } });
+    if (id === req.body.id)
+    
     try {
         const hashedPassword = await bcrypt.hash(pw, 10);
         await User.create({
@@ -70,3 +70,23 @@ exports.postJoin = async (req, res) => {
     }
 
 };
+
+exports.getLogout = async (req, res) => {
+    const user = req.body.user;
+    if(user) {
+        req.session.destroy((err)=> {
+            if(err) throw err;
+
+            res.redirect('/');
+        });
+    }
+    else {
+        // 세션 만료된 회원
+        res.send(`
+        <scrpit>
+            alert('이미 세션이 완료되었습니다.');
+            document.loation.href='/';
+        </script>`)
+    }
+};
+

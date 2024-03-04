@@ -1,5 +1,4 @@
 "use strict";
-
 const Sequelize = require("sequelize");
 const config = require(__dirname + "/../config/config.json")["development"];
 const db = {};
@@ -34,11 +33,14 @@ Suggest_Like.belongsTo(Suggestions, {
     foreignKey: "sug_index",
 });
 
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+db.User = require("./User")(sequelize, Sequelize);
 
 db.User = User;
 db.Suggestions = Suggestions;
 db.Suggest_Like = Suggest_Like;
 
 module.exports = db;
+

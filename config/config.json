@@ -7,4 +7,6 @@
         "dialect": "mysql",
         "timezone": "+09:00"
     }
+  "test": {},
+  "production": {}
 }

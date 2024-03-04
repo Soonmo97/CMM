@@ -1,0 +1,17 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rbg(46, 51, 56);
+}
+
+.login_form {
+  width: 30rem;
+  max-width: 90%;
+  box-shadow: 0 0 10px #0003;
+  border-radius: 10px;
+  padding: 30px 20px;
+  text-align: center;
+}
+  

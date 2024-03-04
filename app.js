@@ -26,7 +26,7 @@ app.use(
     })
 );
 
-const resRouter = require("./routes/RestDetail");
+const resRouter = require("./routes/restDetail.js");
 const userRouter = require("./routes/user.js");
 const suggestRouter = require("./routes/suggestion.js");
 app.use("/restaurantDetail", resRouter);

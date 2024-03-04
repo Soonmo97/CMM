@@ -3,6 +3,8 @@ const app = express();
 const PORT = 8080;
 const { sequelize } = require('./models');
 const session = require("express-session");
+const db = require("./models");
+require("dotenv").config();
 
 
 // 미들웨어
@@ -22,9 +24,11 @@ app.use(session({
         httpOnly: true,
     }})
 )
- 
+
+const resRouter = require("./routes/RestDetail");
 const userRouter = require("./routes/user.js");
 const suggestRouter = require("./routes/suggestion.js");
+app.use("/restaurantDetail", resRouter);
 app.use("/suggestion", suggestRouter);
 app.use("/", userRouter);
     

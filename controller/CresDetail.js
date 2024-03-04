@@ -39,6 +39,7 @@ exports.getRestDetail = async (req, res) => {
             },
             attributes: ["user_index", "review_content", "createdAt"],
         });
+
         res.render("restaurantDetail", { restaurant, categoryList, menuList, reviewList });
     } catch (err) {
         console.log("err", err);

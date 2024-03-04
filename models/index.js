@@ -22,15 +22,6 @@ db.Restaurant = RestaurantModel;
 db.Review = ReviewModel;
 db.User = UserModel;
 
-// 1:1 관계 설정
-// 식당 : 식당 (연결 키: rest_index)
-RestaurantModel.hasOne(LikeListModel, {
-    foreignKey: { name: "rest_index", allowNull: false },
-});
-LikeListModel.belongsTo(RestaurantModel, {
-    foreignKey: { name: "rest_index", allowNull: false },
-});
-
 // 1:N 관계 설정
 // 식당 : 카테고리 (연결 키: rest_index)
 RestaurantModel.hasMany(CategoryModel, {
@@ -39,6 +30,15 @@ RestaurantModel.hasMany(CategoryModel, {
 CategoryModel.belongsTo(RestaurantModel, {
     foreignKey: { name: "rest_index", allowNull: false },
 });
+
+// 식당 : 즐겨찾기 (연결 키: rest_index)
+RestaurantModel.hasMany(LikeListModel, {
+    foreignKey: { name: "rest_index", allowNull: false },
+});
+LikeListModel.belongsTo(RestaurantModel, {
+    foreignKey: { name: "rest_index", allowNull: false },
+});
+
 // 식당 : 메뉴 (연결 키: rest_index)
 RestaurantModel.hasMany(MenuModel, {
     foreignKey: { name: "rest_index", allowNull: false },
@@ -46,6 +46,7 @@ RestaurantModel.hasMany(MenuModel, {
 MenuModel.belongsTo(RestaurantModel, {
     foreignKey: { name: "rest_index", allowNull: false },
 });
+
 // 식당 : 리뷰 (연결 키: rest_index)
 RestaurantModel.hasMany(ReviewModel, {
     foreignKey: { name: "rest_index", allowNull: false },
@@ -53,6 +54,7 @@ RestaurantModel.hasMany(ReviewModel, {
 ReviewModel.belongsTo(RestaurantModel, {
     foreignKey: { name: "rest_index", allowNull: false },
 });
+
 // 회원 : 리뷰 (연결 키: user_index)
 UserModel.hasMany(ReviewModel, {
     foreignKey: { name: "user_index", allowNull: false },
@@ -60,6 +62,7 @@ UserModel.hasMany(ReviewModel, {
 ReviewModel.belongsTo(UserModel, {
     foreignKey: { name: "user_index", allowNull: false },
 });
+
 // 회원 : 즐겨찾기 (연결 키: user_index)
 UserModel.hasMany(LikeListModel, {
     foreignKey: { name: "user_index", allowNull: false },

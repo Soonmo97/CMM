@@ -4,6 +4,7 @@ const PORT = 8080;
 const session = require("express-session");
 const db = require("./models");
 const router = require("./routes/RestDetail");
+require("dotenv").config();
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -24,7 +25,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-    res.render("index", {});
+    res.render("index");
 });
 
 // 식당 상세페이지 라우터
@@ -36,5 +37,5 @@ db.sequelize.sync({ force: false }).then((result) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`);
+    console.log(`http://localhost:${process.env.PORT}`);
 });

@@ -50,6 +50,7 @@
             </table>
             <div class="btn-group">
                 <a href="/suggestion/list?page=1"><button type="button">목록</button></a>
+                <% if(postInfo.User.user_index===loginUser){ %>
                 <a
                     href="/suggestion/delete?post=<%= postInfo.sug_index %>"
                     onclick="return confirmDel()"
@@ -58,6 +59,7 @@
                 <a href="/suggestion/edit?post=<%= postInfo.sug_index %>"
                     ><button type="button">수정</button></a
                 >
+                <%}%>
             </div>
         </div>
         <script>

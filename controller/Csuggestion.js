@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const { sequelize, User, Suggestions, Suggest_Like } = require("../models/index");
 
 // 게시글 목록 조회
+
 exports.listPage = async (req, res) => {
     try {
         console.log("세션", req.session);
@@ -78,8 +79,8 @@ exports.listPage = async (req, res) => {
 
 // 게시글 작성 페이지 요청
 exports.writePage = (req, res) => {
-    if (req.session.user) {
-        res.render("suggestions/suggestionWrite");
+    if (req.session.index) {
+        res.render("suggestions/suggestionWrite", { isNew: true });
     } else {
         res.render("login");
     }
@@ -128,8 +129,12 @@ exports.getPost = async (req, res) => {
             ],
             group: ["Suggestions.sug_index", "User.user_index"],
         });
+
         if (postInfo) {
-            res.render("suggestions/suggestionPost", { postInfo });
+            res.render("suggestions/suggestionPost", {
+                postInfo,
+                loginUser: req.session.index,
+            });
         } else {
             res.send(
                 '<script>alert("해당 포스트가 존재하지 않습니다."); document.location.href="/suggestion/list?page=1"</script>'
@@ -164,8 +169,12 @@ exports.editPage = async (req, res) => {
         const postInfo = await Suggestions.findOne({
             where: { sug_index: post },
         });
+        if (req.session.index) {
+            res.render("suggestions/suggestionWrite", { postInfo, isNew: false });
+        } else {
+            res.render("login");
+        }
         console.log("수정할 글", postInfo);
-        res.render("suggestions/suggestionEdit", { postInfo });
     } catch (err) {
         console.log(err);
     }

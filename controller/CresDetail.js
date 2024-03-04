@@ -52,3 +52,6 @@ exports.getRestDetail = async (req, res) => {
 
 // POST /restaurantDetail/:restIndex/likeList
 // 즐겨찾기 생성
+
+// DELETE /restaurantDetail/:restIndex/likeList/delete
+// 즐겨찾기 삭제

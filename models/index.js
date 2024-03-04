@@ -8,7 +8,7 @@ if (process.env.NODE_ENV) {
     config = require(__dirname + "/../config/config.js")[process.env.NODE_ENV];
 } else {
     // node app.js
-    config = require(__dirname + "/../config/config.js")[development];
+    config = require(__dirname + "/../config/config.js")["development"];
 }
 const db = {};
 

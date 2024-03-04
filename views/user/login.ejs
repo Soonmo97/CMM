@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <%- include('include/head', {title: '로그인'}) %>
+    <%- include('../include/head', {title: '로그인'}) %>
     <link rel="stylesheet" href="/static/css/login.css" />
   </head>
   <body>
@@ -18,7 +18,7 @@
         <input type="hidden" name="nickname" />
       </form>
 
-      <form name= "form_login" action="/login" method="POST">
+      <form name= "form_login" action="/user/login" method="POST">
         <div class="input-group mb-3">
           <span class="input-group-text" id="id">ID</span>
           <input
@@ -43,7 +43,7 @@
         <button type="submit" class="btn btn-dark" onclick="login()">Login</button>
         <br />
         <a href="/">Home 이동하기</a>
-        <a href="/join">회원가입으로 이동하기</a>
+        <a href="/user/join">회원가입으로 이동하기</a>
       </form>
     </div>
 
@@ -58,7 +58,7 @@
         }
 
         axios({
-          url : "/login",
+          url : "/user/login",
           method : "POST",
           data: {
             id: form.id.value,
@@ -73,7 +73,7 @@
             formInfo.id.value = form.id.value;
             formInfo.submit();
 
-            document.location.href = "/";
+            document.location.href = "/user/logout";
           }
           else {
             alert("로그인 실패");

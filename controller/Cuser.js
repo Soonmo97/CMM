@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 
 // GET /
 exports.main = (req, res) => {
-    const user = req.session.user;
+    const user = req.session.id;
     console.log("유저 정보>> ",user);
     if(user) {
         res.render("index", { isLogin:true, user:user });
@@ -17,12 +17,12 @@ exports.main = (req, res) => {
 // GET /login
 exports.getLogin = (req, res) => {
     console.log("로그인 요청입니다");
-    res.render("login");
+    res.render("user/login");
 };
 
 // GET /join
 exports.getJoin = (req, res) => {
-    res.render("join");
+    res.render("user/join");
 };
 
 // POST /login
@@ -32,11 +32,13 @@ exports.postLogin = async (req, res) => {
     try {
         const user = await User.findOne({ where: { id: req.body.id } });
         if (user && await bcrypt.compare(pw, user.pw)) {
-            req.session.user = user.id;            
-            return res.send('Login 성공'); // 바로 리턴하여 함수를 종료합니다.
+            req.session.user = user.id;
+            req.session.index = user.index;
+                        
+            res.render('user/logout'); // 바로 리턴하여 함수를 종료합니다.
         } 
         else {
-            return res.status(401).send('아이디 혹은 비밀번호가 잘못되었습니다.');
+            res.status(401).send('아이디 혹은 비밀번호가 잘못되었습니다.');
         }
     } catch (error) {
         console.error(error);
@@ -48,22 +50,29 @@ exports.postLogin = async (req, res) => {
 exports.postJoin = async (req, res) => {
     const { id, pw } = req.body;
 
-    const checkId = await User.findOne({ where: { id: req.body.id } });
-    if (id === req.body.id)
-    
     try {
         const hashedPassword = await bcrypt.hash(pw, 10);
-        await User.create({
-            id: req.body.id,
-            pw: hashedPassword,
-            name: req.body.name,
-            nickname: req.body.nickname,
-            email: req.body.email,
-        })
-            .then((result) => {
-                console.log("회원가입 완료", result.id);
-                res.render("index");
+        const user = await User.findOne({ where: { id } });
+        
+        // 기존 아이디와 가입 아이디를 비교해서 찾는 user가 null 값인 경우,
+        // 중복되지 않는다는 뜻이기 때문에 가입 허용  
+        if (user == null) {
+            await User.create({
+                id: req.body.id,
+                pw: hashedPassword,
+                name: req.body.name,
+                nickname: req.body.nickname,
+                email: req.body.email,
             })
+            .then((result) => {
+                // console.log("회원가입 완료!!", result.id);
+                res.send(result);
+            })
+        }
+        else {
+            // console.log("중복된 아이디 입니다.");
+            res.render("user/join");
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send('회원가입 실패');
@@ -71,8 +80,9 @@ exports.postJoin = async (req, res) => {
 
 };
 
+// GET /logout
 exports.getLogout = async (req, res) => {
-    const user = req.body.user;
+    const user = req.body.id;
     if(user) {
         req.session.destroy((err)=> {
             if(err) throw err;
@@ -86,7 +96,7 @@ exports.getLogout = async (req, res) => {
         <scrpit>
             alert('이미 세션이 완료되었습니다.');
             document.loation.href='/';
-        </script>`)
+        </script>`);
     }
 };
 

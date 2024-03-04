@@ -5,15 +5,15 @@ const controller = require("../controller/Cuser");
 // 렌더링, get요청
 router.get("/", controller.main);
 // GET /login
-router.get("/login", controller.getLogin);
+router.get("/user/login", controller.getLogin);
 // GET /join
-router.get("/join", controller.getJoin);
+router.get("/user/join", controller.getJoin);
 // POST /login
-router.post("/login", controller.postLogin);
+router.post("/user/login", controller.postLogin);
 // POST /join
-router.post("/join", controller.postJoin);
+router.post("/user/join", controller.postJoin);
 // GET /logout
-router.get("/logout", controller.getLogout);
+router.get("/user/logout", controller.getLogout);
 
 
 module.exports = router;

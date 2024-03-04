@@ -26,10 +26,10 @@ app.use(
     })
 );
 
-const resRouter = require("./routes/restDetail.js");
+const restRouter = require("./routes/restDetail.js");
 const userRouter = require("./routes/user.js");
 const suggestRouter = require("./routes/suggestion.js");
-app.use("/restaurantDetail", resRouter);
+app.use("/restaurantDetail", restRouter);
 app.use("/suggestion", suggestRouter);
 app.use("/", userRouter);
 

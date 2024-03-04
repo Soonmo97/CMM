@@ -6,29 +6,41 @@
         <title>건의 | <%= postInfo.title%></title>
         <%- include('../include/head') %>
         <style>
-            #table-div {
-                width: 600px;
+            .post-container {
+                width: 80%;
+                margin: 0 auto;
             }
-            #table-div tr:nth-child(3) {
+            .table {
+                width: 100%;
+                border: 1px solid #dadada;
+                box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.08);
+            }
+            table tr:nth-child(3) {
                 height: 300px;
+            }
+            table tr:last-child td {
+                text-align: center;
+            }
+            .btn-group {
+                width: 100%;
             }
         </style>
     </head>
     <body>
-        <div id="table-div">
-            <table class="table table-striped">
+        <div class="post-container">
+            <table class="table">
                 <tr>
                     <td><%= postInfo.sug_index %></td>
                     <td><%= postInfo.title %></td>
                 </tr>
                 <tr>
-                    <td><%= postInfo.dataValues.created_at %></td>
                     <td><%= postInfo.User.nickname %></td>
+                    <td><%= postInfo.dataValues.created_at %></td>
                 </tr>
                 <tr>
                     <td colspan="2"><%- postInfo.content %></td>
                 </tr>
-                <tr>
+                <tr class="btn">
                     <td colspan="2">
                         <button type="button" id="like" onclick="like()">
                             <%= postInfo.dataValues.like_count %>
@@ -36,14 +48,17 @@
                     </td>
                 </tr>
             </table>
-        </div>
-        <div class="btn-group">
-            <a href="/suggestion/list?page=1"><button type="button">목록</button></a>
-            <a
-                href="/suggestion/delete?post=<%= postInfo.sug_index %>"
-                onclick="return confirmDel()"
-                ><button>삭제</button></a
-            >
+            <div class="btn-group">
+                <a href="/suggestion/list?page=1"><button type="button">목록</button></a>
+                <a
+                    href="/suggestion/delete?post=<%= postInfo.sug_index %>"
+                    onclick="return confirmDel()"
+                    ><button type="button">삭제</button></a
+                >
+                <a href="/suggestion/edit?post=<%= postInfo.sug_index %>"
+                    ><button type="button">수정</button></a
+                >
+            </div>
         </div>
         <script>
             function confirmDel() {

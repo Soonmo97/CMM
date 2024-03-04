@@ -8,6 +8,8 @@ exports.listPage = async (req, res) => {
         const pageLimit = 3;
         let { page: currentPage } = req.query;
 
+        currentPage = Number(currentPage);
+
         // 전체 페이지 수 구하기
         const [{ totalPosts }] = await Suggestions.findAll({
             attributes: [[sequelize.fn("count", sequelize.col("sug_index")), "totalPosts"]],
@@ -138,7 +140,6 @@ exports.getPost = async (req, res) => {
 exports.deletePost = async (req, res) => {
     try {
         const { post } = req.query;
-        console.log("지울 번호: ", post);
         const result = await Suggestions.destroy({
             where: { sug_index: post },
         });
@@ -146,6 +147,39 @@ exports.deletePost = async (req, res) => {
             console.log("삭제 성공!");
             res.redirect("list?page=1");
             console.log("redirect?");
+        }
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+// 게시글 수정 페이지 요청
+exports.editPage = async (req, res) => {
+    try {
+        const { post } = req.query;
+        const postInfo = await Suggestions.findOne({
+            where: { sug_index: post },
+        });
+        console.log("수정할 글", postInfo);
+        res.render("suggestions/suggestionEdit", { postInfo });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+// 게시글 수정 요청
+exports.editPost = async (req, res) => {
+    try {
+        const { post } = req.query;
+        const { title, content } = req.body;
+        const editPost = await Suggestions.update(
+            { title: title, content: content },
+            {
+                where: { sug_index: post },
+            }
+        );
+        if (editPost) {
+            res.redirect("post/" + post);
         }
     } catch (err) {
         console.log(err);

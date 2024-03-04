@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>건의 | 글쓰기</title>
+        <title>건의 | 수정</title>
         <script src="https://cdn.jsdelivr.net/npm/suneditor@2.45.1/dist/suneditor.min.js"></script>
         <link
             href="https://cdn.jsdelivr.net/npm/suneditor@2.45.1/dist/css/suneditor.min.css"
@@ -13,15 +13,15 @@
         <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/plugins/modules/[dialog, resizing].js"></script>
         <%- include('../include/head.ejs') %>
         <style>
+            #i-title {
+                width: 100%;
+            }
             a {
                 text-decoration: none;
             }
             .form-container {
                 width: 80%;
                 margin: 0 auto;
-            }
-            #i-title {
-                width: 100%;
             }
             .btn-group {
                 width: 100%;
@@ -30,9 +30,15 @@
     </head>
     <body>
         <div class="form-container">
-            <form action="/suggestion/writePost" method="post">
-                <input type="text" id="i-title" name="title" maxlength="32" /><br />
-                <textarea id="editor" name="content"></textarea>
+            <form action="/suggestion/editPost?post=<%=postInfo.sug_index%>" method="post">
+                <input
+                    type="text"
+                    name="title"
+                    id="i-title"
+                    maxlength="32"
+                    value="<%= postInfo.title %>"
+                /><br />
+                <textarea id="editor" name="content"><%- postInfo.content %></textarea>
                 <button onclick="return editPost()">등록</button>
             </form>
             <div class="btn-group">
@@ -46,7 +52,7 @@
 
             // suneditor 생성
             const suneditor = SUNEDITOR.create("editor", {
-                width: "100%",
+                width: "80%",
                 minWidth: "800px",
                 height: "auto",
                 charCounter: true,
@@ -60,7 +66,6 @@
                 height: 500,
             });
 
-            // 내용 변경 시 textarea에 복사
             suneditor.onChange = (contents, core) => {
                 suneditor.save();
             };

@@ -47,4 +47,3 @@ select * from likelist
 
 select * from review
 
-

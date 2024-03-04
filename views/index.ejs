@@ -1,23 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>창동 맛집 모음</title>
+        <link rel="stylesheet" href="../static/css/index.css" />
         <!-- head include -->
         <%- include('./include/head') %>
     </head>
     <body>
         <!-- header include -->
-        <a href="/restaurantDetail/1"
-            ><img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScXpE_0Ni9xnQquNo5TZmqxaihVCcOUZVdWQ&usqp=CAU"
-                alt="식당이미지"
-                width="400px"
-                height="300px"
-        /></a>
+        <%- include('./include/header') %>
+        <div class="restaurantMenu" id="restaurantMenu1">
+            <table class="table1">
+                <tr>
+                    <th style="font-size: 30px">
+                        <img
+                            class="logo"
+                            src="../static/images/CMM.png"
+                            alt=""
+                            style="width: 50px; height: 50px"
+                        />
+                        모든식당
+                    </th>
+                    <th></th>
+                    <td><button>전체보기</button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="imageContainer">
+                            <a href=""
+                                ><img
+                                    src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDNfMTA1%2FMDAxNzAxNTc1Mzc1MTA4.dN9S9wJppXhDjB9fdVjzf911R91YMES1K8IbCekCMjgg.tYmyq6JD-7LetCAkfz5KQFzEikonrjlL59_LRklghykg.JPEG.jelly877%2F20231203%25A3%25DF115342.jpg"
+                                    alt="Restaurant 1"
+                                    class="RestaurantImage"
+                                />
+                                <span class="label">홍콩 반점</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="imageContainer">
+                            <a href=""
+                                ><img
+                                    src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMDdfMjQz%2FMDAxNzA0NjA2Mjg5Mjk5.uHvOABKI8r7GG-2RUPwBVKNFznTx3voSDhL49SclPEUg.3kTv7hNufwZkBobdz_GUqdLaLnoLUeyE2YpLf_PnRLwg.JPEG.ckstmdh1346%2FKakaoTalk_20240107_123523257_12.jpg"
+                                    alt="Restaurant 2"
+                                    class="RestaurantImage"
+                                />
+                                <span class="label">철수는 부대찌개 영희는 김치찌개</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="imageContainer">
+                            <a href=""
+                                ><img
+                                    src="https://search.pstatic.net/common/?src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNDAyMjdfNDIg%2FMDAxNzA5MDIwMjU4OTcw.qG10KBRjb5s5nW8wURjDutMlp3ycNkA3QKoI8FQX4awg.2CLBY56L0C_QtPsYcUvQaABg-7F04azYXkKvIWwiy9Qg.JPEG%2F20240227_144325.jpg.jpg"
+                                    alt="Restaurant 3"
+                                    class="RestaurantImage"
+                                />
+                                <span class="label">마쯔무라 돈까스</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="imageContainer">
+                            <a href=""
+                                ><img
+                                    src="https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20221210_102%2F1670602134615rvUSq_JPEG%2F1.%25BE%25EE%25B9%25AC%252C%25B1%25E8%25B9%25E4%252C%25BA%25F1%25BA%25F6%252C%25BA%25F1%25BA%25F6%25B9%25E4.jpg"
+                                    alt="Restaurant 4"
+                                    class="RestaurantImage"
+                                />
+                                <span class="label">수유리 우동집</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="imageContainer">
+                            <a href=""
+                                ><img
+                                    src="https://search.pstatic.net/common/?src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNDAyMjhfMjgy%2FMDAxNzA5MTE5MDE5MDgy.NXmhXgHQIGybapwKXX5IVCkss5Qp0Sy3HJ8IufAP6m8g.YmNPsvH7lIAsX2Xwz5Fo5BTi-jvDDPmMF8vILv2Ilc8g.JPEG%2F1707389579225.jpg.jpg"
+                                    alt="Restaurant 5"
+                                    class="RestaurantImage"
+                                />
+                                <span class="label">빽다방</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="imageContainer">
+                            <a href=""
+                                ><img
+                                    src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjAyMjVfMjM1%2FMDAxNjQ1NzE2MjMwNDk4.wDPfSHmgMJXfRsFJifl5zEHnjG8rFN8fMJhuNKdWe7Eg.sdwb7h-DUsnfgiZ6rB5zb8QXsPSmIX9X3s6tkfpz2e4g.JPEG.hi_withyou%2F%25EB%25A6%25AC%25EC%2596%25BC%253F%258C%258C%253F%258A%25A4%253F%253F_%25283%2529.jpg"
+                                    alt="Restaurant 6"
+                                    class="RestaurantImage"
+                                />
+                                <span class="label">리얼파스타</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br /><br />
+        <div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
         <!-- footer include -->
+        <%- include('./include/footer') %>
     </body>
 </html>

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controller/CSuggestion");
+const controller = require("../controller/Csuggestion");
 
 // 게시글 목록 조회 요청
 router.get("/list", controller.listPage);

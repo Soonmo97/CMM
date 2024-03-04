@@ -4,6 +4,7 @@ const { sequelize, User, Suggestions, Suggest_Like } = require("../models/index"
 // 게시글 목록 조회
 exports.listPage = async (req, res) => {
     try {
+        console.log("세션", req.session);
         const limit = 5;
         const pageLimit = 3;
         let { page: currentPage } = req.query;
@@ -77,14 +78,18 @@ exports.listPage = async (req, res) => {
 
 // 게시글 작성 페이지 요청
 exports.writePage = (req, res) => {
-    res.render("suggestions/suggestionWrite");
+    if (req.session.user) {
+        res.render("suggestions/suggestionWrite");
+    } else {
+        res.render("login");
+    }
 };
 
 // 게시글 작성 요청
 exports.writeSuggestion = async (req, res) => {
     try {
         const postInfo = await Suggestions.create({
-            user_index: 1,
+            user_index: req.session.index,
             title: req.body.title,
             content: req.body.content,
         });
@@ -146,7 +151,6 @@ exports.deletePost = async (req, res) => {
         if (result) {
             console.log("삭제 성공!");
             res.redirect("list?page=1");
-            console.log("redirect?");
         }
     } catch (err) {
         console.log(err);

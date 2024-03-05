@@ -23,4 +23,7 @@ router.post("/writePost", controller.writeSuggestion);
 // 게시글 수정 요청
 router.post("/editPost", controller.editPost);
 
+// 게시글 추천 요청
+router.post("/likePost", controller.likePost);
+
 module.exports = router;

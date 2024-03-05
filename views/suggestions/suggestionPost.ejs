@@ -71,6 +71,27 @@
                     return false;
                 }
             }
+
+            async function like() {
+                const btnLike = document.querySelector("#like");
+                const sameUser = "<%= postInfo.User.user_index===loginUser %>";
+                if (!"<%= loginUser %>") {
+                    alert("로그인 후에 추천 가능합니다.");
+                } else if (sameUser === true) {
+                    alert("본인 글은 추천할 수 없습니다.");
+                } else {
+                    const likeCount = await axios({
+                        method: "post",
+                        url: "/suggestion/likePost",
+                        data: {
+                            sug_index: "<%=postInfo.sug_index%>",
+                            user_index: "<%=loginUser%>",
+                        },
+                    });
+                    console.log("추천수 변경!", likeCount.data.likeCount);
+                    btnLike.innerHTML = likeCount.data.likeCount;
+                }
+            }
         </script>
     </body>
 </html>

@@ -198,3 +198,28 @@ exports.editPost = async (req, res) => {
         console.log(err);
     }
 };
+
+// 게시글 추천
+exports.likePost = async (req, res) => {
+    try {
+        console.log("like:: 데이터 확인", req.body);
+        console.log(typeof req.body.sug_index, typeof req.body.user_index);
+        const { sug_index, user_index } = req.body;
+        const [likePost, created] = await Suggest_Like.findOrCreate({
+            where: { sug_index: sug_index, user_index: user_index },
+            defaults: { sug_index: sug_index, user_index: user_index },
+        });
+        console.log("likePost:", likePost, "created", created);
+        if (!created) {
+            const unlikePost = await Suggest_Like.destroy({
+                where: { sug_index: likePost.sug_index, user_index: user_index },
+            });
+            console.log("unlikePost", unlikePost);
+        }
+        const likeCount = await Suggest_Like.count({ where: { sug_index: sug_index } });
+        console.log("추천수 업데이트:", likeCount);
+        res.send({ likeCount: likeCount });
+    } catch (err) {
+        console.log(err);
+    }
+};

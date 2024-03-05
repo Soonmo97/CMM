@@ -1,248 +1,4 @@
-<style>
-    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
-
-    :root {
-        /** color **/
-        --baseColor: #333;
-        --blueColor: #22aee5;
-        /** size **/
-        --baseContainer: 1400px;
-    }
-
-    .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1400px;
-        padding: 0 80px;
-    }
-
-    header {
-        margin: 0 auto;
-        background-color: rgb(254, 255, 255);
-        width: 100%;
-        z-index: 1;
-        top: 0;
-        position: fixed;
-
-        height: 200px;
-
-        border-bottom: 1px solid gray;
-    }
-
-    /* @media (max-width: 1200px) {
-      .search {
-          width: 300px; /* 헤더 너비가 1200px 이하일 때 검색창의 크기를 줄임 
-      } */
-
-    header img {
-        width: 11.875rem;
-        padding: 0.75rem 0;
-    }
-    /* header > div {display: flex;justify-content: space-between;align-items: center;} */
-
-    header nav ul {
-        display: flex;
-        text-align: center;
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-    }
-    header nav ul li {
-        padding: 0 10px;
-        width: 100px;
-    }
-    header nav ul li a {
-        position: relative;
-        display: inline-block;
-        line-height: 3.5rem;
-        font-weight: bold;
-        font-size: 1.0625rem;
-        text-decoration: none;
-        color: black;
-    }
-    header nav ul li.active a,
-    header nav ul li:hover a {
-        color: var(--blueColor);
-    }
-    header nav ul li a:after {
-        opacity: 0;
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        background-color: var(--blueColor);
-        left: 0;
-        bottom: 0;
-        transition: all 0.3s ease-in-out;
-    }
-    header nav ul li.active a:after,
-    header nav ul li:hover a:after {
-        opacity: 1;
-    }
-    header nav ul li:last-child {
-        margin-right: 0; /* 마지막 메뉴의 간격을 없앰 */
-    }
-
-    .search {
-        border: 12.5px solid rgb(142, 205, 247);
-        border-radius: 25px;
-        margin: 0 auto;
-    }
-
-    .search img {
-        width: 30px;
-        margin: 0;
-    }
-
-    .signBtn {
-        border: 5px solid rgb(142, 205, 247);
-        border-radius: 25px;
-        outline: none; /* 클릭시 포커스 테두리도 없앰 */
-        background-color: white;
-    }
-
-    .buttons {
-        display: flex;
-
-        gap: 10px; /* 버튼 사이의 간격 조정 */
-    }
-
-    /* 회원가입 팝업창 스타일 */
-    #signupModal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        width: 600px; /* 너비를 작게 설정 */
-        height: 600px;
-    }
-
-    #loginModal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        width: 500px; /* 너비를 작게 설정 */
-        height: 500px;
-    }
-
-    .modal-content {
-        text-align: center;
-    }
-
-    /* 어두운 오버레이 스타일 */
-    #overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }
-
-    /* 입력폼 */
-
-    input:focus {
-        outline: none;
-    }
-
-    h3 {
-        margin: 19px 0 8px;
-        font-size: 14px;
-        font-weight: 700;
-    }
-
-    .box {
-        display: block;
-        width: 100%;
-        height: 51px;
-        border: solid 1px #dadada;
-        padding: 10px 14px 10px 14px;
-        box-sizing: border-box;
-        background: #fff;
-        position: relative;
-    }
-
-    .int {
-        display: block;
-        position: relative;
-        width: 100%;
-        height: 29px;
-        border: none;
-        background: #fff;
-        font-size: 15px;
-    }
-
-    /* input {
-        font-family: Dotum, "돋움", Helvetica, sans-serif;
-    } */
-
-    .stepbutton {
-        position: absolute;
-        top: 10px;
-        right: 13px;
-        font-size: 15px;
-    }
-
-    /* 에러메세지 */
-
-    .error_next_box {
-        margin-top: 9px;
-        font-size: 12px;
-        color: red;
-        display: none;
-    }
-
-    #alertTxt {
-        position: absolute;
-        top: 19px;
-        right: 38px;
-        font-size: 12px;
-        color: red;
-        display: none;
-    }
-
-    /* 버튼 */
-
-    .btnArea {
-        margin: 30px 0 50px;
-    }
-
-    #btnJoin {
-        width: 100%;
-        padding: 21px 0 17px;
-        border: 0;
-        cursor: pointer;
-        color: #fff;
-        background-color: #0fa6cc;
-        font-size: 20px;
-        font-weight: 400;
-    }
-
-    .signupLabel {
-        position: absolute; /* 절대적인 위치 설정 */
-        top: 10px; /* 이미지 상단에서 10px 떨어진 위치에 배치 */
-        right: 10px; /* 이미지 왼쪽에서 10px 떨어진 위치에 배치 */
-        background-color: rgba(0, 0, 0, 0.5); /* 배경색 지정 */
-        color: white; /* 텍스트 색상 지정 */
-        padding: 5px; /* 안쪽 여백 지정 */
-        border-radius: 5px; /* 테두리 모서리를 둥글게 설정 */
-    }
-</style>
-
+<link rel="stylesheet" href="/static/css/header.css" />
 <header>
     <div class="container">
         <div>
@@ -294,10 +50,11 @@
 
         <div class="buttons">
             <%if (isLogin) { %>
-            <button id="signupBtn" class="signBtn" href="/user/join">회원가입</button>
-            <button id="loginBtn" class="signBtn" href="/user/login">로그인</button>
+            
+            <button id="signupBtn" class="signBtn" >회원가입</button>
+            <button id="loginBtn" class="signBtn" >로그인</button>
             <% } else { %>
-            <button id="logoutBtn" style="display: none" class="signBtn" href="/user/logout">로그아웃</button>
+            <button id="logoutBtn" style="display: none" class="signBtn" >로그아웃</button>
             <% } %>
         </div>
     </div>
@@ -310,7 +67,12 @@
                 <img src="../static/images/CMM.png" width="150px" height="200px" />
             </div>
             <a href=""><span class="signupLabel" id="closeModalBtn">닫기</span></a>
-            <form action="/login" method="post">
+
+            <form name="form_info" action="/" method="POST">
+                <input type="hidden" name="nickname" />
+            </form>
+
+            <form id="modal_login" action="/user/login" method="post">
                 <!-- 아이디 -->
                 <div>
                     <h3>
@@ -343,6 +105,44 @@
         </div>
     </div>
 
+    <script>
+            document.getElementById('modal_login').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            const formInfo = document.forms["form_info"];
+          const form = document.forms["modal_login"];
+  
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+          }
+  
+          axios({
+            url : "/include/header",
+            method : "POST",
+            data: {
+              id: form.id.value,
+              pw: form.pw.value,
+            },
+          })
+          .then((res) => {
+            const { data } = res;
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>",res);
+  
+            if (data) {
+              alert("로그인 성공");
+            //   formInfo.id.value = form.id.value;
+            //   formInfo.submit();
+  
+            }
+            else {
+              alert("로그인 실패");
+              form.reset();
+            }
+          })
+          .catch((err) => console.err(err));
+        });
+    </script>
+
     <!-- 회원가입 팝업창 -->
     <div id="signupModal" class="modal">
         <div class="modal-content">
@@ -351,7 +151,7 @@
                 <img src="../static/images/CMM.png" width="150px" height="200px" />
             </div>
             <a href=""><span class="signupLabel" id="closeModalBtn">닫기</span></a>
-            <form action="/siginup" method="post">
+            <form id="form_register" name="form_register" action="/user/join" method="post">
                 <!-- 아이디 -->
                 <div>
                     <h3>
@@ -364,6 +164,7 @@
                             class="int"
                             maxlength="20"
                             placeholder="7글자 이하로 작성해주세요."
+                            required
                         />
                         <span class="stepbutton"
                             ><button type="button" id="btnCheckId">중복확인</button></span
@@ -378,7 +179,7 @@
                         <label for="pswd1">비밀번호</label>
                     </h3>
                     <span class="box intPw">
-                        <input type="password" name="pw" class="int" maxlength="20" />
+                        <input type="password" name="pw" class="int" maxlength="20" required />
                         <span id="alertTxt">사용불가</span>
                     </span>
                     <span class="error_next_box"></span>
@@ -403,10 +204,11 @@
                     <span class="box intName">
                         <input
                             type="text"
-                            name="name"
+                            name="nickname"
                             class="int"
                             maxlength="20"
                             placeholder="7글자 이하로 작성해주세요."
+                            required
                         />
                         <span class="stepbutton"
                             ><button type="button" id="btnCheckName">중복확인</button></span
@@ -421,7 +223,7 @@
                         <label for="email">이메일</label>
                     </h3>
                     <span class="box intEmail">
-                        <input type="email" name="email" class="int" maxlength="100" />
+                        <input type="email" name="email" class="int" maxlength="100" required/>
                         <span class="stepbutton"
                             ><button type="button" id="btnCheckName">확인코드전송</button></span
                         >
@@ -430,6 +232,7 @@
                 </div>
 
                 <!-- 이메일 확인 -->
+                <!-- 태그명, 변수명 오류 있습니다!!!!!!! -->
                 <div>
                     <h3>
                         <label for="name">이메일 확인</label>
@@ -451,6 +254,47 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('form_register').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            
+          const form = document.forms["form_register"];
+  
+          if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            axios({
+                method: "POST",
+                url: "/user/join",
+                data: {
+                    id: form.id.value,
+                    pw: form.pw.value,
+                    nickname: form.nickname.value,
+                    email: form.email.value,
+                },
+            })
+                .then((result) => {
+                    if (result) {
+                        console.log("응답 데이터", result);
+                        alert("회원가입 성공!");
+                        document.location.href = "/";
+                    }
+                    else {
+                        alert("중복된 아이디 입니다!");
+                        res.end();
+                    }
+                })
+                .catch((err) => {
+                    console.error(error);
+                    res.status(500).send('회원가입 실패');
+                })
+        });
+    </script>
+
+
     <!-- 어두운 오버레이 -->
     <div id="overlay"></div>
 

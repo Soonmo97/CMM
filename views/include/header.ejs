@@ -105,7 +105,8 @@
                 <img src="../static/images/CMM.png" width="150px" height="200px" />
             </div>
             <a href=""><span class="signupLabel" id="closeModalBtn">닫기</span></a>
-            <form id="modal_register" name="modal_register" action="/form/register" method="post">
+            <!-- <form id="modal_register" name="modal_register" action="/form/register" method="post"> -->
+            <form id="modal_register" name="modal_register">
                 <!-- 아이디 -->
                 <div>
                     <h3>
@@ -159,26 +160,29 @@
                 </div>
 
                 <!-- 이메일 -->
+                <!-- <form id="checkEmail" action="/checkEmail" method="POST"></form> -->
+                <!-- form 안에 form 작성불가 -->
                 <div>
                     <h3>
                         <label for="email">이메일</label>
                     </h3>
                     <span class="box intEmail">
                         <input type="email" name="email" class="int" maxlength="100" required />
-                        <span class="stepbutton"><button type="button" id="btnCheckName">확인코드전송</button></span>
+                        <span class="stepbutton"><button type="button" id="btnCheckCode">확인코드전송</button></span>
                     </span>
                     <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
                 </div>
 
                 <!-- 이메일 확인 -->
                 <!-- 태그명, 변수명 오류 있습니다!!!!!!! 제 임의로 바꿔놓았습니다!! -->
+                
                 <div>
                     <h3>
-                        <label for="name">이메일 확인</label>
+                        <label for="email">이메일 확인</label>
                     </h3>
                     <span class="box intName">
-                        <input type="text" name="name" class="int" maxlength="20" />
-                        <span class="stepbutton"><button type="button" id="btnCheckName">확인</button></span>
+                        <input type="email" id="emailChk" name="emailChk" class="int" maxlength="20" />
+                        <span class="stepbutton"><button type="button" id="btnCheckEmail">확인</button></span>
                     </span>
                     <span class="error_next_box"></span>
                 </div>
@@ -228,15 +232,15 @@
 
     <!-- 회원가입 입력값 검사 -->
     <script>
-        document.getElementById('modal_register').addEventListener('submit', function (event) {
+        document.getElementById("modal_register").addEventListener('submit', function (event) {
             event.preventDefault();
 
             const form = document.forms["modal_register"];
 
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
+            // if (!form.checkValidity()) {
+            //     form.reportValidity();
+            //     return;
+            // }
 
             if (form.idDuplication.value != "idCheck") {
                 alert("아이디 중복체크를 해주세요.");

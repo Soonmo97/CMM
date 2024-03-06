@@ -3,6 +3,9 @@ const { Op } = require("sequelize")
 const { User } = require("../models");
 const bcrypt = require('bcrypt');
 const { render } = require("ejs");
+const nodemailer = require("nodemailer");
+const { smtpTransport } = require("../config/email");
+const { response } = require("express");
 
 
 // GET /index
@@ -55,9 +58,9 @@ exports.loginHeader = async (req, res) => {
 
 // POST /include/header/modal_register
 exports.registerHeader = async (req, res) => {
-    const { id, pw } = req.body;
-    const user = req.session.id;
+    const { id, pw, nickname, email } = req.body;
 
+    console.log("id 전달이 됐나요", id);
     try {
         const hashedPassword = await bcrypt.hash(pw, 10);
         const user = await User.findOne({ where: { id } });
@@ -69,7 +72,6 @@ exports.registerHeader = async (req, res) => {
             await User.create({
                 id: req.body.id,
                 pw: hashedPassword,
-                name: req.body.name,
                 nickname: req.body.nickname,
                 email: req.body.email,
             })
@@ -132,4 +134,36 @@ exports.checkId = async (req, res) => {
 // GET /user/idCheckForm
 exports.checkWindow = async (req, res) => {
     res.render("user/idCheckForm");
+}
+
+// POST /include/header/checkEmail
+exports.checkEmail = async (req, res) => {
+    const generateRandomNumber = ((min, max) => {
+        const randNum = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        return randNum;
+    })
+    
+    const number = generateRandomNumber(111111, 999999);
+    const { email } = req.body;
+
+    const mailOptions = {
+        from : process.env.USER_EMAIL,
+        to: email,
+        subject: '새싹 노드 이메일 연결용',
+        html : "<h1> 인증번호를 입력해주세요 /n/n/n/n/n/n </h1>" + number
+    };
+    smtpTransport.sendMail(mailOptions, (err, response) => {
+        console.log("response", response);
+        if(err) {
+            res.json({ok : false , msg : ' 메일 전송에 실패하였습니다. '})
+            smtpTransport.close(); //전송종료
+            return;
+        } else {
+            res.json({ok: true, msg: ' 메일 전송에 성공하였습니다. ', authNum : number})
+            smtpTransport.close(); //전송종료
+            return;
+
+        }
+    })
 }

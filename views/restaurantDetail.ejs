@@ -6,119 +6,173 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>식당 상세페이지</title>
         <%- include('include/head') %>
-        <style>
-            main {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-            }
-            .res {
-                width: 1200px;
-                height: 800px;
-                margin: 50px 0;
-                background-color: lightgray;
-            }
-
-            .res div {
-                width: 1000px;
-                height: 600px;
-                margin: 50px 50px;
-                background-color: aliceblue;
-            }
-            .review {
-                height: 1600px;
-            }
-            .description {
-              display: flex;
-              align-items: end;
-            }
-            .des {
-                width: 1200px;
-                height: 400px;
-                margin: 50px 0;
-                background-color: white;
-            }
-
-        </style>
+        <link rel="stylesheet" href="/static/css/restDetail.css">
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=czcpt81ovb"></script>
+        <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=czcpt81ovb&submodules=geocoder"></script>
+        <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
     </head>
     <body>
-      <main>
-        <div class="des">
-            <span style="font-size: 40px; font-weight: bold;"><%= restaurant.rest_name %></span>
-            <% for (category of categoryList) { %>
-                <span style="margin-left: 20px; font-size: 30px; color:gray"><%= category.category_name %></span>
-            <% } %>
-            <span style="margin-left: 180px;" ><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-              </svg></span>
-            <div class="description">
-              <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScXpE_0Ni9xnQquNo5TZmqxaihVCcOUZVdWQ&usqp=CAU"
-                  alt="식당이미지"
-                  width="400px"
-                  height="300px"
-                  style="margin-right: 30px;"
-              />
-              <p>
-                  <%= restaurant.rest_desc%>
-                  <br /><br />
-                  - 영업시간: <%= restaurant.rest_time%><br /><br />
-                  - 번호 : <%= restaurant.rest_number%>
-              </p>
-            </div>
-        </div>
-        <!-- 메뉴 정보가 있을 때 -->
-        <% if (menuList.length > 0) { %>
-        <div class="res menu">
-            <div>
-               
-                <h2>- 메뉴</h2>
-                <ul>
-                    <% for (menu of menuList) { %>
-                        <li><%=menu.menu%> -------------------------------------- <%=menu.price%>원</li>
-                    <% } %>
-                </ul>
-            </div>
-        </div>
-        <% } %>
-
-        <div class="res location">
-            <h2>위치</h2>
-            <div>
-                <span>- 주소 : <%=restaurant.rest_address%></span>
-                <span style="margin-left: 50%;"></span>
-                <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98UFqnLabe4Wk9DGom8PxcWiCeSqYMPyztHzrdsnfVl79zzB00_ZCpJwnL6g7juOeAN0&usqp=CAU"
-                    alt="위치 지도"
-                    width="1000px"
-                    height="400px"
-                />
-            </div>
-        </div>
-
-        <div class="res review">
-            <h2>리뷰</h2><span><a href="#" style="margin-left:80%">작성하기</a></span>
-            <% if (reviewList.length > 0) {%>
-                <% for (review of reviewList) { %>
-                    <div class="view" style="height: 300px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-                        </svg></i><span><%= review.User.nickname%></span> |
-                        <% const originalDate = new Date(review.createdAt);
-                        const formattedDate = originalDate.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false});
-                        %>
-                        <span><%=formattedDate %></span>
-                        <p><%= review.review_content%></p>
+        <main>
+            <div class="rest">
+                <div class="restImg">
+                </div>
+                <div class="restInfo">
+                    <div class="restTitle">
+                        <div class="restNameCate">
+                            <span style="font-size: 40px; font-weight: bold;"><%= restaurant.rest_name %></span>
+                            <% for (category of categoryList) { %>
+                            <span style="margin-left: 20px; font-size: 25px; color:gray"><%= category.category_name %></span>
+                            <% } %>
+                        </div>
+                        <div class="restRankLike">
+                            <!-- 별점 -->
+                            <i class="fa-solid fa-star fa-2xl" style="color: #FFD43B;"></i>
+                            <!-- restaurant.rating -->
+                            <span class="rating">4.5</span>
+                            <!-- 채운 하트 fa-regular -> fa-solid -->
+                            <% if (!likeCheckResult) { %>
+                            <!-- 로그인 x, 로그인 o 즐겨찾기 x -->
+                            <i class="fa-regular fa-heart fa-2xl" style="color: #ff0000;" onclick="likePlus('<%= restaurant.rest_index%>')"></i>
+                            <% } else { %>
+                            <!-- 로그인 o 즐겨찾기 o -->
+                            <i class="fa-solid fa-heart fa-2xl" style="color: #ff0000;" onclick="likePlus('<%= restaurant.rest_index%>')"></i>
+                            <% } %>
+                        </div>
+                        
                     </div>
-                <% } %>
-            <% } %>
-            <hr />
-            <div class="create">
-                <textarea name="create_review" id="" cols="108" rows="25"
-                placeholder="내용을 입력해주세요."
-                ></textarea>
+                    
+                    <div class="restDes">
+                        <p><%= restaurant.rest_desc%></p>
+                        <br />
+                        <div class="otherInfo">
+                            <div class="timeAndNum">
+                                - 영업시간: <%= restaurant.rest_time%><br /><br />
+                                - 번호: <%= restaurant.rest_number%><br /><br />  
+                            </div>
+                            <div class="menu">
+                                - 대표메뉴:
+                                <!-- 메뉴 정보가 있을 때 -->
+                                <% if (menuList.length > 0) { %>
+                                            <ul>
+                                                <% for (menu of menuList) { %>
+                                                    <li><span><%=menu.menu%></span> ------------- <%=menu.price%>원</li>
+                                                <% } %>
+                                            </ul>     
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-      </main>
+            <!-- 지도 -->
+            <div class="maps">
+                <div class="address">주소: <%= restaurant.rest_address%></div>
+                <div id="map"></div>
+            </div>     
+            <script>
+                const address = "<%=restaurant.rest_address%>";
+                let lat, lng;
+                // console.log(address);
+                function geo() {
+                    return new Promise((resolve, reject) => {
+                        naver.maps.Service.geocode({
+                            query: address
+                        }, function(status, response) {
+                            if (status !== naver.maps.Service.Status.OK) {
+                                reject("주소 -> 위도,경도 변환 error");
+                            }
+                            let result = response.v2; // 검색 결과의 컨테이너
+                            let items = result.addresses; // 검색 결과의 배열
+                            lat = items[0].x;
+                            lng = items[0].y;
+                            resolve(); // Promise를 이용하여 비동기 동작이 완료됨을 알림
+                        });
+                    });
+                }
+                function map() {
+                    // console.log("lat, lng >> ",lat, lng);
+
+                    // 지도 위치(x:경도, y:위도), 줌, 컨트롤 설정
+                    let mapOptions = {
+                        center: new naver.maps.LatLng(lng, lat),
+                        zoom: 18,
+                        scaleControl: false,
+                        mapDataControl: false,
+                        zoomControl: true
+                    };
+
+                    // mapOptions의 옵션으로 map 생성
+                    let map = new naver.maps.Map("map", mapOptions);
+
+                    // 지도 마커 설정
+                    let marker = new naver.maps.Marker({
+                        position: new naver.maps.LatLng(lng, lat),
+                        map: map
+                    });
+                }
+                async function geoAndMap() {
+                    await geo();
+                    map();
+                }
+
+                geoAndMap();
+
+            </script>
+
+            
+            <div class="reviewAll">
+                <h2>리뷰</h2>
+                <hr />
+                <div class="reviews">
+                    <% if (reviewList.length > 0) {%>
+                        <% for (review of reviewList) { %>
+                            <div class="review"">
+                                <div class="reviewOne">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                                    </svg></i><span><%= review.User.nickname%></span> |
+                                    <% const originalDate = new Date(review.createdAt);
+                                    const formattedDate = originalDate.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false});
+                                    %>
+                                    <span><%=formattedDate %></span>
+                                    <span class="reviewRating">
+                                        <% for(let i = 0; i < review.review_rating; i++) { %>
+                                        <i class="fa-solid fa-star fa-xl" style="color: #FFD43B;"></i>    
+                                        <% } %>
+                                    </span>
+                                </div>
+                                <p><%= review.review_content%></p>
+                            </div>
+                        <% } %>
+                    <% } %>
+                    <button type="button" onclick="reviewPlus()">리뷰 더보기 +</button>
+                </div>
+                <hr />
+                <div class="createReview">
+                    <div class="rating">
+                        <%for (let i=1; i<=5; i++) { %>
+                        <i class="fa-regular fa-star fa-xl" style="color: #FFD43B;"></i>
+                        <%} %>
+                    </div>
+                    <textarea class="createReviewContent" name="create_review" cols="92" rows="25"
+                    placeholder="내용을 입력해주세요."
+                    ></textarea>
+                    <button type="button">리뷰 등록하기</button>
+                </div>
+            </div>
+        </main>
+        <%- include('include/footer') %>
     </body>
+
+    <script>
+        function likePlus(restIndex) {
+            
+        }
+
+        // function reviewPlus() {
+        //     axios({
+                
+        //     })
+        // }
+    </script>
 </html>

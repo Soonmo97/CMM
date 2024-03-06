@@ -12,6 +12,10 @@ const Review = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(255),
                 allowNull: false,
             },
+            review_rating: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
         },
         { freezeTableName: true, timestamps: true, createdAt: true, updatedAt: false }
     );

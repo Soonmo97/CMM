@@ -54,7 +54,6 @@ exports.loginHeader = async (req, res) => {
 // POST /include/header/modal_register
 exports.registerHeader = async (req, res) => {
     const { id, pw, nickname, email } = req.body;
-
     console.log("id 전달이 됐나요", id);
     try {
         const hashedPassword = await bcrypt.hash(pw, 10);

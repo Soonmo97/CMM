@@ -3,17 +3,18 @@ const editor = document.getElementById("editor");
 // suneditor 생성
 const suneditor = SUNEDITOR.create("editor", {
     width: "100%",
-    minWidth: "800px",
-    height: "auto",
+    height: "500px",
     charCounter: true,
+    placeholder: "본문을 입력해주세요",
     popupDisplay: "local",
     buttonList: [
-        ["undo", "redo", "formatBlock", "fontSize"],
+        ["formatBlock", "fontSize"],
         ["bold", "underline", "italic", "strike", "removeFormat"],
-        ["fontColor", "hiliteColor", "indent", "outdent", "align", "list", "table"],
+        ["fontColor", "hiliteColor", "indent", "outdent", "align", "list", "table", "link"],
+        ["undo", "redo"],
     ],
     lang: SUNEDITOR_LANG["ko"],
-    height: 500,
+    defaultStyle: "position: relative; z-index:0;",
 });
 
 // 내용 변경 시 textarea에 복사
@@ -22,13 +23,41 @@ suneditor.onChange = (contents, core) => {
 };
 
 function submitPost() {
-    let content = suneditor.getContents(editor.innerHTML);
-    let textCount = suneditor.getCharCount(content);
-    if (textCount > 1000) {
+    let title = document.querySelector(".title");
+    let titleVal = title.value.replace(/ /g, "");
+    let textContent = suneditor.getText();
+    let contentVal = textContent.replace(/ /g, "");
+    let textCount = suneditor.getCharCount();
+
+    if (titleVal === "") {
+        alert("제목을 입력해주세요.");
+        return false;
+    } else if (contentVal === "") {
+        alert("내용을 입력해주세요.");
+        return false;
+    } else if (textCount > 1000) {
         alert("입력 가능한 글자수를 초과하였습니다. (최대 1000자)");
         return false;
     } else {
         return true;
+    }
+}
+
+function test() {
+    let content = suneditor.getContents();
+    let textContent = suneditor.getText();
+
+    console.log("html: ", content);
+    console.log("text: ", textContent);
+    let ctv = content.replace(/&nbsp;/g, "");
+    console.log("ctv", ctv);
+    if (ctv === "") {
+        console.log("ctv is none");
+    }
+    let contentVal = textContent.replace(/\\s+/g, "");
+    console.log("text 정규식: ", contentVal);
+    if (contentVal === "") {
+        console.log("content is none");
     }
 }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,53 +9,47 @@
             href="https://cdn.jsdelivr.net/npm/suneditor@2.45.1/dist/css/suneditor.min.css"
             rel="stylesheet"
         />
+        <link rel="stylesheet" href="/static/css/sugWriter.css">
         <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/lang/ko.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/plugins/modules/[dialog, resizing].js"></script>
         <%- include('../include/head.ejs') %>
-        <style>
-            a {
-                text-decoration: none;
-            }
-            .form-container {
-                width: 80%;
-                margin: 0 auto;
-            }
-            #i-title {
-                width: 100%;
-            }
-            .btn-group {
-                width: 100%;
-            }
-        </style>
     </head>
     <body>
-        <div class="form-container">
-            <% if(isNew) {%>
-            <form action="/suggestion/writePost" method="post">
-                <input type="text" id="i-title" name="title" maxlength="32" /><br />
-                <textarea id="editor" name="content"></textarea>
-                <%} else{ %>
-                <form
-                    action="/suggestion/editPost?post=<%=postInfo.sug_index%>"
-                    method="post"
-                >
-                <input
-                    type="text"
-                    name="title"
-                    id="i-title"
-                    maxlength="32"
-                    value="<%= postInfo.title %>"
-                /><br />
-                <textarea id="editor" name="content"><%- postInfo.content %></textarea>
-                <% } %>
-                <button onclick="return submitPost()">등록</button>
-            </form>
-            <div class="btn-group">
-                <a href="/suggestion/list?page=1" onclick="return confirmOut()"
-                    ><button type="button">목록</button></a
+        <%- include('../include/header.ejs') %>
+        <div class="main-container">
+            <div class="back-link-div">
+                <a href="/suggestion/list?page=1" class="back-link" onclick="return confirmOut()"
+                    ><p>&lt;목록으로</p></a
                 >
             </div>
+            <div class="form-container">
+                <% if(isNew) {%>
+                <form action="/suggestion/writePost" method="post">
+                    <input type="text" class="title" name="title" maxlength="32" placeholder="제목을 입력해주세요"/><br /><br>
+                    <textarea id="editor" class="content" name="content"></textarea>
+                    <%} else{ %>
+                    <form
+                        action="/suggestion/editPost?post=<%=postInfo.sug_index%>"
+                        method="post"
+                    >
+                    <input
+                        type="text"
+                        name="title"
+                        class="title"
+                        maxlength="32"
+                        placeholder="제목을 입력해주세요"
+                        value="<%= postInfo.title %>"
+                    /><br /><br/><br/>
+                    <textarea id="editor" class="content" name="content"><%- postInfo.content %></textarea>
+                    <% } %>
+                    <div class="btn-container">
+                    <button class="btn btn-info" onclick="return submitPost()">등록</button>
+                </div>
+                </form>
+            </div>
         </div>
+        <button type="button" onclick="test()">test</button>
+        <%- include('../include/footer.ejs') %>
         <script src="/static/js/suggestionWrite.js"></script>
     </body>
 </html>

@@ -2,7 +2,6 @@ const { Op } = require("sequelize");
 const { sequelize, User, Suggestions, Suggest_Like } = require("../models/index");
 
 // 게시글 목록 조회
-
 exports.listPage = async (req, res) => {
     try {
         console.log("세션", req.session);

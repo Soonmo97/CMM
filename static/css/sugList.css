@@ -1,0 +1,51 @@
+.main-container {
+    width: 70%;
+    margin: 0 auto;
+    padding: 220px 20px 20px 20px;
+}
+.list-container {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dadada;
+    border-radius: 25px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.08);
+}
+.list-table {
+    width: 100%;
+    border-style: none;
+}
+.list-table tr {
+    height: 36px;
+    line-height: 36px;
+}
+.list-table tr:not(tr:last-child) {
+    width: 100%;
+    border-bottom: 1px solid #dadada;
+}
+.list-table tr th,
+td:not(td:nth-child(2)) {
+    text-align: center;
+}
+.list-table tr td a {
+    text-decoration: none;
+    color: #444444;
+}
+.list-table tr td a:hover {
+    color: #444444;
+}
+.btn-container {
+    width: 100%;
+}
+.page-container {
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+}
+.page-nav {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+}
+.btn-nav {
+    width: 10%;
+}

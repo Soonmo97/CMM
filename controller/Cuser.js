@@ -1,4 +1,4 @@
-const { Op } = require("sequelize")
+const { Op } = require("sequelize");
 // const { session }  = require("../session");
 const { User } = require("../models");
 const bcrypt = require('bcrypt');
@@ -7,16 +7,13 @@ const nodemailer = require("nodemailer");
 const { smtpTransport } = require("../config/email");
 const { response } = require("express");
 
-
 // GET /index
 exports.getMain = (req, res) => {
     const user = req.session.user;
-
     console.log("유저 세션 정보>> ",user);
     if(user) {
         res.render("index", { isLogin:true, user:user });
     }
-    else { res.render("index", { isLogin:false }); }
 };
 
 // POST /index
@@ -53,8 +50,6 @@ exports.loginHeader = async (req, res) => {
         return res.status(500).send('로그인 오류');
     }
 }
-
-
 
 // POST /include/header/modal_register
 exports.registerHeader = async (req, res) => {

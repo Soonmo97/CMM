@@ -1,6 +1,13 @@
+-- Active: 1707101285852@@127.0.0.1@3306@sesac
 create database cmm DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;use cmm;
 
+CREATE USER 'sesac'@'%' IDENTIFIED WITH mysql_native_password BY '1234';
+GRANT ALL PRIVILEGES ON *.* TO 'sesac'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+SELECT host, user from mysql.user;
+
 show DATABASES
+
 
 use cmm
 

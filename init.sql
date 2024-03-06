@@ -54,3 +54,4 @@ select * from likelist
 
 select * from review
 
+DELETE FROM User;

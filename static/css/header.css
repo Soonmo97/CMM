@@ -24,10 +24,14 @@ header {
     position: fixed;
     display: flex;
     justify-content: center;
-
     height: 200px;
-
     border-bottom: 1px solid gray;
+}
+
+/* @media (max-width: 1200px) {
+      .search {
+          width: 300px; /* 헤더 너비가 1200px 이하일 때 검색창의 크기를 줄임 
+      } */
 
     -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
     -moz-transform: matrix(1, 0, 0, 1, 0, 0);
@@ -161,11 +165,11 @@ menu ul li {
     }
 } */
 
-/* //38선// */
 header img {
     width: 11.875rem;
     padding: 0.75rem 0;
 }
+
 /* header > div {display: flex;justify-content: space-between;align-items: center;} */
 
 header nav ul {
@@ -175,10 +179,12 @@ header nav ul {
     padding: 0;
     margin: 0;
 }
+
 header nav ul li {
     padding: 0 10px;
     width: 100px;
 }
+
 header nav ul li a {
     position: relative;
     display: inline-block;
@@ -188,10 +194,12 @@ header nav ul li a {
     text-decoration: none;
     color: black;
 }
+
 header nav ul li.active a,
 header nav ul li:hover a {
     color: var(--blueColor);
 }
+
 header nav ul li a:after {
     opacity: 0;
     content: "";
@@ -203,10 +211,16 @@ header nav ul li a:after {
     bottom: 0;
     transition: all 0.3s ease-in-out;
 }
+
 header nav ul li.active a:after,
 header nav ul li:hover a:after {
     opacity: 1;
 }
+
+header nav ul li:last-child {
+    margin-right: 0;
+    /* 마지막 메뉴의 간격을 없앰 */
+
 header nav ul li:last-child {
     margin-right: 0; /* 마지막 메뉴의 간격을 없앰 */
 }
@@ -248,7 +262,6 @@ header nav ul li:last-child {
 
 .buttons {
     display: flex;
-
     gap: 10px; /* 버튼 사이의 간격 조정 */
 }
 
@@ -322,6 +335,7 @@ header nav ul li:last-child {
     width: 500px;
     height: 300%;
 }
+  
 .modal-content {
     text-align: center;
 }
@@ -370,10 +384,6 @@ h3 {
     background: #fff;
     font-size: 15px;
 }
-
-/* input {
-    font-family: Dotum, "돋움", Helvetica, sans-serif;
-} */
 
 .stepbutton {
     position: absolute;
@@ -437,3 +447,4 @@ h3 {
     padding: 5px; /* 안쪽 여백 지정 */
     border-radius: 5px; /* 테두리 모서리를 둥글게 설정 */
 }
+

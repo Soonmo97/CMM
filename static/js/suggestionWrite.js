@@ -24,40 +24,22 @@ suneditor.onChange = (contents, core) => {
 
 function submitPost() {
     let title = document.querySelector(".title");
-    let titleVal = title.value.replace(/ /g, "");
+    let titleVal = title.value.replace(/\\s+/g, "");
     let textContent = suneditor.getText();
-    let contentVal = textContent.replace(/ /g, "");
+    // let contentVal = textContent.replace(/ /g, "");
     let textCount = suneditor.getCharCount();
 
     if (titleVal === "") {
-        alert("제목을 입력해주세요.");
+        suneditor.noticeOpen("제목을 입력해주세요.");
         return false;
-    } else if (contentVal === "") {
-        alert("내용을 입력해주세요.");
+    } else if (textContent === "") {
+        suneditor.noticeOpen("본문을 입력해주세요.");
         return false;
     } else if (textCount > 1000) {
-        alert("입력 가능한 글자수를 초과하였습니다. (최대 1000자)");
+        suneditor.noticeOpen("입력 가능한 글자수를 초과하였습니다. (최대 1000자)");
         return false;
     } else {
         return true;
-    }
-}
-
-function test() {
-    let content = suneditor.getContents();
-    let textContent = suneditor.getText();
-
-    console.log("html: ", content);
-    console.log("text: ", textContent);
-    let ctv = content.replace(/&nbsp;/g, "");
-    console.log("ctv", ctv);
-    if (ctv === "") {
-        console.log("ctv is none");
-    }
-    let contentVal = textContent.replace(/\\s+/g, "");
-    console.log("text 정규식: ", contentVal);
-    if (contentVal === "") {
-        console.log("content is none");
     }
 }
 

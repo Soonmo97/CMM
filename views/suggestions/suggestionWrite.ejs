@@ -15,7 +15,7 @@
         <%- include('../include/head.ejs') %>
     </head>
     <body>
-        <%- include('../include/header.ejs') %>
+        <%- include('../include/header.ejs', {isLogin}) %>
         <div class="main-container">
             <div class="back-link-div">
                 <a href="/suggestion/list?page=1" class="back-link" onclick="return confirmOut()"

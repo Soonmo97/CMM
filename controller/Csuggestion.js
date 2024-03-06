@@ -8,6 +8,7 @@ exports.listPage = async (req, res) => {
         const limit = 5;
         const pageLimit = 3;
         let { page: currentPage } = req.query;
+        let isLogin = false;
 
         currentPage = Number(currentPage);
 
@@ -70,7 +71,16 @@ exports.listPage = async (req, res) => {
             group: ["Suggestions.sug_index", "User.user_index"],
             order: [["sug_index", "DESC"]],
         });
-        res.render("suggestions/suggestionList", { sugList: sugList, pageInfo: pageInfo });
+
+        if (req.session.index) {
+            isLogin = true;
+        }
+
+        res.render("suggestions/suggestionList", {
+            sugList: sugList,
+            pageInfo: pageInfo,
+            isLogin: isLogin,
+        });
     } catch (err) {
         console.log(err);
     }
@@ -78,10 +88,12 @@ exports.listPage = async (req, res) => {
 
 // 게시글 작성 페이지 요청
 exports.writePage = (req, res) => {
+    let isLogin = false;
     if (req.session.index) {
-        res.render("suggestions/suggestionWrite", { isNew: true });
+        isLogin = true;
+        res.render("suggestions/suggestionWrite", { isNew: true, isLogin });
     } else {
-        res.render("login");
+        res.render("login", { isLogin });
     }
 };
 
@@ -103,6 +115,7 @@ exports.writeSuggestion = async (req, res) => {
 // 특정 게시글 조회
 exports.getPost = async (req, res) => {
     try {
+        let isLogin = false;
         const { postId } = req.params;
         const postInfo = await Suggestions.findOne({
             where: { sug_index: postId },
@@ -128,11 +141,14 @@ exports.getPost = async (req, res) => {
             ],
             group: ["Suggestions.sug_index", "User.user_index"],
         });
-
+        if (req.session.index) {
+            isLogin = true;
+        }
         if (postInfo) {
             res.render("suggestions/suggestionPost", {
                 postInfo,
                 loginUser: req.session.index,
+                isLogin,
             });
         } else {
             res.send(
@@ -164,14 +180,16 @@ exports.deletePost = async (req, res) => {
 // 게시글 수정 페이지 요청
 exports.editPage = async (req, res) => {
     try {
+        let isLogin = false;
         const { post } = req.query;
         const postInfo = await Suggestions.findOne({
             where: { sug_index: post },
         });
         if (req.session.index) {
-            res.render("suggestions/suggestionWrite", { postInfo, isNew: false });
+            isLogin = true;
+            res.render("suggestions/suggestionWrite", { postInfo, isLogin, isNew: false });
         } else {
-            res.render("login");
+            res.render("login", { isLogin });
         }
         console.log("수정할 글", postInfo);
     } catch (err) {
@@ -201,22 +219,17 @@ exports.editPost = async (req, res) => {
 // 게시글 추천
 exports.likePost = async (req, res) => {
     try {
-        console.log("like:: 데이터 확인", req.body);
-        console.log(typeof req.body.sug_index, typeof req.body.user_index);
         const { sug_index, user_index } = req.body;
         const [likePost, created] = await Suggest_Like.findOrCreate({
             where: { sug_index: sug_index, user_index: user_index },
             defaults: { sug_index: sug_index, user_index: user_index },
         });
-        console.log("likePost:", likePost, "created", created);
         if (!created) {
             const unlikePost = await Suggest_Like.destroy({
                 where: { sug_index: likePost.sug_index, user_index: user_index },
             });
-            console.log("unlikePost", unlikePost);
         }
         const likeCount = await Suggest_Like.count({ where: { sug_index: sug_index } });
-        console.log("추천수 업데이트:", likeCount);
         res.send({ likeCount: likeCount });
     } catch (err) {
         console.log(err);

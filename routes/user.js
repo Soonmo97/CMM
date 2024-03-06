@@ -2,20 +2,18 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controller/Cuser");
 
-// 렌더링, get요청
-router.get("/", controller.main);
-// GET /login
-router.get("/user/login", controller.getLogin);
-// GET /join
-router.get("/user/join", controller.getJoin);
-// POST /login
-router.post("/user/login", controller.postLogin);
-// POST /join
-router.post("/user/join", controller.postJoin);
-// GET /logout
-router.get("/user/logout", controller.getLogout);
-// GET /header
-router.post("/include/header", controller.getHeader);
+// GET /
+router.get("/", controller.getMain);
 
+// POST /include/header/modal_login
+router.post("/form/login", controller.loginHeader);
+// POST /include/header/modal_register
+router.post("/form/register", controller.registerHeader);
+// POST /include/header/form_logout
+router.post("/form/logout", controller.logoutHeader);
+// POST /user/idCheckForm/checkForm
+router.post("/form/checkid", controller.checkId);
+// GET /user/idCheckForm
+router.get("/user/idCheckForm", controller.checkWindow);
 
 module.exports = router;

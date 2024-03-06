@@ -1,261 +1,12 @@
-<style>
-    @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
-
-    :root {
-        /** color **/
-        --baseColor: #333;
-        --blueColor: #22aee5;
-        /** size **/
-        --baseContainer: 1400px;
-    }
-
-    .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1400px;
-        padding: 0 80px;
-    }
-
-    header {
-        margin: 0 auto;
-        background-color: rgb(254, 255, 255);
-        width: 100%;
-        z-index: 1;
-        top: 0;
-        position: fixed;
-
-        height: 200px;
-
-        border-bottom: 1px solid gray;
-    }
-
-    /* @media (max-width: 1200px) {
-      .search {
-          width: 300px; /* 헤더 너비가 1200px 이하일 때 검색창의 크기를 줄임 
-      } */
-
-    header img {
-        width: 11.875rem;
-        padding: 0.75rem 0;
-    }
-    /* header > div {display: flex;justify-content: space-between;align-items: center;} */
-
-    header nav ul {
-        display: flex;
-        text-align: center;
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-    }
-    header nav ul li {
-        padding: 0 10px;
-        width: 100px;
-    }
-    header nav ul li a {
-        position: relative;
-        display: inline-block;
-        line-height: 3.5rem;
-        font-weight: bold;
-        font-size: 1.0625rem;
-        text-decoration: none;
-        color: black;
-    }
-    header nav ul li.active a,
-    header nav ul li:hover a {
-        color: var(--blueColor);
-    }
-    header nav ul li a:after {
-        opacity: 0;
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        background-color: var(--blueColor);
-        left: 0;
-        bottom: 0;
-        transition: all 0.3s ease-in-out;
-    }
-    header nav ul li.active a:after,
-    header nav ul li:hover a:after {
-        opacity: 1;
-    }
-    header nav ul li:last-child {
-        margin-right: 0; /* 마지막 메뉴의 간격을 없앰 */
-    }
-
-    .search {
-        border: 12.5px solid rgb(142, 205, 247);
-        border-radius: 25px;
-        margin: 0 auto;
-    }
-
-    .search img {
-        width: 30px;
-        margin: 0;
-    }
-
-    .signBtn {
-        border: 5px solid rgb(142, 205, 247);
-        border-radius: 25px;
-        outline: none; /* 클릭시 포커스 테두리도 없앰 */
-        background-color: white;
-    }
-
-    .buttons {
-        display: flex;
-
-        gap: 10px; /* 버튼 사이의 간격 조정 */
-    }
-
-    /* 회원가입 팝업창 스타일 */
-    #signupModal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        width: 600px; /* 너비를 작게 설정 */
-        height: 600px;
-    }
-
-    #loginModal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        width: 500px; /* 너비를 작게 설정 */
-        height: 500px;
-    }
-
-    .modal-content {
-        text-align: center;
-    }
-
-    /* 어두운 오버레이 스타일 */
-    #overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }
-
-    /* 입력폼 */
-
-    input:focus {
-        outline: none;
-    }
-
-    h3 {
-        margin: 19px 0 8px;
-        font-size: 14px;
-        font-weight: 700;
-    }
-
-    .box {
-        display: block;
-        width: 100%;
-        height: 51px;
-        border: solid 1px #dadada;
-        padding: 10px 14px 10px 14px;
-        box-sizing: border-box;
-        background: #fff;
-        position: relative;
-    }
-
-    .int {
-        display: block;
-        position: relative;
-        width: 100%;
-        height: 29px;
-        border: none;
-        background: #fff;
-        font-size: 15px;
-    }
-
-    /* input {
-        font-family: Dotum, "돋움", Helvetica, sans-serif;
-    } */
-
-    .stepbutton {
-        position: absolute;
-        top: 10px;
-        right: 13px;
-        font-size: 15px;
-    }
-
-    /* 에러메세지 */
-
-    .error_next_box {
-        margin-top: 9px;
-        font-size: 12px;
-        color: red;
-        display: none;
-    }
-
-    #alertTxt {
-        position: absolute;
-        top: 19px;
-        right: 38px;
-        font-size: 12px;
-        color: red;
-        display: none;
-    }
-
-    /* 버튼 */
-
-    .btnArea {
-        margin: 30px 0 50px;
-    }
-
-    #btnJoin {
-        width: 100%;
-        padding: 21px 0 17px;
-        border: 0;
-        cursor: pointer;
-        color: #fff;
-        background-color: #0fa6cc;
-        font-size: 20px;
-        font-weight: 400;
-    }
-
-    .signupLabel {
-        position: absolute; /* 절대적인 위치 설정 */
-        top: 10px; /* 이미지 상단에서 10px 떨어진 위치에 배치 */
-        right: 10px; /* 이미지 왼쪽에서 10px 떨어진 위치에 배치 */
-        background-color: rgba(0, 0, 0, 0.5); /* 배경색 지정 */
-        color: white; /* 텍스트 색상 지정 */
-        padding: 5px; /* 안쪽 여백 지정 */
-        border-radius: 5px; /* 테두리 모서리를 둥글게 설정 */
-    }
-</style>
-
+<link rel="stylesheet" href="/static/css/header.css" />
 <header>
-    <div class="container">
+    <div class="wrapper">
         <div>
             <a href="">
-                <img
-                    class="logo"
-                    src="../static/images/CMM.png"
-                    alt=""
-                    style="width: auto; height: 200px; margin-bottom: 20px; flex: 0 0 auto"
-                />
+                <img src="../static/images/CMM.png" alt="" style="width: auto; height: 200px" />
             </a>
         </div>
-        <div>
+        <div style="margin-top: 20px; margin-left: 140px">
             <div class="search" style="width: 500px; margin-top: 0px; flex: 1">
                 <div
                     class="collapse navbar-collapse d-flex justify-content-center"
@@ -263,11 +14,10 @@
                 >
                     <div class="d-flex" role="search" style="width: 500px">
                         <input
-                            class="form-control me-2"
+                            class="searchStyle"
                             type="search"
                             placeholder="search"
                             aria-label="Search"
-                            id=""
                         />
                         <button class="btn" type="button" id="">
                             <img
@@ -279,7 +29,7 @@
             </div>
             <br />
             <div>
-                <nav class="menu" style="flex: 0 0 auto; margin-top: -30px">
+                <nav class="menu" style="flex: 0 0 auto; margin-top: -15px">
                     <ul>
                         <li class="active"><a href="#">홈</a></li>
                         <li><a href="#">한식</a></li>
@@ -292,13 +42,85 @@
             </div>
         </div>
 
-        <div class="buttons">
-            <button id="signupBtn" class="signBtn">회원가입</button>
-            <button id="loginBtn" class="signBtn">로그인</button>
+        <div style="margin-right: 150px">
+            <div class="buttons">
+                <button id="signupBtn" class="signBtn">회원가입</button>
+                <button id="loginBtn" class="signBtn">로그인</button>
 
-            <button id="logoutBtn" style="display: none" class="signBtn">로그아웃</button>
+                <button id="logoutBtn" style="display: none" class="signBtn">로그아웃</button>
+                <div><button class="signBtn" id="menu">마이페이지</button></div>
+            </div>
+            <br />
         </div>
     </div>
+
+    <menu>
+        <div class="container" id="menuContainer">
+            <div class="box">
+                <ul>
+                    <div class="myPage1">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 20px">000님</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button
+                            id="myInfo"
+                            style="
+                                border: none;
+                                background: none;
+                                font-weight: 800;
+                                font-size: 15px;
+                                text-decoration: underline;
+                            "
+                        >
+                            내 정보
+                        </button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button id="close-menu" class="signBtn">닫기</button>
+                    </div>
+
+                    <br />
+
+                    <div>
+                        &nbsp;&nbsp;&nbsp;
+                        <span style="font-size: 13px; font-weight: 800">즐겨찾기 0</span>
+
+                        <span style="font-size: 13px; font-weight: 800">리뷰 0</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span><a href="/">로그아웃</a></span>
+                    </div>
+                    <div></div>
+                </ul>
+                <ul>
+                    <li>
+                        <button
+                            id="sideMenuLikeBtn"
+                            style="
+                                border: none;
+                                background: none;
+                                font-weight: 800;
+                                font-size: 15px;
+                            "
+                        >
+                            즐겨찾기
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            id="sideMenuMyLiked"
+                            style="
+                                border: none;
+                                background: none;
+                                font-weight: 800;
+                                font-size: 15px;
+                            "
+                        >
+                            내가 쓴 리뷰
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </menu>
 
     <!-- 로그인 팝업창 -->
     <div id="loginModal" class="modal">
@@ -333,7 +155,7 @@
 
                 <!-- 로그인-->
                 <div class="btnArea">
-                    <button type="submit" id="btnJoin">
+                    <button type="submit" id="btnLogin">
                         <span>로그인</span>
                     </button>
                 </div>
@@ -348,7 +170,7 @@
             <div>
                 <img src="../static/images/CMM.png" width="150px" height="200px" />
             </div>
-            <a href=""><span class="signupLabel" id="closeModalBtn">닫기</span></a>
+            <a href=""><span class="signupLabel" id="closeLikeBtn">닫기</span></a>
             <form action="/siginup" method="post">
                 <!-- 아이디 -->
                 <div>
@@ -421,7 +243,7 @@
                     <span class="box intEmail">
                         <input type="email" name="email" class="int" maxlength="100" />
                         <span class="stepbutton"
-                            ><button type="button" id="btnCheckName">확인코드전송</button></span
+                            ><button type="button" id="btnCheckCodeSend">확인코드전송</button></span
                         >
                     </span>
                     <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
@@ -435,7 +257,7 @@
                     <span class="box intName">
                         <input type="text" name="name" class="int" maxlength="20" />
                         <span class="stepbutton"
-                            ><button type="button" id="btnCheckName">확인</button></span
+                            ><button type="button" id="btnCheckCode">확인</button></span
                         >
                     </span>
                     <span class="error_next_box"></span>
@@ -452,8 +274,140 @@
     <!-- 어두운 오버레이 -->
     <div id="overlay"></div>
 
+    <div id="likeModal" class="likelistModal" style="display: none">
+        <div>
+            <div style="display: flex; justify-content: right">
+                <a href=""><span id="closeLikeListBtn">닫기</span></a>
+            </div>
+            <div>
+                <h1>즐겨찾기</h1>
+            </div>
+            <table style="border-spacing: 70px; border-collapse: separate">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>식당1</td>
+                    <td>식당2</td>
+                    <td>식당3</td>
+                </tr>
+                <tr>
+                    <td>식당4</td>
+                    <td>식당5</td>
+                    <td>식당6</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="myLikedModal" class="myLikedModal" style="display: none">
+        <div>
+            <div style="display: flex; justify-content: right">
+                <a href=""><span id="closeMyLikedBtn">닫기</span></a>
+            </div>
+            <div>
+                <h1>내가 쓴 리뷰</h1>
+            </div>
+            <table style="border-spacing: 70px; border-collapse: separate">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>식당1</td>
+                    <td>식당2</td>
+                    <td>식당3</td>
+                </tr>
+                <tr>
+                    <td>식당4</td>
+                    <td>식당5</td>
+                    <td>식당6</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="myInfoModal" class="myInfoModal" style="display: none">
+        <div>
+            <div style="display: flex; justify-content: right">
+                <a href=""><span id="closeMyInfoBtn">닫기</span></a>
+            </div>
+            <div>
+                <h1>내 정보</h1>
+            </div>
+        </div>
+    </div>
+
     <script>
         (() => {
+            // 사이드메뉴
+            // DOMContentLoaded 이벤트가 발생하면 실행 ,페이지의 초기화 및 로딩이 완료되었을 때 발생
+            document.addEventListener("DOMContentLoaded", function () {
+                // 현재 브라우저 창의 너비와 높이를 저장하는 변수 w와 h를 선언하고, window.innerWidth와 window.innerHeight 값을 할당
+                let w = window.innerWidth,
+                    h = window.innerHeight,
+                    menuBtn = false;
+
+                // 문서에서 menu 클래스 안에 있는 container 클래스 요소의 높이를 현재 창의 높이에서 60px를 뺀 값으로 설정
+                document.querySelector("menu .container").style.height = h - 60 + "px";
+
+                // id가 "menu"인 요소를 클릭할 때 발생하는 이벤트를 감지하여, document.documentElement의 클래스 리스트에 "active" 클래스를 추가
+
+                document.getElementById("menu").addEventListener("click", function () {
+                    if (menuBtn == false) {
+                        menuBtn = true;
+                        document.documentElement.classList.add("active");
+                    } else if (menuBtn == true) {
+                        menuBtn = false;
+                        document.documentElement.classList.remove("active");
+                    }
+                });
+                // id가 "close-menu"인 요소를 클릭할 때 발생하는 이벤트를 감지하여, document.documentElement의 클래스 리스트에서 "active" 클래스를 제거
+
+                document.getElementById("close-menu").addEventListener("click", function () {
+                    document.documentElement.classList.remove("active");
+                    menuBtn = false;
+                });
+
+                //
+                document.getElementById("closeModalBtn").addEventListener("click", function () {
+                    document.documentElement.classList.remove("active");
+                });
+
+                // document에 클릭 이벤트를 추가하여 사이드 메뉴가 열려 있을 때 사이드 메뉴 이외의 영역을 클릭했을 때 닫기 버튼이 실행되도록 함
+                document.addEventListener("click", function (event) {
+                    let menu = document.getElementById("menu");
+                    let closeMenu = document.getElementById("close-menu");
+                    let likelist = document.getElementById("sideMenuLikeBtn");
+                    let sideMenuMyLiked = document.getElementById("sideMenuMyLiked");
+                    let myInfo = document.getElementById("myInfo");
+                    let likeModal = document.getElementById("likeModal");
+                    let myLikedModal = document.getElementById("myLikedModal");
+                    let myInfoModal = document.getElementById("myInfoModal");
+                    let menuContainer = document.getElementById("menuContainer");
+                    let target = event.target;
+
+                    // 만약 클릭한 요소가 메뉴 아이콘이나 사이드 메뉴 내부에 속하지 않은 경우
+                    if (
+                        !menu.contains(target) &&
+                        // // !closeMenu.contains(target) &&
+                        !likeModal.contains(target) &&
+                        !myLikedModal.contains(target) &&
+                        !myInfoModal.contains(target) &&
+                        !menuContainer.contains(target)
+                    ) {
+                        document.documentElement.classList.remove("active");
+                    }
+                });
+            });
+
+            document.getElementById("menu").addEventListener("click", function () {});
+
             // 회원가입 버튼 클릭 이벤트 처리
             document.getElementById("signupBtn").addEventListener("click", function () {
                 // 팝업창과 어두운 오버레이 표시
@@ -480,6 +434,61 @@
                 // 팝업창과 어두운 오버레이 숨기기
                 document.getElementById("loginModal").style.display = "none";
                 document.getElementById("overlay").style.display = "none";
+            });
+
+            // 즐겨찾기 클릭 이벤트 처리
+            document.getElementById("sideMenuLikeBtn").addEventListener("click", function () {
+                // 팝업창 표시
+                let myLikedModal = document.getElementById("myLikedModal");
+                let myInfoModal = document.getElementById("myInfoModal");
+                document.getElementById("likeModal").style.display = "block";
+                if (myLikedModal.style.display == "block" || myInfoModal.style.display == "block") {
+                    myLikedModal.style.display = "none";
+                    myInfoModal.style.display = "none";
+                }
+            });
+
+            // 모달 닫기 버튼 클릭 이벤트 처리
+            document.getElementById("closeModalBtn").addEventListener("click", function () {
+                // 팝업창 숨기기
+                document.getElementById("likeModal").style.display = "none";
+            });
+
+            // 내가 쓴 리뷰 클릭 이벤트 처리
+            document.getElementById("sideMenuMyLiked").addEventListener("click", function () {
+                // 팝업창 표시
+                let likeModal = document.getElementById("likeModal");
+                let myInfoModal = document.getElementById("myInfoModal");
+                document.getElementById("myLikedModal").style.display = "block";
+                if (likeModal.style.display == "block" || myInfoModal.style.display == "block") {
+                    likeModal.style.display = "none";
+                    myInfoModal.style.display = "none";
+                }
+            });
+
+            // 모달 닫기 버튼 클릭 이벤트 처리
+            document.getElementById("closeModalBtn").addEventListener("click", function () {
+                // 팝업창 숨기기
+                document.getElementById("myLikedModal").style.display = "none";
+            });
+
+            // 내 정보 클릭 이벤트 처리
+            document.getElementById("myInfo").addEventListener("click", function () {
+                // 팝업창 표시
+                document.getElementById("myInfoModal").style.display = "block";
+                let myLikedModal = document.getElementById("myLikedModal");
+                let likeModal = document.getElementById("likeModal");
+
+                if (likeModal.style.display == "block" || myLikedModal.style.display == "block") {
+                    likeModal.style.display = "none";
+                    myLikedModal.style.display = "none";
+                }
+            });
+
+            // 모달 닫기 버튼 클릭 이벤트 처리
+            document.getElementById("closeModalBtn").addEventListener("click", function () {
+                // 팝업창 숨기기
+                document.getElementById("myLikedModal").style.display = "none";
             });
         })();
     </script>

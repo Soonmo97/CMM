@@ -24,8 +24,9 @@
     border-radius: 25px;
 }
 
+/* 03/04 패딩값 변경 */
 body {
-    padding-top: 230px;
+    padding-top: 160px;
 }
 
 .table1 {

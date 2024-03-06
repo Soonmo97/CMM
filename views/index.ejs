@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>창동 맛집 모음</title>
-        <link rel="stylesheet" href="../static/css/index.css" />
+        <link rel="stylesheet" href="/static/css/index.css" />
         <!-- head include -->
         <%- include('./include/head') %>
     </head>
@@ -13,19 +13,18 @@
         <!-- header include -->
         <%- include('./include/header') %>
         <div class="restaurantMenu" id="restaurantMenu1">
-            <table class="table1">
+            <table style="border-spacing: 70px; border-collapse: separate">
                 <tr>
                     <th style="font-size: 30px">
                         <img
                             class="logo"
-                            src="../static/images/CMM.png"
+                            src="/static/images/CMM.png"
                             alt=""
                             style="width: 50px; height: 50px"
                         />
                         모든식당
                     </th>
                     <th></th>
-                    <td><button>전체보기</button></td>
                 </tr>
                 <tr>
                     <td>
@@ -125,5 +124,7 @@
 
         <!-- footer include -->
         <%- include('./include/footer') %>
+
+        <script></script>
     </body>
 </html>

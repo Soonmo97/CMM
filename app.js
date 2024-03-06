@@ -4,6 +4,8 @@ const PORT = 8080;
 const { sequelize } = require("./models");
 const session = require("express-session");
 const db = require("./models");
+const mailer = require("nodemailer");
+
 require("dotenv").config();
 
 // 미들웨어
@@ -25,6 +27,7 @@ app.use(
         },
     })
 );
+
 
 const restRouter = require("./routes/restDetail.js");
 const userRouter = require("./routes/user.js");

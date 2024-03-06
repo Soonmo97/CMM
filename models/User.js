@@ -13,7 +13,7 @@ const User = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             pw: {
-                type: DataTypes.STRING(20),
+                type: DataTypes.STRING(255),
                 allowNull: false,
             },
             nickname: {

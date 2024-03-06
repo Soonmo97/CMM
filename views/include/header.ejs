@@ -8,9 +8,11 @@
         </div>
         <div style="margin-top: 20px; margin-left: 140px">
             <div class="search" style="width: 500px; margin-top: 0px; flex: 1">
-                <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
+                <div
+                    class="collapse navbar-collapse d-flex justify-content-center"
+                    id="navbarSupportedContent"
+                >
                     <div class="d-flex" role="search" style="width: 500px">
-
                         <input
                             class="searchStyle"
                             type="search"
@@ -19,7 +21,9 @@
                         />
 
                         <button class="btn" type="button" id="">
-                            <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" />
+                            <img
+                                src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png"
+                            />
                         </button>
                     </div>
                 </div>
@@ -39,13 +43,11 @@
             </div>
         </div>
 
-      <div style="margin-right: 150px">
-          <div class="buttons">
-            <!-- 로그인 유무에 따른 헤더 변경 -->
-            <%if (isLogin) { %>
-                <p>
-                    <%= user %>님 환영합니다.
-                </p>
+        <div style="margin-right: 150px">
+            <div class="buttons">
+                <!-- 로그인 유무에 따른 헤더 변경 -->
+                <%if (isLogin) { %>
+                <p><%= user %>님 환영합니다.</p>
                 <form name="form_logout" action="/form/logout" method="post">
                     <button id="logoutBtn" class="signBtn" type="submit">로그아웃</button>
                     <div><button class="signBtn" id="menu">마이페이지</button></div>
@@ -53,10 +55,10 @@
 
                 <% } else { %>
 
-                    <button id="signupBtn" class="signBtn">회원가입</button>
-                    <button id="loginBtn" class="signBtn">로그인</button>
-                    <% } %>
-            <br />
+                <button id="signupBtn" class="signBtn">회원가입</button>
+                <button id="loginBtn" class="signBtn">로그인</button>
+                <% } %>
+                <br />
             </div>
         </div>
     </div>
@@ -182,21 +184,33 @@
             <div>
                 <img src="../static/images/CMM.png" width="150px" height="200px" />
             </div>
-            
+
             <a href=""><span class="signupLabel" id="closeLikeBtn">닫기</span></a>
             <form id="modal_register" name="modal_register">
-            
                 <!-- 아이디 -->
                 <div>
                     <h3>
                         <label for="id">아이디</label>
                     </h3>
                     <span class="box intId">
-                        <input type="text" name="id" id="inputId" class="int" maxlength="20" onkeydown="inputIdCk()" required />
+                        <input
+                            type="text"
+                            name="id"
+                            id="inputId"
+                            class="int"
+                            maxlength="20"
+                            onkeydown="inputIdCk()"
+                            required
+                        />
                         <!-- 타입을 btn에서 input으로 수정 -->
                         <span class="stepbutton">
                             <button id="btnCheckId" onclick="idCheck()">중복확인</button>
-                            <input type="hidden" name="idDuplication" id="idDuplication" value="idUncheck">
+                            <input
+                                type="hidden"
+                                name="idDuplication"
+                                id="idDuplication"
+                                value="idUncheck"
+                            />
                         </span>
                     </span>
                     <span class="error_next_box"></span>
@@ -208,7 +222,14 @@
                         <label for="pswd1">비밀번호</label>
                     </h3>
                     <span class="box intPw">
-                        <input type="password" name="pw" class="int" maxlength="20" id=pw required />
+                        <input
+                            type="password"
+                            name="pw"
+                            class="int"
+                            maxlength="20"
+                            id="pw"
+                            required
+                        />
                         <span id="alertTxt">사용불가</span>
                     </span>
                     <span class="error_next_box"></span>
@@ -220,7 +241,13 @@
                         <label for="pswd2">비밀번호 재확인</label>
                     </h3>
                     <span class="box intPwCheck">
-                        <input type="password" name="pwCheck" class="int" maxlength="20" id=pwCk />
+                        <input
+                            type="password"
+                            name="pwCheck"
+                            class="int"
+                            maxlength="20"
+                            id="pwCk"
+                        />
                     </span>
                     <span class="error_next_box"></span>
                 </div>
@@ -231,9 +258,17 @@
                         <label for="name">닉네임</label>
                     </h3>
                     <span class="box intName">
-                        <input type="text" name="nickname" class="int" maxlength="20" placeholder="7글자 이하로 작성해주세요."
-                            required />
-                        <span class="stepbutton"><button type="button" id="btnCheckName">중복확인</button></span>
+                        <input
+                            type="text"
+                            name="nickname"
+                            class="int"
+                            maxlength="20"
+                            placeholder="7글자 이하로 작성해주세요."
+                            required
+                        />
+                        <span class="stepbutton"
+                            ><button type="button" id="btnCheckName">중복확인</button></span
+                        >
                     </span>
                     <span class="error_next_box"></span>
                 </div>
@@ -247,21 +282,31 @@
                     </h3>
                     <span class="box intEmail">
                         <input type="email" name="email" class="int" maxlength="100" required />
-                        <span class="stepbutton"><button type="button" id="btnCheckCodeSend">확인코드전송</button></span>
+                        <span class="stepbutton"
+                            ><button type="button" id="btnCheckCodeSend">확인코드전송</button></span
+                        >
                     </span>
                     <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
                 </div>
 
                 <!-- 이메일 확인 -->
                 <!-- 태그명, 변수명 오류 있습니다!!!!!!! 제 임의로 바꿔놓았습니다!! -->
-                
+
                 <div>
                     <h3>
                         <label for="email">이메일 확인</label>
                     </h3>
                     <span class="box intName">
-                        <input type="email" id="emailChk" name="emailChk" class="int" maxlength="20" />
-                        <span class="stepbutton"><button type="button" id="btnCheckCode">확인</button></span>
+                        <input
+                            type="email"
+                            id="emailChk"
+                            name="emailChk"
+                            class="int"
+                            maxlength="20"
+                        />
+                        <span class="stepbutton"
+                            ><button type="button" id="btnCheckCode">확인</button></span
+                        >
                     </span>
                     <span class="error_next_box"></span>
                 </div>
@@ -275,8 +320,6 @@
         </div>
     </div>
 
-
-
     <!-- 비밀번호 재확인 부분 -->
     <script>
         let pw = document.getElementById("pw");
@@ -285,9 +328,8 @@
         function validatePassword() {
             if (pw.value != pwCk.value) {
                 pwCk.setCustomValidity("비밀번호가 같지 않습니다.");
-            }
-            else {
-                pwCk.setCustomValidity('');
+            } else {
+                pwCk.setCustomValidity("");
             }
         }
 
@@ -300,8 +342,11 @@
         // 아이디 중복체크 화면 열기
         function idCheck() {
             window.name = "parentForm";
-            window.open("/user/idCheckForm", "chkForm", "width=500, height=300, resizable=no, scrollbars=no");
-
+            window.open(
+                "/user/idCheckForm",
+                "chkForm",
+                "width=500, height=300, resizable=no, scrollbars=no"
+            );
         }
         // 중복체크 후 다시 새로운 아이디를 입력했을 때 다시 중복체크 하도록 함
         function inputIdCk() {
@@ -311,7 +356,7 @@
 
     <!-- 회원가입 입력값 검사 -->
     <script>
-        document.getElementById("modal_register").addEventListener('submit', function (event) {
+        document.getElementById("modal_register").addEventListener("submit", function (event) {
             event.preventDefault();
 
             const form = document.forms["modal_register"];
@@ -341,19 +386,17 @@
                         console.log("응답 데이터", result.id); // undefined
                         alert("회원가입 성공!");
                         document.location.href = "/";
-                    }
-                    else {
+                    } else {
                         alert("중복된 아이디 입니다!");
                         res.end();
                     }
                 })
                 .catch((err) => {
                     console.error(error);
-                    res.status(500).send('회원가입 실패');
-                })
+                    res.status(500).send("회원가입 실패");
+                });
         });
     </script>
-
 
     <!-- 어두운 오버레이 -->
     <div id="overlay"></div>
@@ -442,15 +485,15 @@
 
                 // id가 "menu"인 요소를 클릭할 때 발생하는 이벤트를 감지하여, document.documentElement의 클래스 리스트에 "active" 클래스를 추가
 
-                document.getElementById("menu").addEventListener("click", function () {
-                    if (menuBtn == false) {
-                        menuBtn = true;
-                        document.documentElement.classList.add("active");
-                    } else if (menuBtn == true) {
-                        menuBtn = false;
-                        document.documentElement.classList.remove("active");
-                    }
-                });
+                // document.getElementById("menu").addEventListener("click", function () {
+                //     if (menuBtn == false) {
+                //         menuBtn = true;
+                //         document.documentElement.classList.add("active");
+                //     } else if (menuBtn == true) {
+                //         menuBtn = false;
+                //         document.documentElement.classList.remove("active");
+                //     }
+                // });
                 // id가 "close-menu"인 요소를 클릭할 때 발생하는 이벤트를 감지하여, document.documentElement의 클래스 리스트에서 "active" 클래스를 제거
 
                 document.getElementById("close-menu").addEventListener("click", function () {
@@ -490,11 +533,12 @@
                 });
             });
 
-            document.getElementById("menu").addEventListener("click", function () {});
+            // document.getElementById("menu").addEventListener("click", function () {});
 
             // 회원가입 버튼 클릭 이벤트 처리
             document.getElementById("signupBtn").addEventListener("click", function () {
                 // 팝업창과 어두운 오버레이 표시
+                console.log("테스트");
                 document.getElementById("signupModal").style.display = "block";
                 document.getElementById("overlay").style.display = "block";
             });

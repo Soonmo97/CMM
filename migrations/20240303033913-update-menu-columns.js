@@ -12,6 +12,11 @@ module.exports = {
             type: Sequelize.INTEGER, // 변경할 데이터 타입
             allowNull: false, // NOT NULL로 변경
         });
+
+        await queryInterface.changeColumn("user", "pw", {
+            type: Sequelize.STRING(255),
+            allowNull: false,
+        });
     },
 
     down: async (queryInterface, Sequelize) => {

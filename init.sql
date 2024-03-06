@@ -27,6 +27,7 @@ insert into restaurant values(null,'마쯔무라',null, '저희 마쯔무라 돈
 insert into Category values(null, '일식', 1);
 
 insert into user values(null, 'test', '1234', '테스트', 'test123@gmail.com')
+
 insert into user values(null, 'test2', '1234', '테스트2', 'test2123@gmail.com')
 
 insert into LikeList values(null, 1, 1);
@@ -36,10 +37,10 @@ insert into menu values(null, '히레(안심) 까스', 11000, 1);
 insert into menu values(null, '치즈 까스', 12000, 1);
 
 insert into review values(null, '창동역 근처 최고의 맛집입니다.
-제가 먹어봤던 음식 중 제일 맛있네요. 가격도 싸고 가게도 깨끗해서 재방문 의사가 있습니다. 꼭 방문해보시길...',now(), 1, 1)
+제가 먹어봤던 음식 중 제일 맛있네요. 가격도 싸고 가게도 깨끗해서 재방문 의사가 있습니다. 꼭 방문해보시길...', 5, now(), 1, 1)
 
 insert into review values(null, '2창동역 근처 최고의 맛집입니다.
-제가 먹어봤던 음식 중 제일 맛있네요. 가격도 싸고 가게도 깨끗해서 재방문 의사가 있습니다. 꼭 방문해보시길...',now(), 1, 2)
+제가 먹어봤던 음식 중 제일 맛있네요. 가격도 싸고 가게도 깨끗해서 재방문 의사가 있습니다. 꼭 방문해보시길...', 3, now(), 1, 2)
 
 
 Select * from restaurant

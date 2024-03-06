@@ -1,0 +1,57 @@
+.main-container {
+    width: 70%;
+    margin: 0 auto;
+    padding: 220px 20px 50px 20px;
+}
+.post-container {
+    width: 100%;
+    padding: 30px;
+    border: 1px solid #dadada;
+    border-radius: 25px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.08);
+}
+.post-table {
+    width: 100%;
+    border-style: none;
+}
+.post-table tr td {
+    padding: 10px 20px;
+}
+.post-table .first-row td p {
+    font-size: 28px;
+}
+.post-table .second-row {
+    border-bottom: 1px solid #dadada;
+}
+.post-table .second-row td {
+    padding-bottom: 20px;
+    font-size: 14px;
+}
+.post-table .second-row td:nth-child(1) {
+    width: 150px;
+}
+.post-table .third-row {
+    height: 300px;
+}
+.post-table .btn-like-tr td {
+    text-align: center;
+}
+.back-link-div {
+    width: 100%;
+    margin: 5px 0;
+}
+.back-link {
+    display: inline-block;
+    width: 92px;
+    text-decoration: none;
+    color: #2da3d6;
+}
+.back-link p {
+    font-weight: 700;
+    font-size: 18px;
+}
+.btn-container {
+    width: 100%;
+    padding: 20px 0;
+    text-align: right;
+}

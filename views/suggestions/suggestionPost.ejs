@@ -1,65 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/static/css/sugPost.css" />
         <title>건의 | <%= postInfo.title%></title>
         <%- include('../include/head') %>
-        <style>
-            .post-container {
-                width: 80%;
-                margin: 0 auto;
-            }
-            .table {
-                width: 100%;
-                border: 1px solid #dadada;
-                box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.08);
-            }
-            table tr:nth-child(3) {
-                height: 300px;
-            }
-            table tr:last-child td {
-                text-align: center;
-            }
-            .btn-group {
-                width: 100%;
-            }
-        </style>
     </head>
     <body>
-        <div class="post-container">
-            <table class="table">
-                <tr>
-                    <td><%= postInfo.sug_index %></td>
-                    <td><%= postInfo.title %></td>
-                </tr>
-                <tr>
-                    <td><%= postInfo.User.nickname %></td>
-                    <td><%= postInfo.dataValues.created_at %></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><%- postInfo.content %></td>
-                </tr>
-                <tr class="btn">
-                    <td colspan="2">
-                        <button type="button" id="like" onclick="like()">
-                            <%= postInfo.dataValues.like_count %>
-                        </button>
-                    </td>
-                </tr>
-            </table>
-            <div class="btn-group">
-                <a href="/suggestion/list?page=1"><button type="button">목록</button></a>
+        <%- include('../include/header.ejs', {isLogin}) %>
+        <div class="main-container">
+            <div class="back-link-div">
+                <a href="/suggestion/list?page=1" class="back-link"><p>&lt;목록으로</p></a>
+            </div>
+            <div class="post-container">
+                <table class="post-table">
+                    <tr class="first-row">
+                        <td colspan="2"><p><%= postInfo.title %></p></td>
+                    </tr>
+                    <tr class="second-row">
+                        <td><%= postInfo.User.nickname %></td>
+                        <td><%= postInfo.dataValues.created_at %></td>
+                    </tr>
+                    <tr class="third-row">
+                        <td colspan="2"><%- postInfo.content %></td>
+                    </tr>
+                    <tr class="btn-like-tr">
+                        <td colspan="2">
+                            <button type="button" class="btn btn-success btn-like" onclick="like()">
+                                추천 <%= postInfo.dataValues.like_count %>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="btn-container">
+                <% if(postInfo.User.user_index===loginUser){ %>
                 <a
                     href="/suggestion/delete?post=<%= postInfo.sug_index %>"
                     onclick="return confirmDel()"
-                    ><button type="button">삭제</button></a
+                    ><button type="button" class="btn btn-danger">삭제</button></a
                 >
                 <a href="/suggestion/edit?post=<%= postInfo.sug_index %>"
-                    ><button type="button">수정</button></a
+                    ><button type="button" class="btn btn-warning">수정</button></a
                 >
+                <%}%>
             </div>
         </div>
+        <%- include('../include/footer.ejs') %>
         <script>
             function confirmDel() {
                 const isDelete = confirm("게시글을 삭제하시겠습니까?");
@@ -67,6 +55,29 @@
                     return true;
                 } else {
                     return false;
+                }
+            }
+
+            async function like() {
+                const btnLike = document.querySelector(".btn-like");
+                const sameUser =
+                    "<%= postInfo.User.user_index%>" === "<%=loginUser %>" ? true : false;
+                if (!"<%= loginUser %>") {
+                    alert("로그인 후에 추천 가능합니다.");
+                    return;
+                } else if (sameUser === true) {
+                    alert("본인 글은 추천할 수 없습니다.");
+                    return;
+                } else {
+                    const likeCount = await axios({
+                        method: "post",
+                        url: "/suggestion/likePost",
+                        data: {
+                            sug_index: "<%=postInfo.sug_index%>",
+                            user_index: "<%=loginUser%>",
+                        },
+                    });
+                    btnLike.innerHTML = "추천 " + likeCount.data.likeCount;
                 }
             }
         </script>

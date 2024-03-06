@@ -3,71 +3,60 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/static/css/sugList.css">
         <title>건의 | 글 목록</title>
         <%- include('../include/head.ejs') %>
-        <style>
-            .post-container{
-                width: 100%;
-                margin: 0 auto;
-            }
-            .table{
-                width: 100%;
-                border: 1px solid #dadada;
-                box-shadow: 0px 1px 4px rgba(0, 0, 0, .08);
-            }
-            th, td:not(td:nth-child(2)){
-                text-align: center;
-            }
-            tr{
-                width: 100%;
-            }
-            a {
-                text-decoration: none;
-            }
-            .btn-group {
-                width: 100%;
-            }
-        </style>
     </head>
     <body>
-        <div class="post-container">
-            <table class="table table-hover">
-            <tr>
-                <th style="width: 8%">번호</th>
-                <th style="width: 65%">제목</th>
-                <th style="width: 10%">작성자</th>
-                <th style="width: 10%">등록일</th>
-                <th style="width: 7%">추천</th>
-            </tr>
-            <% for(let i=0; i<sugList.length; i++){ %>
+        <%- include('../include/header.ejs', {isLogin}) %>
+        <div class="main-container">
+            <h2>건의사항</h2>
+            <br>
+            <div class="list-container">
+                <table class="list-table">
                 <tr>
-                    <td><%= sugList[i].sug_index %></td>
-                    <td><a href="post/<%=sugList[i].sug_index%>"><%= sugList[i].title %></a></td>
-                    <td><%= sugList[i].User.nickname %></td>
-                    <td><%= sugList[i].dataValues.created_at %></td>
-                    <td><%= sugList[i].dataValues.like_count %></td>
+                    <th style="width: 100px">번호</th>
+                    <th>제목</th>
+                    <th style="width: 150px">작성자</th>
+                    <th style="width: 120px">등록일</th>
+                    <th style="width: 80px">추천</th>
                 </tr>
-                <% } %>
-                <tr>
-                    <td colspan="4">
+                <% for(let i=0; i<sugList.length; i++){ %>
+                    <tr>
+                        <td><%= sugList[i].sug_index %></td>
+                        <td><a href="post/<%=sugList[i].sug_index%>"><%= sugList[i].title %></a></td>
+                        <td><%= sugList[i].User.nickname %></td>
+                        <td><%= sugList[i].dataValues.created_at %></td>
+                        <td><%= sugList[i].dataValues.like_count %></td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
+            <div class="page-container">
+                <nav aria-label="Page navigation" class="page-nav">
+                    <ul class="pagination">
                         <% if(pageInfo.startPage > pageInfo.pageLimit){ %>
-                            <a href="list?page=<%=pageInfo.startPage-1%>">◀</a>
-                            <% } %>
+                            <li class="page-item">
+                                <a class="page-link" href="list?page=<%=pageInfo.startPage-1%>" aria-label="Previous">&laquo;</a>
+                            </li>
+                        <% } %>
                         <% for(let i=pageInfo.startPage; i<=pageInfo.endPage; i++){ %>
                             <% if(pageInfo.currentPage === i){ %>
-                                <a href="list?page=<%=i%>"><b><%= i %></b></a>
+                                <li class="page-item"><a class="page-link" href="list?page=<%=i%>"><b><%= i %></b></a></li>
                             <%} else{ %>
-                                <a href="list?page=<%=i%>"><%= i %></a>
+                                <li class="page-item"><a class="page-link" href="list?page=<%=i%>"><%= i %></a></li>
                             <% } %>
                         <% } %>
                         <% if(pageInfo.endPage < pageInfo.totalPage){ %>
-                            <a href="list?page=<%=pageInfo.endPage+1%>">▶</a>
-                            <% } %>
-                    </td>
-                </tr>
-            </table>
-            <div class="btn-group">
-                <a href="/suggestion/write"><button type="button">글쓰기</button></a>
+                            <li class="page-item">
+                                <a class="page-link" href="list?page=<%=pageInfo.endPage+1%>" aria-label="Next">&raquo;</a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+                <div class="btn-div">
+                    <a href="/suggestion/write"><button type="button" class="btn btn-info">글쓰기</button></a>
+                </div>
             </div>
         </div>
     </body>

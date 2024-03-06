@@ -13,8 +13,10 @@ module.exports = {
             allowNull: false, // NOT NULL로 변경
         });
 
-        await queryInterface.changeColumn("user", "pw", {
-            type: Sequelize.STRING(255),
+        await queryInterface.renameColumn("restaurant", "rest_rating", "rating");
+
+        await queryInterface.addColumn("review", "review_rating", {
+            type: Sequelize.INTEGER,
             allowNull: false,
         });
     },
@@ -23,4 +25,5 @@ module.exports = {
         // 이전 상태로 롤백하는 코드 작성
         // (이전 상태로 롤백하는 로직은 꼭 필요한 경우에만 작성)
     },
+    // 마이그레이션 적용: npx sequelize-cli db:migrate
 };

@@ -34,7 +34,7 @@ app.use("/suggestion", suggestRouter);
 app.use("/", userRouter);
 
 sequelize
-    .sync()
+    .sync({ force: false })
     .then(() => {
         app.listen(PORT, () => {
             console.log(`http://localhost:${PORT}`);

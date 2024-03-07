@@ -4,11 +4,11 @@ const { sequelize, User, Suggestions, Suggest_Like } = require("../models/index"
 // 게시글 목록 조회
 exports.listPage = async (req, res) => {
     try {
-        console.log("세션", req.session);
         const limit = 5;
         const pageLimit = 3;
         let { page: currentPage } = req.query;
         let isLogin = false;
+        let user = req.session.user;
 
         currentPage = Number(currentPage);
 
@@ -80,6 +80,7 @@ exports.listPage = async (req, res) => {
             sugList: sugList,
             pageInfo: pageInfo,
             isLogin: isLogin,
+            user,
         });
     } catch (err) {
         console.log(err);
@@ -89,11 +90,12 @@ exports.listPage = async (req, res) => {
 // 게시글 작성 페이지 요청
 exports.writePage = (req, res) => {
     let isLogin = false;
+    let user = req.session.user;
     if (req.session.index) {
         isLogin = true;
-        res.render("suggestions/suggestionWrite", { isNew: true, isLogin });
+        res.render("suggestions/suggestionWrite", { isNew: true, isLogin, user });
     } else {
-        res.render("login", { isLogin });
+        res.render("user/login", { isLogin, user });
     }
 };
 
@@ -116,6 +118,7 @@ exports.writeSuggestion = async (req, res) => {
 exports.getPost = async (req, res) => {
     try {
         let isLogin = false;
+        let user = req.session.user;
         const { postId } = req.params;
         const postInfo = await Suggestions.findOne({
             where: { sug_index: postId },
@@ -149,6 +152,7 @@ exports.getPost = async (req, res) => {
                 postInfo,
                 loginUser: req.session.index,
                 isLogin,
+                user,
             });
         } else {
             res.send(
@@ -181,15 +185,16 @@ exports.deletePost = async (req, res) => {
 exports.editPage = async (req, res) => {
     try {
         let isLogin = false;
+        let user = req.session.user;
         const { post } = req.query;
         const postInfo = await Suggestions.findOne({
             where: { sug_index: post },
         });
         if (req.session.index) {
             isLogin = true;
-            res.render("suggestions/suggestionWrite", { postInfo, isLogin, isNew: false });
+            res.render("suggestions/suggestionWrite", { postInfo, isLogin, user, isNew: false });
         } else {
-            res.render("login", { isLogin });
+            res.render("user/login", { isLogin, user });
         }
         console.log("수정할 글", postInfo);
     } catch (err) {

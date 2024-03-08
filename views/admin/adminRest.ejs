@@ -30,7 +30,7 @@
                 <tr>
                     <td><%=restInfo[i].rest_index%></td>
                     <td onclick="openRestInfo('<%=restInfo[i].rest_index%>')"><%=restInfo[i].rest_name%></td>
-                    <td><button type="button" onclick="editRestInfo('<%=restInfo[i].rest_index%>')">수정</button></td>
+                    <td><button type="button" onclick="openEdit('<%=restInfo[i].rest_index%>')">수정</button></td>
                     <td><button type="button" onclick="deleteRest('<%=restInfo[i].rest_index%>','<%=restInfo[i].rest_name%>')">삭제</button></td>
                 </tr>
                 <%}%>
@@ -39,10 +39,30 @@
                 <div class="restmodal modal-main">
                     <div class="restmodal modal-info">
                         <h3 class="restinfo name">식당명</h3>
+                        <p class="restinfo category">카테고리</p>
                         <p class="restinfo desc">식당정보</p>
                         <p class="restinfo address">식당주소</p>
                         <p class="restinfo time">영업시간</p>
                         <p class="restinfo number">전화번호</p>
+                    </div>
+                    <div class="restmodal modal-edit">
+                        <input type="hidden" class="restedit index" name="rest_index">
+                        <input type="text" class="restedit name" placeholder="식당 이름">
+                        <select name="category" class="restedit category">
+                            <option value="한식">한식</option>
+                            <option value="일식">일식</option>
+                            <option value="양식">양식</option>
+                            <option value="중식">중식</option>
+                            <option value="디저트">디저트</option>
+                        </select>
+                        <input type="text" class="restedit desc" placeholder="식당 설명">
+                        <input type="text" class="restedit address" placeholder="식당 주소">
+                        <input type="text" class="restedit time" placeholder="식당 영업시간">
+                        <input type="text" class="restedit number" placeholder="식당 전화번호">
+                        <button type="button" class="restedit editbtn" onclick="editRestInfo()">수정</button>
+                    </div>
+                    <div class="restmodal modal-add">
+
                     </div>
                     <div class="restmodal modal-bottom"><span class="close-modal">&times;</span></div>
                 </div>
@@ -54,46 +74,121 @@
             const modal = document.querySelector('.modal-container')
             const modalBtn = document.querySelector(".close-modal");
 
-            function openRestInfo(idx){
-                modal.style.display = "block";
-                const [name, desc, address, time, number] = document.getElementsByClassName('restinfo');
+            function getOneRestInfo(idx){
                 const result = axios({
                     method:'post',
                     url:'/admin/getRestInfo',
                     data:{rest_index:idx}
-                }).then((result)=>{
-                    const {rest_index, rest_name, rest_desc, rest_address, rest_number, rest_time} = result.data.restInfo;
-                    name.innerHTML = rest_name;
-                    desc.innerHTML = rest_desc;
-                    address.innerHTML = rest_address;
-                    time.innerHTML = rest_time;
-                    number.innerHTML = rest_number;
                 });
+                return result;
+            };
+
+            async function openRestInfo(idx){
+                modal.style.display = "block";
+                document.querySelector('.modal-info').style.display = "block";
+                document.querySelector('.modal-edit').style.display = "none";
+
+                const restInfo = document.getElementsByClassName('restinfo');
+                const [name, category, desc, address, time, number] = restInfo;
+
+                const result = await getOneRestInfo(idx);
+                
+                const {rest_index, rest_name, rest_desc, rest_address, rest_number, rest_time, Categories:cateInfo} = result.data.restInfo;
+
+                const categories = cateInfo.map((category) => category.category_name);
+                let category_name = categories.join(', ');
+
+                name.innerHTML = rest_name;
+                desc.innerHTML = rest_desc;
+                category.innerHTML = category_name;
+                address.innerHTML = rest_address;
+                time.innerHTML = rest_time;
+                number.innerHTML = rest_number;
             }
 
             async function deleteRest(idx, name){
                 const isDelete = confirm(`식당 ${name}을(를) 삭제하시겠습니까?`);
                 if(isDelete){
-                    axios({
+                    const result = await axios({
                         method:'post',
                         url:'/admin/deleteRest',
                         data: {rest_index:idx}                    
-                    }).then((result)=>{
-                        if(result.data.result===1){
-                            alert('삭제되었습니다.');
-                            location.reload(true);
+                    });
+                    if(result.data.result===1){
+                        alert('삭제되었습니다.');
+                        location.reload(true);
+                    }else{
+                        alert('삭제하지 못했습니다.');
+                        location.reload(true);
+                    }
+                }
+            }
+
+            async function openEdit(idx){
+                modal.style.display = "block";
+                document.querySelector('.modal-info').style.display = "none";
+                document.querySelector('.modal-edit').style.display = "block";
+                
+                const restEdit = document.getElementsByClassName('restedit');
+                const [index, name, category, desc, address, time, number] = restEdit;
+                console.log(category);
+
+                const result = await getOneRestInfo(idx);
+
+                const {rest_index, rest_name, rest_desc, rest_address, rest_number, rest_time, Categories:cateInfo} = result.data.restInfo;
+                
+                index.value = rest_index;
+                name.value = rest_name;
+                // category.value = category_name;
+                desc.value = rest_desc;
+                address.value = rest_address;
+                time.value = rest_time;
+                number.value = rest_number;
+            }
+
+            async function editRestInfo(){
+                const isEdit = confirm("수정하시겠습니까?");
+                const restEdit = document.getElementsByClassName('restedit');
+                const [index, name, category, desc, address, time, number] = restEdit;
+
+                if(isEdit){
+                    // null 또는 공백일 경우 경고 + return
+                    for(let i=0; i<restEdit.length-1; i++){
+                        let rmvSpace = restEdit[i].value.replace(/ |\s+/g, '');
+                        if(rmvSpace === ''){
+                            alert('모든 정보를 입력해주세요.');
+                            return;
                         }
-                    })
+                    }
+                    const result = await axios({
+                        method:'post',
+                        url:'/admin/editRestInfo',
+                        data:{
+                            rest_index: index.value,
+                            rest_name: name.value,
+                            category_name: category.value,
+                            rest_desc: desc.value,
+                            rest_address: address.value,
+                            rest_time: time.value,
+                            rest_number: number.value
+                        }
+                    });
+                    if(result.data.result === 1){
+                        openRestInfo(index.value);
+                    }else{
+                        alert('정보를 수정하지 못했습니다.');
+                        openRestInfo(index.value);
+                    }
                 }
             }
 
             modalBtn.onclick = () => {
                 modal.style.display = "none";
             }
-            modal.addEventListener('click', (e)=>{
-                console.log(e);
-                if(e.target === modal) modal.style.display = "none";
-            });
+            // modal.addEventListener('click', (e)=>{
+            //     console.log(e);
+            //     if(e.target === modal) modal.style.display = "none";
+            // });
 
         </script>
     </body>

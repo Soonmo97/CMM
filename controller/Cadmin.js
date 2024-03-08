@@ -24,14 +24,14 @@ exports.getAdminPage = async (req, res) => {
     }
 };
 
-// 식당 추가
+// 식당 정보 조회
 exports.getRestInfo = async (req, res) => {
     try {
         console.log(req.body.rest_index);
         const restInfo = await Restaurant.findOne({
             where: { rest_index: req.body.rest_index },
+            include: { model: Category, attributes: ["category_index", "category_name"] },
         });
-        console.log(restInfo.dataValues);
         res.send({ restInfo: restInfo.dataValues });
     } catch (error) {
         console.log(error);
@@ -57,6 +57,24 @@ exports.deleteRest = async (req, res) => {
 // 식당 정보 수정
 exports.editRestInfo = async (req, res) => {
     try {
+        // if (req.session.index === 6) {
+        const [result] = await Restaurant.update(
+            {
+                rest_name: req.body.rest_name,
+                rest_desc: req.body.rest_desc,
+                rest_address: req.body.rest_address,
+                rest_number: req.body.rest_number,
+                rest_time: req.body.rest_time,
+            },
+            {
+                where: { rest_index: req.body.rest_index },
+            }
+        );
+        console.log(result);
+        res.send({ result });
+        // } else {
+        //     res.send({ result: 0 });
+        // }
     } catch (error) {
         console.log(error);
     }

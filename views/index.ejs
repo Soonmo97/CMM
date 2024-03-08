@@ -18,35 +18,41 @@
         <div class="restaurantMenu" id="restaurantMenu1">
             <table style="border-spacing: 70px; border-collapse: separate">
                 <tr>
-                    <!-- <td>
-                        <div class="imageContainer">
-                            <a href="">
-                                <img
-                                    src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDNfMTA1%2FMDAxNzAxNTc1Mzc1MTA4.dN9S9wJppXhDjB9fdVjzf911R91YMES1K8IbCekCMjgg.tYmyq6JD-7LetCAkfz5KQFzEikonrjlL59_LRklghykg.JPEG.jelly877%2F20231203%25A3%25DF115342.jpg"
-                                    alt="Restaurant 1"
-                                    class="RestaurantImage"
-                                />
-                                <span class="label">홍콩 반점</span>
-                            </a>
-                        </div>
-                    </td> -->
-                    <% for (let i = 0; i < restaurants.length; i++) { %>
-                    <td>
-                        <div class="imageContainer">
-                            <a href="">
-                                <img
-                                    src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDNfMTA1%2FMDAxNzAxNTc1Mzc1MTA4.dN9S9wJppXhDjB9fdVjzf911R91YMES1K8IbCekCMjgg.tYmyq6JD-7LetCAkfz5KQFzEikonrjlL59_LRklghykg.JPEG.jelly877%2F20231203%25A3%25DF115342.jpg"
-                                    alt="Restaurant 1"
-                                    class="RestaurantImage"
-                                />
-                                <span class="label"><%= restaurants[i].rest_name %></span>
-                            </a>
-                        </div>
-                    </td>
-                    <% } %>
+                    <th style="font-size: 30px">
+                        <img
+                            class="logo"
+                            src="/static/images/CMM.png"
+                            alt=""
+                            style="width: 50px; height: 50px"
+                        />
+                        모든식당
+                    </th>
+                    <th></th>
                 </tr>
+                <tbody id="restaurantContainer">
+                    <% console.log("레스토랑 정보 >> ",restaurants); %>
+
+                    <tr>
+                        <% restaurants.forEach((el, index) => { %>
+                            <% if (index % 3 === 0 && index !== 0) { %>
+                                </tr><tr>
+                            <% } %>
+                            <td>
+                                <a href="">
+                                    <div class="imageContainer">
+                                        <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDNfMTA1%2FMDAxNzAxNTc1Mzc1MTA4.dN9S9wJppXhDjB9fdVjzf911R91YMES1K8IbCekCMjgg.tYmyq6JD-7LetCAkfz5KQFzEikonrjlL59_LRklghykg.JPEG.jelly877%2F20231203%25A3%25DF115342.jpg"
+                                            alt="Restaurant 1"
+                                            class="RestaurantImage"/>
+                                        <span class="label"><%= el.rest_name %></span>
+                                    </div>
+                                </a>
+                            </td>
+                        <% }) %>
+                    </tr>
+                </tbody>
             </table>
         </div>
+
         <br /><br />
         <div>
             <nav aria-label="Page navigation example">

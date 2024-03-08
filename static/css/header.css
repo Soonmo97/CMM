@@ -3,7 +3,7 @@
 :root {
     /** color **/
     --baseColor: #333;
-    --blueColor: #22aee5;
+    --whiteColor: rgb(254, 255, 255);
     /** size **/
     /* --baseContainer: 1400px; */
 }
@@ -23,7 +23,7 @@
 
 header {
     margin: 0 auto;
-    background-color: rgb(254, 255, 255);
+    background-color: #ffde59;
     width: 100%;
     z-index: 1;
     top: 0;
@@ -126,7 +126,7 @@ header nav ul li a {
 
 header nav ul li.active a,
 header nav ul li:hover a {
-    color: var(--blueColor);
+    color: var(--whiteColor);
 }
 
 header nav ul li a:after {
@@ -135,7 +135,7 @@ header nav ul li a:after {
     position: absolute;
     width: 100%;
     height: 2px;
-    background-color: var(--blueColor);
+    background-color: var(--whiteColor);
     left: 0;
     bottom: 0;
     transition: all 0.3s ease-in-out;
@@ -156,7 +156,7 @@ header nav ul li:last-child {
 }
 
 .search {
-    border: 12.5px solid rgb(142, 205, 247);
+    border: 12.5px solid #ffc064;
     border-radius: 25px;
     margin: 0 auto;
 }
@@ -184,7 +184,7 @@ header nav ul li:last-child {
 }
 
 .signBtn {
-    border: 5px solid rgb(142, 205, 247);
+    border: 5px solid #ffc064;
     border-radius: 25px;
     outline: none; /* 클릭시 포커스 테두리도 없앰 */
     background-color: white;
@@ -352,7 +352,7 @@ h3 {
     border: 0;
     cursor: pointer;
     color: #fff;
-    background-color: #0fa6cc;
+    background-color: #ffc064;
     font-size: 20px;
     font-weight: 400;
 }
@@ -363,7 +363,7 @@ h3 {
     border: 0;
     cursor: pointer;
     color: #fff;
-    background-color: #0fa6cc;
+    background-color: #ffc064;
     font-size: 20px;
     font-weight: 400;
 }

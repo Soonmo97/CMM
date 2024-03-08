@@ -42,13 +42,14 @@
                     </p>
                     <form name="form_logout" action="/form/logout" method="post">
                         <button id="logoutBtn" class="signBtn" type="submit">로그아웃</button>
-                        <div><button class="signBtn" id="menu">마이페이지</button></div>
+                        <div><button class="signBtn" id="menu">마이페이지</button></div></br>
+                        <a href="../suggestion/list">건의사항</a>
                     </form>
 
                     <% } else { %>
-
                         <button id="signupBtn" class="signBtn">회원가입</button>
-                        <button id="loginBtn" class="signBtn">로그인</button>
+                        <button id="loginBtn" class="signBtn">로그인</button></br>
+                        <a href="../suggestion/list">건의사항</a>
                         <% } %>
                             <br />
             </div>

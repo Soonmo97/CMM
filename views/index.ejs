@@ -6,8 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>창동 맛집 모음</title>
         <link rel="stylesheet" href="/static/css/index.css" />
-        <link rel="stylesheet" href="/static/css/header.css" />
-        <link rel="stylesheet" href="/static/css/footer.css" />
         <!-- head include -->
         <%- include('./include/head') %>
     </head>
@@ -32,20 +30,23 @@
                 <tbody id="restaurantContainer">
                     <% console.log("레스토랑 정보 >> ",restaurants); %>
                     <tr>
-                        <% restaurants.forEach((el, index) => { %>
-                            <% if (index % 3 === 0 && index !== 0) { %>
-                                </tr><tr>
-                            <% } %>
-                            <td>
-                                <a href="/restaurantDetail/1">
-                                    <div class="imageContainer">
-                                        <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDNfMTA1%2FMDAxNzAxNTc1Mzc1MTA4.dN9S9wJppXhDjB9fdVjzf911R91YMES1K8IbCekCMjgg.tYmyq6JD-7LetCAkfz5KQFzEikonrjlL59_LRklghykg.JPEG.jelly877%2F20231203%25A3%25DF115342.jpg"
-                                            alt="Restaurant 1"
-                                            class="RestaurantImage"/>
-                                        <span class="label"><%= el.rest_name %></span>
-                                    </div>
-                                </a>
-                            </td>
+                        <% restaurants.forEach((el, index) => { %> <% if (index % 3 === 0 && index
+                        !== 0) { %>
+                    </tr>
+                    <tr>
+                        <% } %>
+                        <td>
+                            <a href="/restaurantDetail/1">
+                                <div class="imageContainer">
+                                    <img
+                                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDNfMTA1%2FMDAxNzAxNTc1Mzc1MTA4.dN9S9wJppXhDjB9fdVjzf911R91YMES1K8IbCekCMjgg.tYmyq6JD-7LetCAkfz5KQFzEikonrjlL59_LRklghykg.JPEG.jelly877%2F20231203%25A3%25DF115342.jpg"
+                                        alt="Restaurant 1"
+                                        class="RestaurantImage"
+                                    />
+                                    <span class="label"><%= el.rest_name %></span>
+                                </div>
+                            </a>
+                        </td>
                         <% }) %>
                     </tr>
                 </tbody>

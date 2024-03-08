@@ -323,19 +323,6 @@
                     console.error(error); 
                 });
         }
-
-        // function btnEmailCk() {
-        //     const emailChk = document.getElementById("emailChk");
-        //     const codeValue = emailChk.value;
-        //     console.log("인증코드입니다아아아아아아", response.data.number);
-
-        //     if (codeValue === response.data.number) {
-        //         alert("인증번호가 일치합니다.");
-        //     } else {
-        //         alert("인증번호가 일치하지 않습니다.");
-        //         emailChk.value = '';
-        //     }
-        // }
     </script>
 
     <!-- 이메일 코드 확인 -->
@@ -372,11 +359,6 @@
 
             const form = document.forms["modal_register"];
 
-            // if (!form.checkValidity()) {
-            //     form.reportValidity();
-            //     return;
-            // }
-
             if (form.idDuplication.value != "idCheck") {
                 alert("아이디 중복체크를 해주세요.");
                 return false;
@@ -394,7 +376,6 @@
             })
                 .then((result) => {
                     if (result) {
-                        console.log("응답 데이터", result.id); // undefined
                         alert("회원가입 성공!");
                         document.location.href = "/";
                     } else {

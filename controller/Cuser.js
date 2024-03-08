@@ -1,22 +1,33 @@
 const { Op } = require("sequelize");
 // const { session }  = require("../session");
-const { User } = require("../models");
+const { User, Restaurant } = require("../models");
 const bcrypt = require('bcrypt');
 const { render } = require("ejs");
 const nodemailer = require("nodemailer");
 const { smtpTransport } = require("../config/email");
 const { response } = require("express");
+const { assign } = require("nodemailer/lib/shared");
 
 // GET /index
 exports.getMain = (req, res) => {
     const user = req.session.user;
     console.log("유저 세션 정보>> ",user);
-    if(user) {
-        res.render("index", { isLogin:true, user:user });
-    }
-    else {
-        res.render("index", { isLogin:false});
-    }
+
+    const restaurants = Restaurant.findAll({
+        attributes: ["rest_index","rest_name"]
+    })
+    .then(restaurants => {
+        console.log("레스토랑 인덱스, 이름 >> ", restaurants);
+        if (user) {
+            res.render("index", { isLogin: true, user: user, restaurants: restaurants });
+        } else {
+            res.render("index", { isLogin: false, restaurants: restaurants });
+        }
+    })
+    .catch(error => {
+        console.error("레스토랑 요청 오류:", error);
+        res.status(500).json({ error: "Internal server error" });
+    });
 };
 
 

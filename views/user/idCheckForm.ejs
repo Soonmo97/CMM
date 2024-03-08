@@ -10,7 +10,7 @@
     <title>아이디 중복체크</title>
 </head>
 
-<body>
+<body onload="pValue()">
     <div id="wrap">
         <br>
         <b>
@@ -25,7 +25,7 @@
             </form>
             <div id="msg"></div>
             <br>
-            <input id="cancelBtn" type="button" value="취소" onclick="window.close()">
+            <input id="cancelBtn" type="button" value="취소" onclick="cancelBtn()">
             <br>
             <input id="useBtn" type="button" value="사용하기" onclick="sendCheckValue()">
         </div>
@@ -78,14 +78,26 @@
 
     // 사용하기 버튼을 클릭했을 때 부모 창으로 값 전달
     function sendCheckValue() {
-        opener.document.modal_register.idDuplication.value = "idCheck";
-        opener.document.modal_register.id.value = document.getElementById("userId").value;
-        if (opener != null) {
+        if (opener.document.modal_register.idDuplication.value === "idCheck") {
+            opener.document.modal_register.id.value = document.getElementById("userId").value;
             opener.chkForm = null;
             self.close();
         }
     }
 </script>
 
+<script>
+    function cancelBtn() {
+        document.getElementById("userId").value = "";
+        opener.document.modal_register.id.value = "";
+        window.close();
+    }
+</script>
+
+<script>
+    function pValue() {
+        document.getElementById("userId").value = opener.document.modal_register.id.value;
+    }
+</script>
 
 </html>

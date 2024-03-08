@@ -1,26 +1,31 @@
-<link rel="stylesheet" href="/static/css/header.css" />
 <header>
     <div class="wrapper">
-        <div>
-            <a href="">
+        <div class="headerLogo">
+            <a href="/">
                 <img src="../static/images/CMM.png" alt="" style="width: auto; height: 200px" />
             </a>
         </div>
-        <div style="margin-top: 20px; margin-left: 140px">
-            <div class="search" style="width: 500px; margin-top: 0px; flex: 1">
+        <div class="searchResponse" style="z-index: 999">
+            <div class="search" style="width: 500px">
                 <div
                     class="collapse navbar-collapse d-flex justify-content-center"
                     id="navbarSupportedContent"
                 >
                     <div class="d-flex" role="search" style="width: 500px">
                         <input
+                            id="searchInput"
                             class="searchStyle"
                             type="search"
                             placeholder="search"
                             aria-label="Search"
                         />
 
-                        <button class="btn" type="button" id="">
+                        <button
+                            class="searchBtn"
+                            type="button"
+                            id="searchButton"
+                            style="border: none; background-color: white; border-radius: 25px"
+                        >
                             <img
                                 src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png"
                             />
@@ -33,21 +38,23 @@
                 <nav class="menu" style="flex: 0 0 auto; margin-top: -15px">
                     <ul>
                         <li class="active"><a href="#">홈</a></li>
-                        <li><a href="#">한식</a></li>
-                        <li><a href="#">일식</a></li>
-                        <li><a href="#">양식</a></li>
-                        <li><a href="#">중식</a></li>
-                        <li><a href="#">디저트</a></li>
+                        <li><a href="/search/category?category=한식">한식</a></li>
+                        <li><a href="/search/category?category=일식">일식</a></li>
+                        <li><a href="/search/category?category=양식">양식</a></li>
+                        <li><a href="/search/category?category=중식">중식</a></li>
+                        <li><a href="/search/category?category=디저트">디저트</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
 
-        <div style="margin-right: 150px">
+        <div class="InfoResponse">
             <div class="buttons">
                 <!-- 로그인 유무에 따른 헤더 변경 -->
                 <%if (isLogin) { %>
-                <p><%= user %>님 환영합니다.</p>
+                <div class="welcomeResponse" style="right: 25%">
+                    <p><%= user %>님 환영합니다.</p>
+                </div>
                 <form name="form_logout" action="/form/logout" method="post">
                     <button id="logoutBtn" class="signBtn" type="submit">로그아웃</button>
                     <div>
@@ -59,86 +66,18 @@
                         >
                             마이페이지
                         </button>
+                        <a href="/suggestion/list">건의사항</a>
                     </div>
                 </form>
-
                 <% } else { %>
-
                 <button id="signupBtn" class="signBtn">회원가입</button>
                 <button id="loginBtn" class="signBtn">로그인</button>
+                <a href="/suggestion/list">건의사항</a>
                 <% } %>
                 <br />
             </div>
         </div>
     </div>
-    <!-- 메뉴 -->
-    <menu>
-        <div class="container" id="menuContainer">
-            <div class="box">
-                <ul>
-                    <div class="myPage1">
-                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 20px">000님</span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button
-                            id="myInfo"
-                            style="
-                                border: none;
-                                background: none;
-                                font-weight: 800;
-                                font-size: 15px;
-                                text-decoration: underline;
-                            "
-                        >
-                            내 정보
-                        </button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button id="close-menu" class="signBtn">닫기</button>
-                    </div>
-
-                    <br />
-
-                    <div>
-                        &nbsp;&nbsp;&nbsp;
-                        <span style="font-size: 13px; font-weight: 800">즐겨찾기 0</span>
-
-                        <span style="font-size: 13px; font-weight: 800">리뷰 0</span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span><a href="/">로그아웃</a></span>
-                    </div>
-                    <div></div>
-                </ul>
-                <ul>
-                    <li>
-                        <button
-                            id="sideMenuLikeBtn"
-                            style="
-                                border: none;
-                                background: none;
-                                font-weight: 800;
-                                font-size: 15px;
-                            "
-                        >
-                            즐겨찾기
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            id="sideMenuMyLiked"
-                            style="
-                                border: none;
-                                background: none;
-                                font-weight: 800;
-                                font-size: 15px;
-                            "
-                        >
-                            내가 쓴 리뷰
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </menu>
 
     <!-- 로그인 팝업창 -->
     <div id="loginModal" class="modal">
@@ -156,9 +95,9 @@
             <form id="modal_login" action="/form/login" method="post">
                 <!-- 아이디 -->
                 <div>
-                    <h3>
+                    <h4>
                         <label for="id">아이디</label>
-                    </h3>
+                    </h4>
                     <span class="box intId">
                         <input type="text" name="id" class="int" maxlength="20" />
                     </span>
@@ -167,9 +106,9 @@
 
                 <!-- 비밀번호 -->
                 <div>
-                    <h3>
+                    <h4>
                         <label for="pswd1">비밀번호</label>
-                    </h3>
+                    </h4>
                     <span class="box intPw">
                         <input type="password" name="pw" class="int" maxlength="20" />
                     </span>
@@ -198,28 +137,16 @@
             <form id="modal_register" name="modal_register">
                 <!-- 아이디 -->
                 <div>
-                    <h3>
+                    <h4>
                         <label for="id">아이디</label>
-                    </h3>
+                    </h4>
                     <span class="box intId">
-                        <input
-                            type="text"
-                            name="id"
-                            id="inputId"
-                            class="int"
-                            maxlength="20"
-                            onkeydown="inputIdCk()"
-                            required
-                        />
+                        <input type="text" name="id" id="inputId" class="int" maxlength="20" onkeydown="inputIdCk()"
+                            required />
                         <!-- 타입을 btn에서 input으로 수정 -->
                         <span class="stepbutton">
                             <button id="btnCheckId" onclick="idCheck()">중복확인</button>
-                            <input
-                                type="hidden"
-                                name="idDuplication"
-                                id="idDuplication"
-                                value="idUncheck"
-                            />
+                            <input type="hidden" name="idDuplication" id="idDuplication" value="idUncheck" />
                         </span>
                     </span>
                     <span class="error_next_box"></span>
@@ -227,18 +154,11 @@
 
                 <!-- 비밀번호 -->
                 <div>
-                    <h3>
+                    <h4>
                         <label for="pswd1">비밀번호</label>
-                    </h3>
+                    </h4>
                     <span class="box intPw">
-                        <input
-                            type="password"
-                            name="pw"
-                            class="int"
-                            maxlength="20"
-                            id="pw"
-                            required
-                        />
+                        <input type="password" name="pw" class="int" maxlength="20" id="pw" required />
                         <span id="alertTxt">사용불가</span>
                     </span>
                     <span class="error_next_box"></span>
@@ -246,88 +166,63 @@
 
                 <!-- 비밀번호 확인 -->
                 <div>
-                    <h3>
+                    <h4>
                         <label for="pswd2">비밀번호 재확인</label>
-                    </h3>
+                    </h4>
                     <span class="box intPwCheck">
-                        <input
-                            type="password"
-                            name="pwCheck"
-                            class="int"
-                            maxlength="20"
-                            id="pwCk"
-                        />
+                        <input type="password" name="pwCheck" class="int" maxlength="20" id="pwCk" />
                     </span>
                     <span class="error_next_box"></span>
                 </div>
 
                 <!-- 닉네임 -->
                 <div>
-                    <h3>
+                    <h4>
                         <label for="name">닉네임</label>
-                    </h3>
+                    </h4>
                     <span class="box intName">
-                        <input
-                            type="text"
-                            name="nickname"
-                            class="int"
-                            maxlength="20"
-                            placeholder="7글자 이하로 작성해주세요."
-                            required
-                        />
-                        <span class="stepbutton"
-                            ><button type="button" id="btnCheckName">중복확인</button></span
-                        >
-                    </span>
-                    <span class="error_next_box"></span>
+                        <input type="text" name="nickname" class="int" maxlength="20" placeholder="7글자 이하로 작성해주세요."
+                            required />
+                        <span class="error_next_box"></span>
                 </div>
 
                 <!-- 이메일 -->
                 <!-- <form id="checkEmail" action="/checkEmail" method="POST"></form> -->
                 <!-- form 안에 form 작성불가 -->
                 <div>
-                    <h3>
+                    <h4>
                         <label for="email">이메일</label>
-                    </h3>
+                    </h4>
                     <span class="box intEmail">
-                        <input type="email" name="email" class="int" maxlength="100" required />
-                        <span class="stepbutton"
-                            ><button type="button" id="btnCheckCodeSend">확인코드전송</button></span
-                        >
+                        <input type="email" name="email" id="email" class="int" maxlength="100" required />
+                        <span class="stepbutton"><button type="button" id="btnCheckCodeSend"
+                                onclick="emailCode()">확인코드전송</button></span>
                     </span>
                     <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
                 </div>
 
                 <!-- 이메일 확인 -->
-                <!-- 태그명, 변수명 오류 있습니다!!!!!!! 제 임의로 바꿔놓았습니다!! -->
-
                 <div>
-                    <h3>
+                    <h4>
                         <label for="email">이메일 확인</label>
-                    </h3>
+                    </h4>
                     <span class="box intName">
-                        <input
-                            type="email"
-                            id="emailChk"
-                            name="emailChk"
-                            class="int"
-                            maxlength="20"
-                        />
-                        <span class="stepbutton"
-                            ><button type="button" id="btnCheckCode">확인</button></span
-                        >
+                        <input type="text" id="emailChk" name="emailChk" class="int" maxlength="20" required/>
+                        <span class="stepbutton"><button type="button" id="btnCheckCode"
+                                onclick="btnEmailCk()">확인</button></span>
                     </span>
                     <span class="error_next_box"></span>
                 </div>
                 <!-- 회원가입-->
                 <div class="btnArea">
-                    <button type="submit" id="btnJoin">
+                    <button type="submit" id="btnJoin" onclick="btnJoin()">
                         <span>가입하기</span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
+
 
     <!-- 비밀번호 재확인 부분 -->
     <script>
@@ -341,10 +236,10 @@
                 pwCk.setCustomValidity("");
             }
         }
-
         pw.onchange = validatePassword;
         pwCk.onkeyup = validatePassword;
     </script>
+
 
     <!-- 아이디 중복화면 검사 -->
     <script>
@@ -363,17 +258,71 @@
         }
     </script>
 
+    <!-- 이메일 확인 코드 전송 -->
+
+    <script>
+        function emailCode() {
+            const emailInput = document.getElementById("email");
+            const emailValue = emailInput.value;
+
+            axios({
+                method: 'POST',
+                url: '/form/sendCode',
+                data: {
+                    email: emailValue
+                }
+            })
+                .then((response) => {
+                    console.log("res 작동 확인", response.data); 
+
+                    if (response.data.ok) {
+                        alert("메일 전송에 성공하였습니다.");
+                        // btnEmailCk();
+                    } else {
+                        alert("메일 전송에 실패하였습니다.");
+                        emailChk.value = '';
+                    }
+                })
+
+                .catch((error) => {
+                    console.error(error); 
+                });
+        }
+    </script>
+
+    <!-- 이메일 코드 확인 -->
+    <script>
+        function btnEmailCk() {
+            const emailChk = document.getElementById("emailChk");
+            const codeValue = emailChk.value;
+
+            axios({
+                method: 'POST',
+                url: '/form/checkCode', 
+                data: {
+                    codeValue: codeValue, 
+                }
+            })
+            .then((response) => {
+                    if (response.data.ok) {
+                        alert("인증번호가 일치합니다.");
+                    } else {
+                        alert("인증번호가 일치하지 않습니다.");
+                        emailChk.value = '';
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    </script>
+
     <!-- 회원가입 입력값 검사 -->
     <script>
         document.getElementById("modal_register").addEventListener("submit", function (event) {
             event.preventDefault();
 
             const form = document.forms["modal_register"];
-
-            // if (!form.checkValidity()) {
-            //     form.reportValidity();
-            //     return;
-            // }
 
             if (form.idDuplication.value != "idCheck") {
                 alert("아이디 중복체크를 해주세요.");
@@ -392,7 +341,6 @@
             })
                 .then((result) => {
                     if (result) {
-                        console.log("응답 데이터", result.id); // undefined
                         alert("회원가입 성공!");
                         document.location.href = "/";
                     } else {
@@ -410,140 +358,34 @@
     <!-- 어두운 오버레이 -->
     <div id="overlay"></div>
 
-    <div id="likeModal" class="likelistModal" style="display: none">
-        <div>
-            <div style="display: flex; justify-content: right">
-                <a href=""><span id="closeLikeListBtn">닫기</span></a>
+    <div class="searchWrapper0">
+        <div class="searchWrapper">
+            <div class="inputHolder">
+                <input type="text" class="searchInput" placeholder="Type to search" />
+                <button class="searchIcon" onclick="searchToggle(this, event);">
+                    <span></span>
+                </button>
             </div>
-            <div>
-                <h1>즐겨찾기</h1>
-            </div>
-            <table style="border-spacing: 70px; border-collapse: separate">
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>식당1</td>
-                    <td>식당2</td>
-                    <td>식당3</td>
-                </tr>
-                <tr>
-                    <td>식당4</td>
-                    <td>식당5</td>
-                    <td>식당6</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <div id="myLikedModal" class="myLikedModal" style="display: none">
-        <div>
-            <div style="display: flex; justify-content: right">
-                <a href=""><span id="closeMyLikedBtn">닫기</span></a>
-            </div>
-            <div>
-                <h1>내가 쓴 리뷰</h1>
-            </div>
-            <table style="border-spacing: 70px; border-collapse: separate">
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>식당1</td>
-                    <td>식당2</td>
-                    <td>식당3</td>
-                </tr>
-                <tr>
-                    <td>식당4</td>
-                    <td>식당5</td>
-                    <td>식당6</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <div id="myInfoModal" class="myInfoModal" style="display: none">
-        <div>
-            <div style="display: flex; justify-content: right">
-                <a href=""><span id="closeMyInfoBtn">닫기</span></a>
-            </div>
-            <div>
-                <h1>내 정보</h1>
-            </div>
+            <span class="close" onclick="searchToggle(this, event);"></span>
         </div>
     </div>
 
     <script>
+        function searchToggle(obj, evt) {
+            var container = obj.closest(".searchWrapper");
+            if (!container.classList.contains("active")) {
+                container.classList.add("active");
+                evt.preventDefault();
+            } else if (container.classList.contains("active") && !obj.closest(".inputHolder")) {
+                container.classList.remove("active");
+                // clear input
+                container.querySelector(".searchInput").value = "";
+            }
+        }
+    </script>
+
+    <script>
         (() => {
-            // 사이드메뉴
-            // DOMContentLoaded 이벤트가 발생하면 실행 ,페이지의 초기화 및 로딩이 완료되었을 때 발생
-            document.addEventListener("DOMContentLoaded", function () {
-                // 현재 브라우저 창의 너비와 높이를 저장하는 변수 w와 h를 선언하고, window.innerWidth와 window.innerHeight 값을 할당
-                let w = window.innerWidth,
-                    h = window.innerHeight,
-                    menuBtn = false;
-
-                // 문서에서 menu 클래스 안에 있는 container 클래스 요소의 높이를 현재 창의 높이에서 60px를 뺀 값으로 설정
-                document.querySelector("menu .container").style.height = h - 60 + "px";
-
-                // id가 "menu"인 요소를 클릭할 때 발생하는 이벤트를 감지하여, document.documentElement의 클래스 리스트에 "active" 클래스를 추가
-
-                // document.getElementById("menu").addEventListener("click", function () {
-                //     if (menuBtn == false) {
-                //         menuBtn = true;
-                //         document.documentElement.classList.add("active");
-                //     } else if (menuBtn == true) {
-                //         menuBtn = false;
-                //         document.documentElement.classList.remove("active");
-                //     }
-                // });
-                // id가 "close-menu"인 요소를 클릭할 때 발생하는 이벤트를 감지하여, document.documentElement의 클래스 리스트에서 "active" 클래스를 제거
-
-                document.getElementById("close-menu").addEventListener("click", function () {
-                    document.documentElement.classList.remove("active");
-                    menuBtn = false;
-                });
-
-                //
-                document.getElementById("closeModalBtn").addEventListener("click", function () {
-                    document.documentElement.classList.remove("active");
-                });
-
-                // document에 클릭 이벤트를 추가하여 사이드 메뉴가 열려 있을 때 사이드 메뉴 이외의 영역을 클릭했을 때 닫기 버튼이 실행되도록 함
-                document.addEventListener("click", function (event) {
-                    let menu = document.getElementById("menu");
-                    let closeMenu = document.getElementById("close-menu");
-                    let likelist = document.getElementById("sideMenuLikeBtn");
-                    let sideMenuMyLiked = document.getElementById("sideMenuMyLiked");
-                    let myInfo = document.getElementById("myInfo");
-                    let likeModal = document.getElementById("likeModal");
-                    let myLikedModal = document.getElementById("myLikedModal");
-                    let myInfoModal = document.getElementById("myInfoModal");
-                    let menuContainer = document.getElementById("menuContainer");
-                    let target = event.target;
-
-                    // 만약 클릭한 요소가 메뉴 아이콘이나 사이드 메뉴 내부에 속하지 않은 경우
-                    if (
-                        // !menu.contains(target) &&
-                        // // !closeMenu.contains(target) &&
-                        !likeModal.contains(target) &&
-                        !myLikedModal.contains(target) &&
-                        !myInfoModal.contains(target) &&
-                        !menuContainer.contains(target)
-                    ) {
-                        document.documentElement.classList.remove("active");
-                    }
-                });
-            });
-
-            // document.getElementById("menu").addEventListener("click", function () {});
-
             // 회원가입 버튼 클릭 이벤트 처리
             document.getElementById("signupBtn").addEventListener("click", function () {
                 // 팝업창과 어두운 오버레이 표시
@@ -573,60 +415,7 @@
                 document.getElementById("overlay").style.display = "none";
             });
 
-            // 즐겨찾기 클릭 이벤트 처리
-            document.getElementById("sideMenuLikeBtn").addEventListener("click", function () {
-                // 팝업창 표시
-                let myLikedModal = document.getElementById("myLikedModal");
-                let myInfoModal = document.getElementById("myInfoModal");
-                document.getElementById("likeModal").style.display = "block";
-                if (myLikedModal.style.display == "block" || myInfoModal.style.display == "block") {
-                    myLikedModal.style.display = "none";
-                    myInfoModal.style.display = "none";
-                }
-            });
-
-            // 모달 닫기 버튼 클릭 이벤트 처리
-            document.getElementById("closeModalBtn").addEventListener("click", function () {
-                // 팝업창 숨기기
-                document.getElementById("likeModal").style.display = "none";
-            });
-
-            // 내가 쓴 리뷰 클릭 이벤트 처리
-            document.getElementById("sideMenuMyLiked").addEventListener("click", function () {
-                // 팝업창 표시
-                let likeModal = document.getElementById("likeModal");
-                let myInfoModal = document.getElementById("myInfoModal");
-                document.getElementById("myLikedModal").style.display = "block";
-                if (likeModal.style.display == "block" || myInfoModal.style.display == "block") {
-                    likeModal.style.display = "none";
-                    myInfoModal.style.display = "none";
-                }
-            });
-
-            // 모달 닫기 버튼 클릭 이벤트 처리
-            document.getElementById("closeModalBtn").addEventListener("click", function () {
-                // 팝업창 숨기기
-                document.getElementById("myLikedModal").style.display = "none";
-            });
-
-            // 내 정보 클릭 이벤트 처리
-            document.getElementById("myInfo").addEventListener("click", function () {
-                // 팝업창 표시
-                document.getElementById("myInfoModal").style.display = "block";
-                let myLikedModal = document.getElementById("myLikedModal");
-                let likeModal = document.getElementById("likeModal");
-
-                if (likeModal.style.display == "block" || myLikedModal.style.display == "block") {
-                    likeModal.style.display = "none";
-                    myLikedModal.style.display = "none";
-                }
-            });
-
-            // 모달 닫기 버튼 클릭 이벤트 처리
-            document.getElementById("closeModalBtn").addEventListener("click", function () {
-                // 팝업창 숨기기
-                document.getElementById("myLikedModal").style.display = "none";
-            });
+            // search
         })();
     </script>
 </header>

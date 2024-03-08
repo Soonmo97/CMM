@@ -30,9 +30,6 @@
 .post-table .second-row td:nth-child(1) {
     width: 150px;
 }
-.post-table .third-row {
-    height: 300px;
-}
 .post-table .btn-like-tr td {
     text-align: center;
 }

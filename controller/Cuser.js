@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 // const { session }  = require("../session");
-const { User } = require("../models");
+const { User, Restaurant, Category } = require("../models");
 const bcrypt = require("bcrypt");
 const { render } = require("ejs");
 const nodemailer = require("nodemailer");
@@ -8,13 +8,28 @@ const { smtpTransport } = require("../config/email");
 const { response } = require("express");
 
 // GET /index
-exports.getMain = (req, res) => {
+exports.getMain = async (req, res) => {
     const user = req.session.user;
+    const restaurants = await Restaurant.findAll({
+        attributes: ["rest_index", "rest_name"],
+    });
+
+    // 카테고리
+    const categories = await Category.findAll({
+        attributes: ["category_name"],
+    });
+
+    console.log(restaurants);
     console.log("유저 세션 정보>> ", user);
     if (user) {
-        res.render("index", { isLogin: true, user: user });
+        res.render("index", {
+            isLogin: true,
+            user: user,
+            restaurants: restaurants,
+            categories: categories,
+        });
     } else {
-        res.render("index", { isLogin: false });
+        res.render("index", { isLogin: false, restaurants: restaurants, categories: categories });
     }
 };
 
@@ -41,7 +56,6 @@ exports.loginHeader = async (req, res) => {
             req.session.index = user.user_index; // 세션 인덱스 저장 값
 
             console.log("세션 연결 완료>>  ", req.session.index);
-
             res.redirect("/");
         } else {
             res.status(401).send("아이디 혹은 비밀번호가 잘못되었습니다.");

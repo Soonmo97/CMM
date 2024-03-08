@@ -6,7 +6,9 @@ GRANT ALL PRIVILEGES ON *.* TO 'sesac'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 SELECT host, user from mysql.user;
 
-show DATABASES
+show DATABASES;
+
+show tables;
 
 
 use cmm
@@ -42,17 +44,36 @@ insert into review values(null, '창동역 근처 최고의 맛집입니다.
 insert into review values(null, '2창동역 근처 최고의 맛집입니다.
 제가 먹어봤던 음식 중 제일 맛있네요. 가격도 싸고 가게도 깨끗해서 재방문 의사가 있습니다. 꼭 방문해보시길...', 3, now(), 1, 2)
 
+insert into restaurant VALUES(null, '홍콩반점', 5 , '소개글', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '철수는 부대찌개 영희는 김치찌개', 5 , '소개글', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '마쯔무라 돈까스', 5 , '소개글', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '수유리 우동집', 5 , '소개글', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '빽다방', 5 , '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '리얼파스타', 5 , '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
 
-Select * from restaurant
+insert into category VALUES(null, "한식",1);
 
-select * from category
+insert into category VALUES(null, "일식",2);
 
-select * from user
+insert into category VALUES(null, "양식",3);
 
-select * from menu
+insert into category VALUES(null, "중식",4);
 
-select * from likelist
+insert into category VALUES(null, "디저트",5);
+
+Select * from restaurant;
+
+select * from category;
+
+select * from user;
+
+select * from menu;
+
+select * from likelist;
 
 select * from review
 
 DELETE FROM User;
+
+drop DATABASE CMM;
+drop table

@@ -28,15 +28,7 @@ insert into restaurant values(null,'마쯔무라', '저희 마쯔무라 돈가�
 
 insert into restaurant VALUES(null, "리얼파스타", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
 
-insert into restaurant VALUES(null, "식당3", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
-
-insert into restaurant VALUES(null, "식당4", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
-
-insert into restaurant VALUES(null, "식당5", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
-
-insert into restaurant VALUES(null, "식당6", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
-
-insert into restaurant VALUES(null, "식당7", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
+insert into restaurant VALUES(null, "식당7", "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
 
 insert into Category values(null, '일식', 1);
 insert into Category VALUES(null, "양식", 2);
@@ -106,4 +98,5 @@ DELETE FROM User;
 delete from review where review_index = 12;
 
 drop DATABASE CMM;
-drop table
+
+drop TABLE user;

@@ -80,7 +80,7 @@ exports.registerHeader = async (req, res) => {
             }).then((result) => {
                 // console.log("회원가입 완료!!", result.id);
                 console.log("회원가입 완료 >>", result.id); //result.id = id
-                res.render("index", { isLogin: true, user: id });
+                res.redirect("/");
             });
         } else {
             console.log("중복된 아이디 입니다.");

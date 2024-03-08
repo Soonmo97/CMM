@@ -271,7 +271,7 @@
                 </div>
                 <!-- 회원가입-->
                 <div class="btnArea">
-                    <button type="submit" id="btnJoin" onclick="btnJoin()">
+                    <button type="submit" id="btnJoin">
                         <span>가입하기</span>
                     </button>
                 </div>
@@ -394,12 +394,12 @@
                 },
             })
                 .then((result) => {
+                    console.log(result);
                     if (result) {
                         alert("회원가입 성공!");
                         document.location.href = "/";
                     } else {
-                        alert("중복된 아이디 입니다!");
-                        res.end();
+                        alert("회원가입 실패");
                     }
                 })
                 .catch((err) => {

@@ -24,7 +24,7 @@
                             class="searchBtn"
                             type="button"
                             id="searchButton"
-                            style="border: none; background-color: white; border-radius: 25px"
+                            style="border: none; background-color: #ffde59; border-radius: 25px"
                         >
                             <img
                                 src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png"
@@ -72,7 +72,11 @@
                 <% } else { %>
                 <button id="signupBtn" class="signBtn">회원가입</button>
                 <button id="loginBtn" class="signBtn">로그인</button>
-                <a href="/suggestion/list">건의사항</a>
+                <button class="signBtn">
+                    <a href="/suggestion/list" style="text-decoration: none; color: black"
+                        >건의사항</a
+                    >
+                </button>
                 <% } %>
                 <br />
             </div>
@@ -141,12 +145,24 @@
                         <label for="id">아이디</label>
                     </h4>
                     <span class="box intId">
-                        <input type="text" name="id" id="inputId" class="int" maxlength="20" onkeydown="inputIdCk()"
-                            required />
+                        <input
+                            type="text"
+                            name="id"
+                            id="inputId"
+                            class="int"
+                            maxlength="20"
+                            onkeydown="inputIdCk()"
+                            required
+                        />
                         <!-- 타입을 btn에서 input으로 수정 -->
                         <span class="stepbutton">
                             <button id="btnCheckId" onclick="idCheck()">중복확인</button>
-                            <input type="hidden" name="idDuplication" id="idDuplication" value="idUncheck" />
+                            <input
+                                type="hidden"
+                                name="idDuplication"
+                                id="idDuplication"
+                                value="idUncheck"
+                            />
                         </span>
                     </span>
                     <span class="error_next_box"></span>
@@ -158,7 +174,14 @@
                         <label for="pswd1">비밀번호</label>
                     </h4>
                     <span class="box intPw">
-                        <input type="password" name="pw" class="int" maxlength="20" id="pw" required />
+                        <input
+                            type="password"
+                            name="pw"
+                            class="int"
+                            maxlength="20"
+                            id="pw"
+                            required
+                        />
                         <span id="alertTxt">사용불가</span>
                     </span>
                     <span class="error_next_box"></span>
@@ -170,7 +193,13 @@
                         <label for="pswd2">비밀번호 재확인</label>
                     </h4>
                     <span class="box intPwCheck">
-                        <input type="password" name="pwCheck" class="int" maxlength="20" id="pwCk" />
+                        <input
+                            type="password"
+                            name="pwCheck"
+                            class="int"
+                            maxlength="20"
+                            id="pwCk"
+                        />
                     </span>
                     <span class="error_next_box"></span>
                 </div>
@@ -181,8 +210,14 @@
                         <label for="name">닉네임</label>
                     </h4>
                     <span class="box intName">
-                        <input type="text" name="nickname" class="int" maxlength="20" placeholder="7글자 이하로 작성해주세요."
-                            required />
+                        <input
+                            type="text"
+                            name="nickname"
+                            class="int"
+                            maxlength="20"
+                            placeholder="7글자 이하로 작성해주세요."
+                            required
+                        />
                         <span class="error_next_box"></span>
                     </span>
                 </div>
@@ -195,9 +230,19 @@
                         <label for="email">이메일</label>
                     </h4>
                     <span class="box intEmail">
-                        <input type="email" name="email" id="email" class="int" maxlength="100" required />
-                        <span class="stepbutton"><button type="button" id="btnCheckCodeSend"
-                                onclick="emailCode()">확인코드전송</button></span>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            class="int"
+                            maxlength="100"
+                            required
+                        />
+                        <span class="stepbutton"
+                            ><button type="button" id="btnCheckCodeSend" onclick="emailCode()">
+                                확인코드전송
+                            </button></span
+                        >
                     </span>
                     <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
                 </div>
@@ -208,9 +253,19 @@
                         <label for="email">이메일 확인</label>
                     </h4>
                     <span class="box intName">
-                        <input type="text" id="emailChk" name="emailChk" class="int" maxlength="20" required/>
-                        <span class="stepbutton"><button type="button" id="btnCheckCode"
-                                onclick="btnEmailCk()">확인</button></span>
+                        <input
+                            type="text"
+                            id="emailChk"
+                            name="emailChk"
+                            class="int"
+                            maxlength="20"
+                            required
+                        />
+                        <span class="stepbutton"
+                            ><button type="button" id="btnCheckCode" onclick="btnEmailCk()">
+                                확인
+                            </button></span
+                        >
                     </span>
                     <span class="error_next_box"></span>
                 </div>
@@ -223,7 +278,6 @@
             </form>
         </div>
     </div>
-
 
     <!-- 비밀번호 재확인 부분 -->
     <script>
@@ -240,7 +294,6 @@
         pw.onchange = validatePassword;
         pwCk.onkeyup = validatePassword;
     </script>
-
 
     <!-- 아이디 중복화면 검사 -->
     <script>
@@ -267,26 +320,26 @@
             const emailValue = emailInput.value;
 
             axios({
-                method: 'POST',
-                url: '/form/sendCode',
+                method: "POST",
+                url: "/form/sendCode",
                 data: {
-                    email: emailValue
-                }
+                    email: emailValue,
+                },
             })
                 .then((response) => {
-                    console.log("res 작동 확인", response.data); 
+                    console.log("res 작동 확인", response.data);
 
                     if (response.data.ok) {
                         alert("메일 전송에 성공하였습니다.");
                         // btnEmailCk();
                     } else {
                         alert("메일 전송에 실패하였습니다.");
-                        emailChk.value = '';
+                        emailChk.value = "";
                     }
                 })
 
                 .catch((error) => {
-                    console.error(error); 
+                    console.error(error);
                 });
         }
     </script>
@@ -298,18 +351,18 @@
             const codeValue = emailChk.value;
 
             axios({
-                method: 'POST',
-                url: '/form/checkCode', 
+                method: "POST",
+                url: "/form/checkCode",
                 data: {
-                    codeValue: codeValue, 
-                }
+                    codeValue: codeValue,
+                },
             })
-            .then((response) => {
+                .then((response) => {
                     if (response.data.ok) {
                         alert("인증번호가 일치합니다.");
                     } else {
                         alert("인증번호가 일치하지 않습니다.");
-                        emailChk.value = '';
+                        emailChk.value = "";
                     }
                 })
                 .catch((error) => {

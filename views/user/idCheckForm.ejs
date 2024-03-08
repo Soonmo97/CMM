@@ -1,80 +1,74 @@
 <!DOCTYPE html>
 <html lang="ko">
+    <head>
+        <!-- axios CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-<head>
-    <!-- axios CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>아이디 중복체크</title>
+    </head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>아이디 중복체크</title>
-</head>
-
-<body onload="pValue()">
-    <div id="wrap">
-        <br>
-        <b>
-            <p size="4" color="gray">아이디 중복체크</p>
-        </b>
-        <hr size="1" width="460">
-        <br>
-        <div id="chk">
-            <form id="checkForm">
-                <input type="text" name="userId" id="userId">
-                <input type="button" value="중복확인" onclick="idCheck()">
-            </form>
-            <div id="msg"></div>
-            <br>
-            <input id="cancelBtn" type="button" value="취소" onclick="cancelBtn()">
-            <br>
-            <input id="useBtn" type="button" value="사용하기" onclick="sendCheckValue()">
+    <body onload="pValue()">
+        <div id="wrap">
+            <br />
+            <b>
+                <p size="4" color="gray">아이디 중복체크</p>
+            </b>
+            <hr size="1" width="460" />
+            <br />
+            <div id="chk">
+                <form id="checkForm">
+                    <input type="text" name="userId" id="userId" />
+                    <input type="button" value="중복확인" onclick="idCheck()" />
+                </form>
+                <div id="msg"></div>
+                <br />
+                <input id="cancelBtn" type="button" value="취소" onclick="cancelBtn()" />
+                <br />
+                <input id="useBtn" type="button" value="사용하기" onclick="sendCheckValue()" />
+            </div>
         </div>
-    </div>
+    </body>
 
-
-</body>
-
-
-<script>
-    // axios를 사용하여 아이디 중복 체크 요청을 보내는 함수
-    function idCheck() {
-        const id = document.getElementById("userId").value;
-        if (!id) {
-            alert("아이디를 입력하지 않았습니다.");
-            return false;
-        }
-        else if (!/^[a-zA-Z0-9]+$/.test(id)) {
-            alert("영문 대소문자와 숫자만 사용할 수 있습니다.");
-            return false; } 
-        else {
-            axios({
-                method: "POST",
-                url: "/form/checkid",
-                data: {
-                    id: id,
-                },
-            })
-                .then((result) => {
-                    if (result.data.available) {
-                        console.log("사용가능");
-                        alert("사용 가능한 아이디입니다.");
-                        document.getElementById("cancelBtn").style.visibility = 'hidden';
-                        document.getElementById("useBtn").style.visibility = 'visible';
-                        document.getElementById("msg").innerHTML = "사용 가능한 아이디입니다.";
-                    } 
-                    else {
-                        console.log("사용불가능");
-                        alert("사용할 수 없는 아이디입니다.");
-                        document.getElementById("cancelBtn").style.visibility = 'visible';
-                        document.getElementById("useBtn").style.visibility = 'hidden';
-                        document.getElementById("msg").innerHTML = "";
-                    }
+    <script>
+        // axios를 사용하여 아이디 중복 체크 요청을 보내는 함수
+        function idCheck() {
+            const id = document.getElementById("userId").value;
+            if (!id) {
+                alert("아이디를 입력하지 않았습니다.");
+                return false;
+            } else if (!/^[a-zA-Z0-9]+$/.test(id)) {
+                alert("영문 대소문자와 숫자만 사용할 수 있습니다.");
+                return false;
+            } else {
+                axios({
+                    method: "POST",
+                    url: "/form/checkid",
+                    data: {
+                        id: id,
+                    },
                 })
-                .catch( (error) => {
-                    console.error(error);
-                });
+                    .then((result) => {
+                        if (result.data.available) {
+                            console.log("사용가능");
+                            alert("사용 가능한 아이디입니다.");
+                            document.getElementById("cancelBtn").style.visibility = "hidden";
+                            document.getElementById("useBtn").style.visibility = "visible";
+                            document.getElementById("msg").innerHTML = "사용 가능한 아이디입니다.";
+                        } else {
+                            console.log("사용불가능");
+                            alert("사용할 수 없는 아이디입니다.");
+                            document.getElementById("cancelBtn").style.visibility = "visible";
+                            document.getElementById("useBtn").style.visibility = "hidden";
+                            document.getElementById("msg").innerHTML = "";
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }
         }
-    }
 
     // 사용하기 버튼을 클릭했을 때 부모 창으로 값 전달
     function sendCheckValue() {
@@ -84,21 +78,19 @@
             opener.chkForm = null;
             self.close();
         }
-    }
-</script>
+    </script>
 
-<script>
-    function cancelBtn() {
-        document.getElementById("userId").value = "";
-        opener.document.modal_register.id.value = "";
-        window.close();
-    }
-</script>
+    <script>
+        function cancelBtn() {
+            document.getElementById("userId").value = "";
+            opener.document.modal_register.id.value = "";
+            window.close();
+        }
+    </script>
 
-<script>
-    function pValue() {
-        document.getElementById("userId").value = opener.document.modal_register.id.value;
-    }
-</script>
-
+    <script>
+        function pValue() {
+            document.getElementById("userId").value = opener.document.modal_register.id.value;
+        }
+    </script>
 </html>

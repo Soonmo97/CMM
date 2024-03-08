@@ -30,22 +30,21 @@
                 <tbody id="restaurantContainer">
                     <% console.log("레스토랑 정보 >> ",restaurants) %>
                     <tr>
-                        <% for (let i = 1; i <= restaurants.length; i++) { %> <%#
+                        <% for (let i = 0; i < restaurants.length; i++) { %> <%#
                         restaurants.forEach((el, index) => { %> <% if ((i % 3 === 0 && i!== 0)) { %>
                         <%# if (index % 3 === 0 && index!== 0) { %>
                     </tr>
-                    <% } %>
                     <tr>
-                        <%# } %>
+                        <% } %> <%# } %>
                         <td>
-                            <a href="/restaurantDetail/<%=i%>">
+                            <a href="/restaurantDetail/<#%=restaurants[i].rest_index%>">
                                 <div class="imageContainer">
                                     <img
                                         src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDNfMTA1%2FMDAxNzAxNTc1Mzc1MTA4.dN9S9wJppXhDjB9fdVjzf911R91YMES1K8IbCekCMjgg.tYmyq6JD-7LetCAkfz5KQFzEikonrjlL59_LRklghykg.JPEG.jelly877%2F20231203%25A3%25DF115342.jpg"
                                         alt="Restaurant 1"
                                         class="RestaurantImage"
                                     />
-                                    <span class="label"><%= restaurants[i].rest_name %></span>
+                                    <span class="label"><#%= restaurants[i].rest_name %></span>
                                 </div>
                             </a>
                         </td>

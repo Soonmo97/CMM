@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>내 좋아요 목록</title>
+        <%- include('../include/head') %>
+        <link rel="stylesheet" href="/static/css/likeList.css" />
+        <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <%- include('../include/header'), {isLogin: isLogin, user: user} %>
+        <%-include('../include/mypageNav') %>
+        <main>
+            <% for (let i=0; i<likeList.length; i++) { %>
+            <div class="like">
+                <a href="/restaurantDetail/<%=likeList[i].rest_index%>">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdnvUCVlZTyFm3ylGKkQHUqG54GvkQ9w6S0A&s"
+                        alt="식당 이미지"
+                    />
+                    <span class="restName"><%= likeList[i].Restaurant.rest_name%></span>
+                </a>
+                <span class="heart">
+                    <i
+                        id="filledHeart"
+                        class="fa-solid fa-heart fa-2xl"
+                        style="color: #ff0000"
+                        onclick="likePlus('<%=likeList[i].rest_index%>', '<%= isLogin %>')"
+                    >
+                    </i>
+                </span>
+            </div>
+            <% } %>
+        </main>
+        <%-include('../include/footer') %>
+    </body>
+    <script>
+        function likePlus(restIndex, isLogin) {
+            // 로그인 되어있을 때
+            // console.log("로그인 상태 >> ",isLogin)
+            if (isLogin === "true") {
+                const filledHeart = document.querySelector("#filledHeart");
+                // console.log(filledHeart)
+                // 채워진 하트 좋아요 o) 라면
+                if (filledHeart) {
+                    // 채워진 하트 fa-solid, 빈 하트 fa-regular
+                    // 좋아요 삭제 후 빈하트
+                    axios({
+                        url: `/mypage/likeList/deleteLike`,
+                        method: "delete",
+                        data: { restIndex: restIndex },
+                    })
+                        .then((response) => {
+                            filledHeart.id = "emptyHeart";
+                            filledHeart.classList.remove("fa-solid");
+                            filledHeart.classList.add("fa-regular");
+                            console.log(response);
+                            alert(response.data.message);
+                        })
+                        .catch((err) => {
+                            alert("좋아요 삭제 실패");
+                            console.log("err", err);
+                        });
+                } else {
+                    // 빈 하트 (로그인 o 좋아요 x) 라면
+                    const emptyHeart = document.querySelector("#emptyHeart");
+                    console.log(emptyHeart);
+                    // 좋아요 등록 후 채워진 하트
+                    axios({
+                        url: `/mypage/likeList/createLike`,
+                        method: "post",
+                        data: { restIndex: restIndex },
+                    })
+                        .then((response) => {
+                            emptyHeart.id = "filledHeart";
+                            emptyHeart.classList.remove("fa-regular");
+                            emptyHeart.classList.add("fa-solid");
+                            console.log(response);
+                            alert(response.data.message);
+                        })
+                        .catch((err) => {
+                            alert("좋아요 등록 실패");
+                            console.log("err", err);
+                        });
+                }
+            } else {
+                // 로그인 안되어있을 때
+                return alert("좋아요 등록은 로그인이 된 상태여야 합니다. 로그인을 해주세요!");
+            }
+        }
+    </script>
+</html>

@@ -56,17 +56,23 @@
                     <p><%= user %>님 환영합니다.</p>
                 </div>
                 <form name="form_logout" action="/form/logout" method="post">
-                    <div style="display: flex">
-                        <button id="logoutBtn" class="signBtn" type="submit">로그아웃</button>
-                        &nbsp;
-                        <button class="signBtn" id="menu">마이페이지</button>
-                        <a href="../suggestion/list">건의사항</a>
+                    <button id="logoutBtn" class="signBtn" type="submit">로그아웃</button>
+                    <div>
+                        <button
+                            type="button"
+                            class="signBtn"
+                            id="menu"
+                            onclick="window.location.href = '/mypage/likeList';"
+                        >
+                            마이페이지
+                        </button>
+                        <a href="/suggestion/list">건의사항</a>
                     </div>
                 </form>
                 <% } else { %>
                 <button id="signupBtn" class="signBtn">회원가입</button>
                 <button id="loginBtn" class="signBtn">로그인</button>
-                <a href="../suggestion/list">건의사항</a>
+                <a href="/suggestion/list">건의사항</a>
                 <% } %>
                 <br />
             </div>

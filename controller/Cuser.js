@@ -11,7 +11,6 @@ const { assign } = require("nodemailer/lib/shared");
 // GET /index
 exports.getMain = async (req, res) => {
     const user = req.session.user;
-
     const restaurants = await Restaurant.findAll({
         attributes: ["rest_index", "rest_name"],
     });
@@ -47,9 +46,7 @@ exports.loginHeader = async (req, res) => {
         if (user && (await bcrypt.compare(pw, user.pw))) {
             req.session.user = user.id; // 세션에 유저 정보 저장
             req.session.index = user.user_index; // 세션 인덱스 저장 값
-
-            console.log("세션 연결 완료>>  ", req.session.index);
-                        
+            console.log("세션 연결 완료>>  ", req.session.index);         
            res.redirect("/");
         } 
         else {
@@ -180,7 +177,6 @@ exports.sendCode = async (req, res) => {
     
     const number = generateRandomNumber(111111, 999999).toString();
     const hashAuth = bcrypt.hashSync(number, 10);
-
     const { email } = req.body;
     
     req.session.hashAuth = hashAuth;

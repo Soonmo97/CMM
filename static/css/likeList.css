@@ -1,0 +1,28 @@
+.like {
+    width: 290px;
+    height: 250px;
+    margin: 20px;
+    position: relative;
+}
+
+.like img {
+    width: 250px;
+    height: 250px;
+    border-radius: 25px;
+}
+
+.like .restName {
+    position: absolute; /* 절대적인 위치 설정 */
+    top: 10px; /* 이미지 상단에서 10px 떨어진 위치에 배치 */
+    left: 10px; /* 이미지 왼쪽에서 10px 떨어진 위치에 배치 */
+    background-color: rgba(0, 0, 0, 0.5); /* 배경색 지정 */
+    color: white; /* 텍스트 색상 지정 */
+    padding: 5px; /* 안쪽 여백 지정 */
+    border-radius: 5px; /* 테두리 모서리를 둥글게 설정 */
+}
+
+.like .heart {
+    position: absolute;
+    left: 230px;
+    cursor: pointer;
+}

@@ -31,12 +31,14 @@ app.use(
 const restRouter = require("./routes/restDetail.js");
 const userRouter = require("./routes/user.js");
 const suggestRouter = require("./routes/suggestion.js");
+const mypageRouter = require("./routes/mypage.js");
 app.use("/restaurantDetail", restRouter);
 app.use("/suggestion", suggestRouter);
 app.use("/", userRouter);
+app.use("/mypage", mypageRouter);
 
 sequelize
-    .sync({ force: false })
+    .sync()
     .then(() => {
         app.listen(PORT, () => {
             console.log(`http://localhost:${PORT}`);

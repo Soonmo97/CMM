@@ -12,10 +12,6 @@ const Restaurant = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(20),
                 allowNull: false,
             },
-            rest_rating: {
-                type: DataTypes.INTEGER,
-                allowNull: true,
-            },
             rest_desc: {
                 type: DataTypes.STRING(255),
                 allowNull: true,

@@ -50,7 +50,16 @@
                 <p><%= user %>님 환영합니다.</p>
                 <form name="form_logout" action="/form/logout" method="post">
                     <button id="logoutBtn" class="signBtn" type="submit">로그아웃</button>
-                    <div><button class="signBtn" id="menu">마이페이지</button></div>
+                    <div>
+                        <button
+                            type="button"
+                            class="signBtn"
+                            id="menu"
+                            onclick="window.location.href = '/mypage/likeList';"
+                        >
+                            마이페이지
+                        </button>
+                    </div>
                 </form>
 
                 <% } else { %>
@@ -521,7 +530,7 @@
 
                     // 만약 클릭한 요소가 메뉴 아이콘이나 사이드 메뉴 내부에 속하지 않은 경우
                     if (
-                        !menu.contains(target) &&
+                        // !menu.contains(target) &&
                         // // !closeMenu.contains(target) &&
                         !likeModal.contains(target) &&
                         !myLikedModal.contains(target) &&

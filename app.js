@@ -31,8 +31,10 @@ app.use(
 const restRouter = require("./routes/restDetail.js");
 const userRouter = require("./routes/user.js");
 const suggestRouter = require("./routes/suggestion.js");
+const adminRouter = require("./routes/admin.js");
 app.use("/restaurantDetail", restRouter);
 app.use("/suggestion", suggestRouter);
+app.use("/admin", adminRouter);
 app.use("/", userRouter);
 
 sequelize

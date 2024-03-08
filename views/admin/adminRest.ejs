@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <%-include('../include/head.ejs')%>
+        <link rel="stylesheet" href="/static/css/adminRest.css">
+        <title>관리 페이지</title>
+    </head>
+    <body>
+        <header>
+
+        </header>
+        <nav class="sidebar">
+            <a href="/admin/restaurants">식당 관리</a>
+            <a href="/admin/users">회원 관리</a>
+        </nav>
+        <main class="admin-main">
+            <h2>식당 관리</h2>
+            <div class="add-rest-div">
+                <button type="button">식당 추가</button>
+            </div>
+            <table class="rest-list-table">
+                <tr>
+                    <th>번호</th>
+                    <th>식당명</th>
+                    <th colspan="2"></th>
+                </tr>
+                <%for(let i=0; i<restInfo.length; i++){%>
+                <tr>
+                    <td><%=restInfo[i].rest_index%></td>
+                    <td onclick="openRestInfo('<%=restInfo[i].rest_index%>')"><%=restInfo[i].rest_name%></td>
+                    <td><button type="button" onclick="editRestInfo('<%=restInfo[i].rest_index%>')">수정</button></td>
+                    <td><button type="button" onclick="deleteRest('<%=restInfo[i].rest_index%>','<%=restInfo[i].rest_name%>')">삭제</button></td>
+                </tr>
+                <%}%>
+            </table>
+            <div class="restmodal modal-container">
+                <div class="restmodal modal-main">
+                    <div class="restmodal modal-info">
+                        <h3 class="restinfo name">식당명</h3>
+                        <p class="restinfo desc">식당정보</p>
+                        <p class="restinfo address">식당주소</p>
+                        <p class="restinfo time">영업시간</p>
+                        <p class="restinfo number">전화번호</p>
+                    </div>
+                    <div class="restmodal modal-bottom"><span class="close-modal">&times;</span></div>
+                </div>
+            </div>
+            <!-- pagination -->
+            <nav></nav>
+        </main>
+        <script>
+            const modal = document.querySelector('.modal-container')
+            const modalBtn = document.querySelector(".close-modal");
+
+            function openRestInfo(idx){
+                modal.style.display = "block";
+                const [name, desc, address, time, number] = document.getElementsByClassName('restinfo');
+                const result = axios({
+                    method:'post',
+                    url:'/admin/getRestInfo',
+                    data:{rest_index:idx}
+                }).then((result)=>{
+                    const {rest_index, rest_name, rest_desc, rest_address, rest_number, rest_time} = result.data.restInfo;
+                    name.innerHTML = rest_name;
+                    desc.innerHTML = rest_desc;
+                    address.innerHTML = rest_address;
+                    time.innerHTML = rest_time;
+                    number.innerHTML = rest_number;
+                });
+            }
+
+            async function deleteRest(idx, name){
+                const isDelete = confirm(`식당 ${name}을(를) 삭제하시겠습니까?`);
+                if(isDelete){
+                    axios({
+                        method:'post',
+                        url:'/admin/deleteRest',
+                        data: {rest_index:idx}                    
+                    }).then((result)=>{
+                        if(result.data.result===1){
+                            alert('삭제되었습니다.');
+                            location.reload(true);
+                        }
+                    })
+                }
+            }
+
+            modalBtn.onclick = () => {
+                modal.style.display = "none";
+            }
+            modal.addEventListener('click', (e)=>{
+                console.log(e);
+                if(e.target === modal) modal.style.display = "none";
+            });
+
+        </script>
+    </body>
+</html>

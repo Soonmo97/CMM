@@ -78,11 +78,12 @@
 
     // 사용하기 버튼을 클릭했을 때 부모 창으로 값 전달
     function sendCheckValue() {
-            opener.document.modal_register.idDuplication.value === "idCheck"
-            opener.document.modal_register.id.value = document.getElementById("userId").value;
+        opener.document.modal_register.idDuplication.value = "idCheck";
+        opener.document.modal_register.id.value = document.getElementById("userId").value;
+        if (opener != null ) {
             opener.chkForm = null;
             self.close();
-
+        }
     }
 </script>
 

@@ -25,17 +25,8 @@ desc User
 
 insert into restaurant values(null,'마쯔무라', '저희 마쯔무라 돈가스전문점 창동본점은 1997년 8월 15일 개업하여 오늘에 이르기까지 고객의 꾸준한 사랑을 받으며 나날이 성장해 왔습니다. 진심으로 감사드리며 앞으로도 수익보다는 고객 한 분 한 분들에게 만족을 느끼게 하는데 최선을 다할 것임을 약속합니다.
 ', '서울 도봉구 노해로63길 84 지하1층', '02-990-9801', '화~금 09:30 ~ 18:00, 토 09:30 ~ 18:00');
-insert into restaurant VALUES(null, "리얼파스타", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
 
-insert into restaurant VALUES(null, "식당3", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
-
-insert into restaurant VALUES(null, "식당4", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
-
-insert into restaurant VALUES(null, "식당5", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
-
-insert into restaurant VALUES(null, "식당6", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
-
-insert into restaurant VALUES(null, "식당7", null, "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
+insert into restaurant VALUES(null, "식당7", "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
 
 insert into Category values(null, '일식', 1);
 insert into Category VALUES(null, "양식", 2);
@@ -105,4 +96,5 @@ DELETE FROM User;
 delete from review where review_index = 12;
 
 drop DATABASE CMM;
-drop table
+
+drop TABLE user;

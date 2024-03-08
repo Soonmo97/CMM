@@ -56,8 +56,7 @@ exports.loginHeader = async (req, res) => {
             req.session.index = user.user_index; // 세션 인덱스 저장 값
 
             console.log("세션 연결 완료>>  ", req.session.index);
-
-            res.render("index", { isLogin: true, user: id });
+            res.redirect("/");
         } else {
             res.status(401).send("아이디 혹은 비밀번호가 잘못되었습니다.");
         }

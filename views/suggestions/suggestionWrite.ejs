@@ -15,7 +15,7 @@
         <%- include('../include/head.ejs') %>
     </head>
     <body>
-        <%- include('../include/header.ejs', {isLogin}) %>
+        <%- include('../include/header.ejs', {isLogin, user}) %>
         <div class="main-container">
             <div class="back-link-div">
                 <a href="/suggestion/list?page=1" class="back-link" onclick="return confirmOut()"
@@ -48,7 +48,6 @@
                 </form>
             </div>
         </div>
-        <button type="button" onclick="test()">test</button>
         <%- include('../include/footer.ejs') %>
         <script src="/static/js/suggestionWrite.js"></script>
     </body>

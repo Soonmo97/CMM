@@ -22,7 +22,7 @@ app.use(
         resave: false,
         saveUnitialized: false,
         cookie: {
-            maxAge: 1000 * 60 * 10, // 10분 뒤 세션 종료
+            maxAge: 1000 * 60 * 30, // 30분 뒤 세션 종료
             httpOnly: true,
         },
     })

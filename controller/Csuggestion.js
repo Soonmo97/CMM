@@ -93,7 +93,7 @@ exports.writePage = (req, res) => {
         isLogin = true;
         res.render("suggestions/suggestionWrite", { isNew: true, isLogin });
     } else {
-        res.render("login", { isLogin });
+        res.render("user/login", { isLogin });
     }
 };
 

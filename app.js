@@ -22,7 +22,7 @@ app.use(
         resave: false,
         saveUnitialized: false,
         cookie: {
-            maxAge: 1000 * 60 * 10, // 10분 뒤 세션 종료
+            maxAge: 1000 * 60 * 30, // 30분 뒤 세션 종료
             httpOnly: true,
         },
     })
@@ -31,9 +31,11 @@ app.use(
 const restRouter = require("./routes/restDetail.js");
 const userRouter = require("./routes/user.js");
 const suggestRouter = require("./routes/suggestion.js");
+const search = require("./routes/search.js");
 app.use("/restaurantDetail", restRouter);
 app.use("/suggestion", suggestRouter);
 app.use("/", userRouter);
+app.use("/search", search);
 
 sequelize
     .sync({ force: false })

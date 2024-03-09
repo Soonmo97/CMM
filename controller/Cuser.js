@@ -42,8 +42,10 @@ exports.loginHeader = async (req, res) => {
             console.log("세션 연결 완료>>  ", req.session.index);
             res.redirect("/");
         } else {
+            // res.render("index", { isLogin: false });
             res.send(`<script>
             alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+            window.location.href = "/";
             </script>`);
         }
     } catch (error) {
@@ -104,9 +106,10 @@ exports.postLogin = async (req, res) => {
 
             res.render("index", { isLogin: true, user: id });
         } else {
-            res.send(`<script>
-            alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-            </script>`);
+            // res.send(`<script>
+            // alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+            // </script>`);
+            res.render("index", { isLogin: false });
         }
     } catch (error) {
         console.error(error);
@@ -119,7 +122,6 @@ exports.logoutHeader = async (req, res) => {
     if (req.session.user) {
         req.session.destroy((err) => {
             if (err) {
-                console.error("로그아웃 중 오류 발생: ", err);
                 res.status(500).send("로그아웃 중 오류 발생");
             } else {
                 res.redirect("/");
@@ -158,22 +160,35 @@ exports.checkWindow = async (req, res) => {
 };
 
 // POST /form/sendCode
+    // 메일 재시도 가능 함수
+
+    // await smtpTransport.sendMail(mailOptions, (err, response) => {
+    //     console.log("response", response);
+    //     if (err) {
+    //         res.send({ ok: false, msg: " 메일 전송에 실패하였습니다. " });
+    //         smtpTransport.close(); //전송종료
+    //     } else {
+    //         res.send({ ok: true, msg: " 메일 전송에 성공하였습니다. " });
+    //         console.log();
+    //         smtpTransport.close(); //전송종료
+    //     }
+    // });
+
+
 exports.sendCode = async (req, res) => {
+    // 인증 코드 생성
     const generateRandomNumber = (min, max) => {
         const randNum = Math.floor(Math.random() * (max - min + 1)) + min;
         console.log("랜덤 숫자 >>> ", randNum);
         return randNum;
     };
-    console.log("이메일 전송 라우터 연결 됐습니다", req.body);
-
     const number = generateRandomNumber(111111, 999999).toString();
     const hashAuth = bcrypt.hashSync(number, 10);
     const { email } = req.body;
-
     req.session.hashAuth = hashAuth;
     console.log("코드 숫자 >>> ", hashAuth);
 
-    console.log("이메일 전송 라우터 연결 됐습니다", req.body);
+    // 메일 형식
     const mailOptions = {
         from: process.env.USER_EMAIL,
         to: email,
@@ -206,16 +221,13 @@ exports.sendCode = async (req, res) => {
         if (err) {
             res.send({ ok: false, msg: " 메일 전송에 실패하였습니다. " });
             smtpTransport.close(); //전송종료
-            return;
         } else {
             res.send({ ok: true, msg: " 메일 전송에 성공하였습니다. " });
             console.log();
             smtpTransport.close(); //전송종료
-            return;
         }
-    });
+    }); 
 };
-
 // POST /form/checkCode
 exports.checkCode = async (req, res) => {
     const { codeValue } = req.body;

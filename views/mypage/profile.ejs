@@ -9,8 +9,8 @@
         <link rel="stylesheet" href="/static/css/likeList.css" />
     </head>
     <body>
-        <%- include('../include/header'), {isLogin: isLogin, user: user} %>
-        <%-include('../include/mypageNav') %>
+        <%- include('../include/header'), {isLogin: isLogin, user: user} %> <%-
+        include('../include/mypageNav', { title: "내 정보" }) %>
         <main></main>
         <%-include('../include/footer') %>
     </body>

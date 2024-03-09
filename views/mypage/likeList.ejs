@@ -11,7 +11,7 @@
     </head>
     <body>
         <%- include('../include/header'), {isLogin: isLogin, user: user} %>
-        <%-include('../include/mypageNav') %>
+        <%- include('../include/mypageNav', { title: "내 좋아요 목록" }) %>
         <main>
             <% for (let i=0; i<likeList.length; i++) { %>
             <div class="like">

@@ -125,6 +125,10 @@ main {
     padding: 10px;
 }
 
+.review p {
+    margin-top: 10px;
+}
+
 .review .reviewTitle .reviewRating {
     margin-left: 10px;
 }

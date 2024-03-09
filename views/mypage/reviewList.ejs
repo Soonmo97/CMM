@@ -10,8 +10,8 @@
         <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <%- include('../include/header'), {isLogin: isLogin, user: user} %>
-        <%-include('../include/mypageNav') %>
+        <%- include('../include/header'), {isLogin: isLogin, user: user} %> <%-
+        include('../include/mypageNav', { title: "내 리뷰 목록" }) %>
         <main></main>
         <%-include('../include/footer') %>
     </body>

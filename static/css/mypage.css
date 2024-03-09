@@ -12,7 +12,6 @@ body {
     height: 80px;
     border-radius: 25px;
     margin-top: 220px;
-    margin-bottom: 10px;
     line-height: 100px;
 }
 
@@ -36,15 +35,4 @@ body {
     line-height: 40px;
     text-align: center;
     color: black;
-}
-
-main {
-    width: 1350px;
-    height: 100%;
-    border-radius: 25px;
-    margin-bottom: 50px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    /* text-align: center; */
 }

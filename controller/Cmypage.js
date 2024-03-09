@@ -80,7 +80,7 @@ exports.getReviewList = async (req, res) => {
                 model: Restaurant,
                 attributes: ["rest_name"],
             },
-            attributes: ["rest_index", "review_rating", "review_content"],
+            attributes: ["review_index", "rest_index", "review_rating", "review_content"],
         }).catch((err) => {
             console.log("내 리뷰 조회 error", err);
         });

@@ -10,9 +10,12 @@
         <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
     </head>
     <body>
+        <% console.log(isLogin) %>
         <%- include('../include/header'), {isLogin: isLogin, user: user} %>
         <%- include('../include/mypageNav', { title: "내 좋아요 목록" }) %>
+        <% try { %>
         <main>
+            <hr style="border: 3px solid#878787; height: 3px !important; display: block !important; width: 100% !important; "/>
             <% for (let i=0; i<likeList.length; i++) { %>
             <div class="like">
                 <a href="/restaurantDetail/<%=likeList[i].rest_index%>">
@@ -34,6 +37,9 @@
             </div>
             <% } %>
         </main>
+        <% }  catch(err) { %>
+            <h1>세션이 만료되었습니다. 다시 로그인해주세요.</h1>
+        <% }%>
         <%-include('../include/footer') %>
     </body>
     <script>

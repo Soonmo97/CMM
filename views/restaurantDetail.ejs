@@ -154,6 +154,7 @@
                                         <% } %>
                                     </span>
                                 </div>
+                                <hr>
                                 <p><%= reviewList[i].review_content%></p>
                             </div>
                         <% } %>
@@ -281,9 +282,10 @@
                                 // 리뷰 타이틀 div와 콘텐츠 p
                                 const reviewTitle = document.createElement("div");
                                 reviewTitle.classList.add("reviewTitle")
+                                const hr = document.createElement("hr");
                                 const content = document.createElement("p");
                                 content.textContent = reviewList[i].review_content;
-                                plusReview.append(reviewTitle, content)
+                                plusReview.append(reviewTitle, hr, content)
                                 
                                 // 유저이미지, 닉네임, 생성일, 별점
                                 const userImage = document.createElement("i");
@@ -327,9 +329,10 @@
                                 // 리뷰 타이틀 div와 콘텐츠 p
                                 const reviewTitle = document.createElement("div");
                                 reviewTitle.classList.add("reviewTitle")
+                                const hr = document.createElement("hr");
                                 const content = document.createElement("p");
                                 content.textContent = reviewList[i].review_content;
-                                plusReview.append(reviewTitle, content)
+                                plusReview.append(reviewTitle, hr, content)
                                 
                                 // 유저이미지, 닉네임, 생성일, 별점
                                 const userImage = document.createElement("i");

@@ -1,5 +1,5 @@
 
--- Active: 1707101285852@@127.0.0.1@3306@cmm
+-- Active: 1707101284088@@127.0.0.1@3306@cmm
 create database cmm DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;use cmm;
 
 CREATE USER 'sesac'@'%' IDENTIFIED WITH mysql_native_password BY '1234';

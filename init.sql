@@ -1,5 +1,5 @@
 
--- Active: 1707101284088@@127.0.0.1@3306@cmm
+-- Active: 1707101283581@@127.0.0.1@3306@cmm
 create database cmm DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;use cmm;
 
 CREATE USER 'sesac'@'%' IDENTIFIED WITH mysql_native_password BY '1234';
@@ -70,12 +70,12 @@ insert into review values(null, '666창동역 근처 최고의 맛집입니다.
 insert into review values(null, '777창동역 근처 최고의 맛집입니다.
 제가 먹어봤던 음식 중 제일 맛있네요. 가격도 싸고 가게도 깨끗해서 재방문 의사가 있습니다. 꼭 방문해보시길...', 3, now(), 1, 2)
 
-insert into restaurant VALUES(null, '홍콩반점', 5 , '소개글', '주소' , '전화번호','영업시간' );
-insert into restaurant VALUES(null, '철수는 부대찌개 영희는 김치찌개', 5 , '소개글', '주소' , '전화번호','영업시간' );
-insert into restaurant VALUES(null, '마쯔무라 돈까스', 5 , '소개글', '주소' , '전화번호','영업시간' );
-insert into restaurant VALUES(null, '수유리 우동집', 5 , '소개글', '주소' , '전화번호','영업시간' );
-insert into restaurant VALUES(null, '빽다방', 5 , '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
-insert into restaurant VALUES(null, '리얼파스타', 5 , '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '홍콩반점', '중식당입니다', '서울 도봉구 노해로63길 84 지하1층' , '02-000-0000','월~금 18:00' );
+insert into restaurant VALUES(null, '철수는 부대찌개 영희는 김치찌개', '찌개를 파는 가게 입니다', '서울 도봉구 노해로63길 84 지하1층' , '02-000-0000','월~금 18:00' );
+insert into restaurant VALUES(null, '마쯔무라 돈까스', '소개글', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '수유리 우동집', '소개글', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '빽다방','홍콩반점입니다~', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '리얼파스타', '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
 
 insert into category VALUES(null, "한식",1);
 
@@ -86,6 +86,8 @@ insert into category VALUES(null, "양식",3);
 insert into category VALUES(null, "중식",4);
 
 insert into category VALUES(null, "디저트",5);
+insert into category VALUES(null, "한식",6);
+insert into category VALUES(null, "한식",7);
 
 Select * from restaurant;
 
@@ -105,4 +107,4 @@ delete from review where review_index = 12;
 
 drop DATABASE CMM;
 
-drop TABLE user;
+drop TABLE category;

@@ -37,8 +37,7 @@
                             justify-items: center;
                         "
                     >
-                        <% console.log("레스토랑 정보 >> ",restaurants) %> <% for (let i = 0; i <
-                        restaurants.length; i++) { %>
+                        <% for (let i = 0; i <restaurants.length; i++) { %>
                         <div class="restaurantItem" style="max-width: 410px">
                             <a href="/restaurantDetail/<%=restaurants[i].rest_index%>">
                                 <div class="imageContainer">
@@ -46,62 +45,12 @@
                                         src="/static/images/<%= restaurants[i].rest_index %>.png"
                                         alt="Restaurant 1"
                                         class="RestaurantImage"
-                                        style="width: 100%; height: auto"
+                                        style="width: 300px; height: 300px"
                                     />
                                     <span class="label"><%= restaurants[i].rest_name %></span>
                                     <span class="labelStar">리뷰</span>
                                 </div>
                             </a>
-                // 오류 수정 중입니다...
-                // <script>
-                //     document.addEventListener("DOMContentLoaded", function () {
-                //         const moreButton = document.querySelector(".moreButton");
-                //         const moreRow = document.querySelector(".moreRow");
-                //         const restaurantRows = document.querySelectorAll(".restaurantRow");
-
-                //         moreButton.addEventListener("click", async function () {
-                //             // 더보기 버튼을 클릭할 때마다 나머지 식당 불러오기
-                //             // 이 부분 오류 수정
-                //             // router에 이부분 존재하지 않음
-                //             // restaurants 정보를 보유중..
-                //             //
-                //             //
-                //             const response = await fetch("/loadMoreRestaurants");
-                //             const newRestaurants = await response.json();
-
-                //             // 레스토랑 정보 추가
-                //             const restaurantContainer =
-                //                 document.getElementById("restaurantContainer");
-                //             newRestaurants.forEach((restaurant, index) => {
-                //                 if (index % 3 === 0) {
-                //                     const newRow = document.createElement("tr");
-                //                     newRow.classList.add("restaurantRow");
-                //                     restaurantContainer.appendChild(newRow);
-                //                 }
-                //                 const newCell = document.createElement("td");
-                //                 newCell.classList.add("restaurantCell");
-                //                 newCell.innerHTML = `
-                //     <a href="/restaurantDetail/${restaurant.rest_index}">
-                //         <div class="imageContainer">
-                //             <img src="/static/images/${restaurant.rest_index}.png" alt="Restaurant ${restaurant.rest_index}" class="RestaurantImage" />
-                //             <span class="label">${restaurant.rest_name}</span>
-                //         </div>
-                //     </a>
-                // `;
-                //                 const lastRow = restaurantContainer.lastChild;
-                //                 lastRow.appendChild(newCell);
-                //             });
-
-                //             // 더보기 버튼 숨기기
-                //             moreRow.style.display = "none";
-                //         });
-
-                //         // 페이지 로드시 나머지 레스토랑 숨김
-                //         for (let i = 3; i < restaurantRows.length; i++) {
-                //             restaurantRows[i].style.display = "none";
-                //         }
-                //     });
-                // </script>
                         </div>
                         <% } %>
                     </div>

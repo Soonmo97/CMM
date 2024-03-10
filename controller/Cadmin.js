@@ -1,10 +1,11 @@
 const { Restaurant, Category, Menu, User, sequelize } = require("../models/index");
 
 // 관리자 페이지 요청
+// 식당 목록 조회
 exports.getAdminPage = async (req, res) => {
     try {
         // admin 계정 맞는지 판별
-        // if (req.session.index === 6) {
+        // if (req.session.user === 'admin') {
         const result = await Restaurant.findAll({
             attributes: ["rest_index", "rest_name"],
         });
@@ -21,16 +22,19 @@ exports.getAdminPage = async (req, res) => {
         // }
     } catch (error) {
         console.log(error);
+        res.status(500).send("정보를 불러오지 못했습니다.");
     }
 };
 
-// 식당 정보 조회
+// 특정 식당 정보 조회
 exports.getRestInfo = async (req, res) => {
     try {
-        console.log(req.body.rest_index);
         const restInfo = await Restaurant.findOne({
             where: { rest_index: req.body.rest_index },
-            include: { model: Category, attributes: ["category_index", "category_name"] },
+            include: [
+                { model: Category, attributes: ["category_index", "category_name"] },
+                { model: Menu, attributes: ["menu", "price"] },
+            ],
         });
         res.send({ restInfo: restInfo.dataValues });
     } catch (error) {
@@ -159,7 +163,7 @@ exports.getEditPage = async (req, res) => {
 // 식당 삭제
 exports.deleteRest = async (req, res) => {
     try {
-        // if (req.session.index === 6) {
+        // if (req.session.user === 'admin') {
         const result = await Restaurant.destroy({
             where: { rest_index: req.body.rest_index },
         });
@@ -176,7 +180,7 @@ exports.deleteRest = async (req, res) => {
 // 식당 정보 수정
 exports.editRestInfo = async (req, res) => {
     try {
-        // if (req.session.index === 6) {
+        // if (req.session.user === 'admin') {
         const [result] = await Restaurant.update(
             {
                 rest_name: req.body.rest_name,

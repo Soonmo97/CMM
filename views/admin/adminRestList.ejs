@@ -39,6 +39,7 @@
                         <p class="restinfo address">식당주소</p>
                         <p class="restinfo time">영업시간</p>
                         <p class="restinfo number">전화번호</p>
+                        <p class="restinfo menus">메뉴</p>
                     </div>
                     <div class="restmodal modal-edit">
                         <input type="hidden" class="restedit index" name="rest_index">
@@ -70,12 +71,17 @@
             const modalBtn = document.querySelector(".close-modal");
 
             function getOneRestInfo(idx){
-                const result = axios({
-                    method:'post',
-                    url:'/admin/getRestInfo',
-                    data:{rest_index:idx}
-                });
-                return result;
+                try {
+                    const result = axios({
+                        method:'post',
+                        url:'/admin/getRestInfo',
+                        data:{rest_index:idx}
+                    });
+                    return result;
+                } catch (error) {
+                    console.log(error);
+                    return false;
+                }
             };
 
             function addPage(){
@@ -92,14 +98,20 @@
                 document.querySelector('.modal-edit').style.display = "none";
 
                 const restInfo = document.getElementsByClassName('restinfo');
-                const [name, category, desc, address, time, number] = restInfo;
+                const [name, category, desc, address, time, number, menus] = restInfo;
 
                 const result = await getOneRestInfo(idx);
-                
-                const {rest_index, rest_name, rest_desc, rest_address, rest_number, rest_time, Categories:cateInfo} = result.data.restInfo;
+                console.log(result);
+                const {rest_index, rest_name, rest_desc, rest_address, rest_number, rest_time, Categories:cateInfo, Menus} = result.data.restInfo;
 
                 const categories = cateInfo.map((category) => category.category_name);
                 let category_name = categories.join(', ');
+                let menuList = [];
+                Menus.forEach(el => {
+                    let menu = el.menu+" ----------- "+el.price;
+                    menuList.push(menu);
+                });
+                const menuHTML = menuList.join('<br />')
 
                 name.innerHTML = rest_name;
                 desc.innerHTML = rest_desc;
@@ -107,6 +119,7 @@
                 address.innerHTML = rest_address;
                 time.innerHTML = rest_time;
                 number.innerHTML = rest_number;
+                menus.innerHTML = menuHTML;
             }
 
             async function deleteRest(idx, name){

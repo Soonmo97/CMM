@@ -5,6 +5,70 @@ main {
     margin-bottom: 50px;
     display: flex;
     flex-wrap: wrap;
-    /* justify-content: space-between; */
+    justify-content: space-between;
     /* text-align: center; */
+}
+
+.review {
+    width: 1320px;
+    display: flex;
+    height: 334px;
+    border: 1px solid gray;
+    border-radius: 25px;
+    margin: 20px;
+}
+
+.rest {
+    width: 400px;
+    height: 250px;
+    margin: 40px 0 40px 35px;
+    position: relative;
+}
+
+.rest img {
+    width: 400px;
+    height: 250px;
+    border-radius: 25px;
+}
+
+.rest .restName {
+    position: absolute; /* 절대적인 위치 설정 */
+    top: 10px; /* 이미지 상단에서 10px 떨어진 위치에 배치 */
+    left: 10px; /* 이미지 왼쪽에서 10px 떨어진 위치에 배치 */
+    background-color: rgba(0, 0, 0, 0.5); /* 배경색 지정 */
+    color: white; /* 텍스트 색상 지정 */
+    padding: 5px; /* 안쪽 여백 지정 */
+    border-radius: 5px; /* 테두리 모서리를 둥글게 설정 */
+}
+
+.review .ratingAndContent {
+    width: 900px;
+    display: flex;
+    flex-direction: column;
+    height: 250px;
+    align-items: center;
+    margin: 40px 35px 0 30px;
+}
+
+.time {
+    margin-bottom: 20px;
+}
+
+.rating {
+    margin-top: 10px;
+}
+
+.content {
+    height: 200px;
+}
+
+.content p {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.updateAndDeleteReview button {
+    margin: 0 10px;
+    border-radius: 25px;
+    padding: 5px 20px;
 }

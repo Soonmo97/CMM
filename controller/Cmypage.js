@@ -97,7 +97,7 @@ exports.getReviewList = async (req, res) => {
     }
 };
 
-// POST /mypage/reviewList/:reviewIndex
+// GET /mypage/reviewList/:reviewIndex
 // 내 리뷰 상세 (조회, 수정, 삭제)
 exports.getReviewDetail = async (req, res) => {
     try {
@@ -114,7 +114,7 @@ exports.getReviewDetail = async (req, res) => {
             attributes: ["user_index"],
         });
         if (check.user_index !== userIndex) {
-            return res.send("다른 사용자의 리뷰는 볼 수 없습니다.");
+            return res.send("올바르지 못한 접근입니다.");
         }
         const reviewDetail = await Review.findOne({
             where: {
@@ -124,7 +124,13 @@ exports.getReviewDetail = async (req, res) => {
                 model: Restaurant,
                 attributes: ["rest_name"],
             },
-            attributes: ["review_index", "rest_index", "review_rating", "review_content"],
+            attributes: [
+                "review_index",
+                "rest_index",
+                "review_rating",
+                "review_content",
+                "createdAt",
+            ],
         }).catch((err) => {
             console.log("내 리뷰 상세 조회 error", err);
         });

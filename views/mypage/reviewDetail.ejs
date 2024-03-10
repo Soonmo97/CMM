@@ -21,6 +21,38 @@
                     width: 100% !important;
                 "
             />
+
+            <div class="review">
+                <div class="rest">
+                    <a href="/restaurantDetail/<%=reviewDetail.review_index%>">
+                        <img
+                            src="/static/images/<%= reviewDetail.rest_index %>.png"
+                            alt="식당 이미지"
+                        />
+                    </a>
+                    <span class="restName"><%= reviewDetail.Restaurant.rest_name%></span>
+                </div>
+                <div class="ratingAndContent">
+                    <div class="time">
+                        <% const originalDate = new Date(reviewDetail.createdAt); const
+                        formattedDate = originalDate.toLocaleString('ko-KR', {timeZone:
+                        'Asia/Seoul', hour12: false}); %> <%= formattedDate %>
+                    </div>
+                    <div class="rating">
+                        <% for (let j = 0; j < reviewDetail.review_rating; j++) { %>
+                        <i id="filledStar" class="fa-solid fa-star fa-2xl" style="color: #ffd43b">
+                        </i>
+                        <% } %>
+                    </div>
+                    <div class="content">
+                        <p><%= reviewDetail.review_content %></p>
+                    </div>
+                    <div class="updateAndDeleteReview">
+                        <button type="button" onclick="updateReview()">수정</button>
+                        <button type="button" onclick="deleteReview()">삭제</button>
+                    </div>
+                </div>
+            </div>
         </main>
         <% } catch(err) { %>
         <h1>세션이 만료되었습니다. 다시 로그인해주세요.</h1>

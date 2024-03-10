@@ -8,7 +8,6 @@
     display: inline-block; /* 요소들을 인라인 블록으로 배치 */
 }
 
-
 /* 라벨 */
 .label {
     position: absolute; /* 절대적인 위치 설정 */
@@ -16,6 +15,16 @@
     left: 15px; /* 이미지 왼쪽에서 10px 떨어진 위치에 배치 */
     background-color: rgba(0, 0, 0, 0.5); /* 배경색 지정 */
     color: white; /* 텍스트 색상 지정 */
+    padding: 5px; /* 안쪽 여백 지정 */
+    border-radius: 5px; /* 테두리 모서리를 둥글게 설정 */
+}
+
+.labelStar {
+    position: absolute; /* 절대적인 위치 설정 */
+    top: 15px; /* 이미지 상단에서 10px 떨어진 위치에 배치 */
+    left: 120px; /* 이미지 왼쪽에서 10px 떨어진 위치에 배치 */
+    background-color: white; /* 배경색 지정 */
+    color: black; /* 텍스트 색상 지정 */
     padding: 5px; /* 안쪽 여백 지정 */
     border-radius: 5px; /* 테두리 모서리를 둥글게 설정 */
 }

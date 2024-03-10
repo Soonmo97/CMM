@@ -34,6 +34,27 @@ insert into restaurant VALUES(null, "리얼파스타", '안녕하세요 리얼�
 15:00 - 16:30 브레이크타임
 20:50 라스트오더');
 
+insert into restaurant VALUES(null, "코토코토","소개","주소","전화번호","영업시간"
+)
+
+DELETE FROM restaurant WHERE rest_name = '코토코토';
+
+
+
+
+
+insert into restaurant VALUES(null, "감탄계","소개","주소","전화번호","영업시간"
+)
+
+insert into restaurant VALUES(null, "수유리 우동집","소개","주소","전화번호","영업시간"
+)
+
+insert into restaurant VALUES(null, "빽다방","소개","주소","전화번호","영업시간")
+
+insert into restaurant VALUES(null, "샐러디","소개","주소","전화번호","영업시간")
+
+
+
 insert into restaurant VALUES(null, "식당7", "리얼파스타는 맛있어요", "서울 도봉구 창동", "02-000-0000", "월~금 18:00");
 
 insert into Category values(null, '일식', 1);

@@ -41,9 +41,9 @@ main {
     line-height: 100px;
 }
 
-.rating {
+.restRankLike .rating {
     font-size: 1.5em;
-    margin-right: 15px;
+    margin-right: 10px;
 }
 
 .fa-heart:hover {
@@ -117,15 +117,6 @@ main {
     margin-right: 10px;
 }
 
-.rating {
-    width: 800px;
-    height: 50px;
-    text-align: center;
-    background-color: white;
-    border-radius: 25px;
-    line-height: 50px;
-}
-
 .review {
     width: 800px;
     height: 300px;
@@ -156,17 +147,36 @@ main {
     flex-direction: column;
     background-color: white;
     border-radius: 25px;
+    align-items: center;
 }
 
 .createReviewContent {
     border-radius: 25px;
     padding: 10px;
+    margin: 10px;
 }
 
 .createReview button {
     border-radius: 25px;
+    height: 30px;
+    width: 200px;
+    margin: 10px 0;
+}
+
+.createReview .rating {
+    margin: 20px 0;
+    width: 800px;
+    text-align: center;
 }
 
 .rating span:hover {
     cursor: pointer;
+}
+
+h2 {
+    /* padding: 10px 0; */
+    background-color: white;
+    border-radius: 25px;
+    width: 100px;
+    text-align: center;
 }

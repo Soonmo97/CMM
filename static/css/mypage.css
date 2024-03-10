@@ -27,6 +27,12 @@ body {
     text-decoration: none;
     border: 5px solid #ffbf62;
     border-radius: 25px;
+    padding: 5px;
+}
+
+.nav ul a:hover {
+    text-decoration: underline;
+    color: lightgray;
 }
 
 .nav ul li {

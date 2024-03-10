@@ -190,7 +190,7 @@
                     <div class="rating">
                         <span>
                         <%for (let i=1; i<=5; i++) { %>
-                        <i id="ratingCount<%= i %>" class="fa-regular fa-star fa-xl" style="color: #FFD43B;" onclick="reviewRating('<%= restaurant.rest_index%>', this)"></i>
+                        <i id="ratingCount<%= i %>" class="fa-regular fa-star fa-2xl" style="color: #FFD43B;" onclick="reviewRating('<%= restaurant.rest_index%>', this)"></i>
                         <%} %>
                         </span>
                     </div>
@@ -417,20 +417,23 @@
                     return alert("리뷰 내용을 입력해주세요!")
                 } 
 
-                // 리뷰 등록 요청
-                await axios({
-                    url: `/restaurantDetail/${restIndex}/createReview`,
-                    method: "post",
-                    data: { restIndex: restIndex, rating: selectRating, content: content}
-                }).then((response) => {
-                    alert(response.data.message);
-                }).catch((err) => {
-                            alert('리뷰 등록 실패 err');
-                            console.log("err", err)
-                })
+                if(confirm("리뷰를 등록하시겠습니까?")) {
+                    // 리뷰 등록 요청
+                    await axios({
+                        url: `/restaurantDetail/${restIndex}/createReview`,
+                        method: "post",
+                        data: { restIndex: restIndex, rating: selectRating, content: content}
+                    }).then((response) => {
+                        alert(response.data.message);
+                    }).catch((err) => {
+                                alert('리뷰 등록 실패 err');
+                                console.log("err", err)
+                    })
 
-                // 현재 페이지를 새로고침
-                location.reload();
+                    // 현재 페이지를 새로고침
+                    location.reload();
+                }
+                
             } else {
                 alert("리뷰를 등록하려면 로그인이 된 상태여야 합니다. 로그인을 해주세요!");
             }

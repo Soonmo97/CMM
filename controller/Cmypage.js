@@ -80,11 +80,60 @@ exports.getReviewList = async (req, res) => {
                 model: Restaurant,
                 attributes: ["rest_name"],
             },
-            attributes: ["rest_index", "review_rating", "review_content"],
+            attributes: [
+                "review_index",
+                "rest_index",
+                "review_rating",
+                "review_content",
+                "createdAt",
+            ],
         }).catch((err) => {
             console.log("내 리뷰 조회 error", err);
         });
         res.render("./mypage/reviewList", { reviewList: reviewList, user: user, isLogin: isLogin });
+    } catch (err) {
+        console.log("err", err);
+        res.status(500).send("sever error");
+    }
+};
+
+// POST /mypage/reviewList/:reviewIndex
+// 내 리뷰 상세 (조회, 수정, 삭제)
+exports.getReviewDetail = async (req, res) => {
+    try {
+        const { reviewIndex } = req.params;
+        console.log("reviewIndex > ", reviewIndex);
+        let isLogin = false;
+        const user = req.session.user;
+        if (user) isLogin = true;
+        userIndex = req.session.index;
+        const check = await Review.findOne({
+            where: {
+                review_index: reviewIndex,
+            },
+            attributes: ["user_index"],
+        });
+        if (check.user_index !== userIndex) {
+            return res.send("다른 사용자의 리뷰는 볼 수 없습니다.");
+        }
+        const reviewDetail = await Review.findOne({
+            where: {
+                review_index: reviewIndex,
+            },
+            include: {
+                model: Restaurant,
+                attributes: ["rest_name"],
+            },
+            attributes: ["review_index", "rest_index", "review_rating", "review_content"],
+        }).catch((err) => {
+            console.log("내 리뷰 상세 조회 error", err);
+        });
+        // console.log("reviewDetail data >>", reviewDetail);
+        res.render("./mypage/reviewDetail", {
+            reviewDetail: reviewDetail,
+            user: user,
+            isLogin: isLogin,
+        });
     } catch (err) {
         console.log("err", err);
         res.status(500).send("sever error");

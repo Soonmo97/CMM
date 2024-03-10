@@ -154,6 +154,7 @@
                                         <% } %>
                                     </span>
                                 </div>
+                                <hr>
                                 <p><%= reviewList[i].review_content%></p>
                             </div>
                         <% } %>
@@ -174,6 +175,7 @@
                                             <% } %>
                                         </span>
                                     </div>
+                                    <hr>
                                     <p><%= reviewList[i].review_content%></p>
                                 </div>
                             <% } %>
@@ -191,7 +193,7 @@
                         <%} %>
                         </span>
                     </div>
-                    <textarea class="createReviewContent" name="create_review" cols="92" rows="25"
+                    <textarea maxlength="255" class="createReviewContent" name="create_review" cols="92" rows="3"
                     placeholder="내용을 입력해주세요."
                     ></textarea>
                     <button type="button" onclick="createReview('<%= restaurant.rest_index %>', '<%= isLogin %>')">리뷰 등록하기</button>
@@ -280,9 +282,10 @@
                                 // 리뷰 타이틀 div와 콘텐츠 p
                                 const reviewTitle = document.createElement("div");
                                 reviewTitle.classList.add("reviewTitle")
+                                const hr = document.createElement("hr");
                                 const content = document.createElement("p");
                                 content.textContent = reviewList[i].review_content;
-                                plusReview.append(reviewTitle, content)
+                                plusReview.append(reviewTitle, hr, content)
                                 
                                 // 유저이미지, 닉네임, 생성일, 별점
                                 const userImage = document.createElement("i");
@@ -326,9 +329,10 @@
                                 // 리뷰 타이틀 div와 콘텐츠 p
                                 const reviewTitle = document.createElement("div");
                                 reviewTitle.classList.add("reviewTitle")
+                                const hr = document.createElement("hr");
                                 const content = document.createElement("p");
                                 content.textContent = reviewList[i].review_content;
-                                plusReview.append(reviewTitle, content)
+                                plusReview.append(reviewTitle, hr, content)
                                 
                                 // 유저이미지, 닉네임, 생성일, 별점
                                 const userImage = document.createElement("i");

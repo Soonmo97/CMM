@@ -6,13 +6,63 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>내 리뷰 목록</title>
         <%- include('../include/head') %>
-        <link rel="stylesheet" href="/static/css/likeList.css" />
+        <link rel="stylesheet" href="/static/css/reviewList.css" />
         <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <%- include('../include/header'), {isLogin: isLogin, user: user} %>
-        <%-include('../include/mypageNav') %>
-        <main></main>
+        <%- include('../include/header'), {isLogin: isLogin, user: user} %> <%-
+        include('../include/mypageNav', { title: "내 리뷰 목록" }) %>
+        <% try { %>
+        <main>
+            <hr style="border: 3px solid#878787; height: 3px !important; display: block !important; width: 100% !important; "/>
+            <% for (let i=0; i<reviewList.length; i++) { %>
+            <div class="review">
+                <div class="rest">
+                    <a href="/restaurantDetail/<%=reviewList[i].review_index%>">
+                    <img
+                        src="/static/images/<%= reviewList[i].rest_index %>.png"
+                        alt="식당 이미지"
+                    />
+                    </a>
+                    <span class="restName"><%= reviewList[i].Restaurant.rest_name%></span>
+                </div>
+                <div class="ratingAndContent">
+                    <div class="time">
+                        <% const originalDate = new Date(reviewList[i].createdAt);
+                            const formattedDate = originalDate.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false});
+                        %>
+                        <%= formattedDate %>
+                    </div>
+                    <div class="rating">
+                        <% for (let j = 0; j < reviewList[i].review_rating; j++) { %>
+                            <i
+                                id="filledStar"
+                                class="fa-solid fa-star fa-xl"
+                                style="color: #FFD43B"
+                            >
+                            </i>
+                        <% } %>
+                    </div>
+                    <!-- 글자 수 25까지만 보여주고 상세에서 전부 보여주기 -->
+                    <div class="content">
+                        <!-- 리뷰의 내용의 25글자 이상일 때 -->
+                        <%if(reviewList[i].review_content.length > 25)  { %>
+                        <a href="/mypage/reviewList/<%= reviewList[i].review_index%>">
+                            <p><%= reviewList[i].review_content.substring(0, 25) %>...</p>
+                        </a>
+                        <% } else { %>
+                        <a href="/mypage/reviewList/<%= reviewList[i].review_index%>">
+                            <p><%= reviewList[i].review_content %></p>
+                        </a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </main>
+        <% }  catch(err) { %>
+            <h1>세션이 만료되었습니다. 다시 로그인해주세요.</h1>
+        <% }%>
         <%-include('../include/footer') %>
     </body>
 </html>

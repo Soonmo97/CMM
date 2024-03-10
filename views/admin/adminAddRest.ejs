@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <%-include('../include/head.ejs')%>
+        <link rel="stylesheet" href="/static/css/adminRest.css" />
+        <title>관리 페이지</title>
+        <style>
+            fieldset {
+                margin: 20px 0px;
+                padding: 10px;
+            }
+            fieldset label {
+                width: 100px;
+                vertical-align: top;
+            }
+            #btnAdd,
+            #btnRmv {
+                width: 30px;
+            }
+            .btn-hidden {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <%- include('./sidebar.ejs') %>
+        <main class="admin-main">
+            <h2>식당 추가</h2>
+            <div class="addRestaurants">
+                <form name="form-addRestInfo">
+                    <fieldset class="restInfo">
+                        <legend>식당 정보</legend>
+                        <label for="rest_name">이름 *</label>
+                        <input type="text" id="rest_name" name="rest_name" required /><br />
+                        <label for="rest_desc">설명</label>
+                        <textarea
+                            id="rest_desc"
+                            name="rest_desc"
+                            cols="50"
+                            rows="10"
+                            maxlength="250"
+                        ></textarea
+                        ><br />
+                        <label for="rest_address">주소 *</label>
+                        <input type="text" id="rest_address" name="rest_address" required /><br />
+                        <label for="rest_number">전화번호</label>
+                        <input type="tel" id="rest_number" name="rest_number" /><br />
+                        <label for="rest_time">영업시간</label>
+                        <input type="text" id="rest_time" name="rest_time" />
+                    </fieldset>
+                    <fieldset class="restCategory">
+                        <legend>식당 카테고리</legend>
+                        <p>카테고리는 두 개까지 설정 가능합니다.</p>
+                        <label id="label" for="category1">카테고리 1 *</label>
+                        <select id="category1" name="category1" required>
+                            <option value="" disabled selected hidden>
+                                카테고리를 설정해주세요
+                            </option>
+                            <option value="한식">한식</option>
+                            <option value="일식">일식</option>
+                            <option value="양식">양식</option>
+                            <option value="중식">중식</option>
+                            <option value="디저트">디저트</option>
+                        </select>
+                        <button type="button" id="btnAdd">+</button>
+                        <br />
+                    </fieldset>
+                    <button type="button" id="btn-addInfo">등록</button>
+                </form>
+            </div>
+        </main>
+        <script>
+            const btnAdd = document.querySelector("#btnAdd");
+            const form = document.forms["form-addRestInfo"];
+
+            document.querySelector("#btn-addInfo").addEventListener("click", async () => {
+                let category = {};
+                category.category1 = document.querySelector("#category1").value;
+
+                if (document.body.contains(document.querySelector("#category2"))) {
+                    if (document.querySelector("#category2").value != "") {
+                        category.category2 = document.querySelector("#category2").value;
+                    }
+                }
+
+                // 유효성 검사
+                if (!form.checkValidity()) {
+                    alert("필수값을 모두 입력해주세요.");
+                    return;
+                }
+
+                const nameValid = form.rest_name.value.replace(/ \s+/g, "");
+                const addressValid = form.rest_address.value.replace(/ \s+/g, "");
+                if (!nameValid) {
+                    alert("이름을 제대로 입력해주세요.");
+                } else if (!addressValid) {
+                    alert("주소를 제대로 입력해주세요.");
+                }
+
+                if (category.category1 === category.category2) {
+                    alert("카테고리를 서로 다르게 설정해주세요.");
+                    return;
+                }
+
+                try {
+                    const result = await axios({
+                        method: "post",
+                        url: "/admin/addRestaurant",
+                        data: {
+                            rest_name: form.rest_name.value,
+                            rest_desc: form.rest_desc.value,
+                            rest_address: form.rest_address.value,
+                            rest_number: form.rest_number.value,
+                            rest_time: form.rest_time.value,
+                            category: category,
+                        },
+                    });
+                    if (result.data.isSuccess) {
+                        window.location.href = `/admin/addRestaurantMenu?rest_index=${result.data.rest_index}`;
+                    }
+                } catch (err) {
+                    if (!err.response.data.isSuccess) {
+                        alert("식당을 추가하지 못했습니다.");
+                    }
+                }
+            });
+
+            btnAdd.addEventListener("click", () => {
+                const restCategory = document.querySelector(".restCategory");
+                const category2 = document.createElement("select");
+                const label2 = document.createElement("label");
+                label2.htmlFor = "category2";
+                label2.innerText = "카테고리 2";
+                category2.id = "category2";
+                category2.name = "category2";
+
+                let categories = [
+                    "카테고리를 설정해주세요",
+                    "한식",
+                    "일식",
+                    "양식",
+                    "중식",
+                    "디저트",
+                ];
+
+                for (let i = 0; i < categories.length; i++) {
+                    option = document.createElement("option");
+                    option.value = categories[i];
+                    option.text = categories[i];
+                    category2.add(option);
+                }
+
+                category2[0].disabled = true;
+                category2[0].hidden = true;
+                category2[0].value = "";
+
+                const btnRmv = document.createElement("button");
+                btnRmv.id = "btnRmv";
+                btnRmv.innerText = "-";
+
+                btnAdd.classList.toggle("btn-hidden");
+
+                const space = document.createTextNode(" ");
+                const space2 = document.createTextNode(" ");
+                restCategory.appendChild(label2);
+                restCategory.appendChild(space);
+                restCategory.appendChild(category2);
+                restCategory.appendChild(space2);
+                restCategory.appendChild(btnRmv);
+
+                btnRmv.addEventListener("click", function removeElement() {
+                    label2.remove();
+                    category2.remove();
+                    this.remove();
+                    btnAdd.classList.toggle("btn-hidden");
+                });
+            });
+        </script>
+    </body>
+</html>

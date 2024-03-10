@@ -7,21 +7,14 @@ body {
     padding: 0px;
 }
 body * {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 header {
     height: 80px;
 }
-.sidebar {
-    position: sticky;
-    width: 100px;
-}
-.sidebar a {
-    width: 100%;
-}
 .admin-main {
     position: relative;
-    width: calc(100% - 100px);
+    width: 85%;
     float: right;
 }
 .add-rest-div {
@@ -36,7 +29,7 @@ header {
     text-align: center;
 }
 .rest-list-table tr td:not(td:nth-child(2)) {
-    width: 80px;
+    width: 100px;
 }
 .rest-list-table tr td:nth-child(2):hover {
     cursor: pointer;

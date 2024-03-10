@@ -46,7 +46,11 @@ main {
     flex-direction: column;
     height: 250px;
     align-items: center;
-    margin: 50px 35px 0 30px;
+    margin: 40px 35px 0 30px;
+}
+
+.time {
+    margin-bottom: 20px;
 }
 
 .content {

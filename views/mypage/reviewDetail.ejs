@@ -6,12 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>내 리뷰 목록</title>
         <%- include('../include/head') %>
-        <link rel="stylesheet" href="/static/css/reviewList.css" />
+        <link rel="stylesheet" href="/static/css/reviewDetail.css" />
         <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <%- include('../include/header'), {isLogin: isLogin, user: user} %> <%-
-        include('../include/mypageNav', { title: "내 리뷰 목록" }) %> <% try { %>
+        include('../include/mypageNav', { title: "내 리뷰 상세" }) %> <% try { %>
         <main>
             <hr
                 style="

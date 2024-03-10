@@ -18,7 +18,7 @@
             <% for (let i=0; i<reviewList.length; i++) { %>
             <div class="review">
                 <div class="rest">
-                    <a href="/restaurantDetail/<%=reviewList[i].rest_index%>">
+                    <a href="/restaurantDetail/<%=reviewList[i].review_index%>">
                     <img
                         src="/static/images/<%= reviewList[i].rest_index %>.png"
                         alt="식당 이미지"
@@ -27,6 +27,12 @@
                     <span class="restName"><%= reviewList[i].Restaurant.rest_name%></span>
                 </div>
                 <div class="ratingAndContent">
+                    <div class="time">
+                        <% const originalDate = new Date(reviewList[i].createdAt);
+                            const formattedDate = originalDate.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false});
+                        %>
+                        <%= formattedDate %>
+                    </div>
                     <div class="rating">
                         <% for (let j = 0; j < reviewList[i].review_rating; j++) { %>
                             <i
@@ -41,11 +47,11 @@
                     <div class="content">
                         <!-- 리뷰의 내용의 25글자 이상일 때 -->
                         <%if(reviewList[i].review_content.length > 25)  { %>
-                        <a href="/mypage/reviewListDetail/<%= reviewList[i].review_index%>">
-                            <p><%= reviewList[i].review_content.substring(0, 25) %></p>
+                        <a href="/mypage/reviewList/<%= reviewList[i].review_index%>">
+                            <p><%= reviewList[i].review_content.substring(0, 25) %>...</p>
                         </a>
                         <% } else { %>
-                        <a href="/mypage/reviewListDetail/<%= reviewList[i].review_index%>">
+                        <a href="/mypage/reviewList/<%= reviewList[i].review_index%>">
                             <p><%= reviewList[i].review_content %></p>
                         </a>
                         <% } %>

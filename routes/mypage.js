@@ -18,6 +18,10 @@ router.post("/likeList/createLike", controller.createLike);
 // 내 리뷰 조회
 router.get("/reviewList", controller.getReviewList);
 
+// GET /mypage/reviewList/:reviewIndex
+// 내 리뷰 상세
+router.get("/reviewList/:reviewIndex", controller.getReviewDetail);
+
 // GET /mypage/profile
 // 내 정보 조회
 router.get("/profile", controller.getProfile);

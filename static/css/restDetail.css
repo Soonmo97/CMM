@@ -53,14 +53,21 @@ main {
 .otherInfo {
     display: flex;
     justify-content: space-between;
+}
+
+.timeAndNum {
     border: 1px solid lightgray;
     border-radius: 25px;
     padding: 10px;
+    margin-right: 10px;
 }
 
 .otherInfo .menu {
     width: 400px;
     text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 25px;
+    padding: 10px;
 }
 
 .otherInfo .menu ul {

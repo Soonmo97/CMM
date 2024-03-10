@@ -15,7 +15,7 @@ exports.getMain = async (req, res) => {
         attributes: ["rest_index", "rest_name"],
     });
 
-    console.log(restaurants);
+    // console.log(restaurants);
     console.log("유저 세션 정보>> ", user);
     if (user) {
         res.render("index", {
@@ -57,7 +57,6 @@ exports.loginHeader = async (req, res) => {
 // POST /include/header/form/register
 exports.registerHeader = async (req, res) => {
     const { id, pw, nickname, email } = req.body;
-    console.log("id 전달이 됐나요", id);
     try {
         const hashedPassword = await bcrypt.hash(pw, 10);
         const user = await User.findOne({ where: { id } });
@@ -204,19 +203,17 @@ exports.sendCode = async (req, res) => {
     await smtpTransport.sendMail(mailOptions, (err, response) => {
         console.log("response", response);
         if (err) {
-            res.send({ ok: false, msg: " 메일 전송에 실패하였습니다. " });
-            smtpTransport.close(); //전송종료
+            return res.send({ ok: false, msg: " 메일 전송에 실패하였습니다. " });
         } else {
             res.send({ ok: true, msg: " 메일 전송에 성공하였습니다. " });
-            console.log();
-            smtpTransport.close(); //전송종료
         }
+        smtpTransport.close(); //전송종료
     }); 
 };
 // POST /form/checkCode
 exports.checkCode = async (req, res) => {
     const { codeValue } = req.body;
-    console.log("쿠키 값 : ", req.session);
+    console.log("세션 값: ", req.session);
 
     const hashAuth = req.session.hashAuth;
 
@@ -231,20 +228,20 @@ exports.checkCode = async (req, res) => {
 };
 
 // GET /loadMoreRestaurants
-exports.loadMoreRestaurants = async (req, res) => {
-    const user = req.session.user;
-    const newRestaurants = await Restaurant.findAll({
-        attributes: ["rest_index", "rest_name"],
-    });
+// exports.loadMoreRestaurants = async (req, res) => {
+//     const user = req.session.user;
+//     const newRestaurants = await Restaurant.findAll({
+//         attributes: ["rest_index", "rest_name"],
+//     });
 
-    console.log(newRestaurants);
-    if (user) {
-        res.render("index", {
-            isLogin: true,
-            user: user,
-            newRestaurants: newRestaurants,
-        });
-    } else {
-        res.render("index", { isLogin: false, newRestaurants: newRestaurants });
-    }
-};
+//     console.log(newRestaurants);
+//     if (user) {
+//         res.render("index", {
+//             isLogin: true,
+//             user: user,
+//             newRestaurants: newRestaurants,
+//         });
+//     } else {
+//         res.render("index", { isLogin: false, newRestaurants: newRestaurants });
+//     }
+// };

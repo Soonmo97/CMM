@@ -38,12 +38,12 @@
                 <nav class="menu" style="flex: 0 0 auto; margin-top: -15px">
                     <ul>
                         <li class="active" id="menuHome"><a href="/">홈</a></li>
-                        <li id="menu1"><a href="#" onclick="loadCategory('한식')">한식</a></li>
-                        <li id="menu2"><a href="#" onclick="loadCategory('일식')">일식</a></li>
-                        <li id="menu3"><a href="#" onclick="loadCategory('양식')">양식</a></li>
-                        <li id="menu4"><a href="#" onclick="loadCategory('중식')">중식</a></li>
-                        <li id="menu5"><a href="#" onclick="loadCategory('디저트')">디저트</a></li>
-                        <li id="menu6"><a href="#" onclick="loadCategory('기타')">기타</a></li>
+                        <li id="menu1"><a href="/search/category?category=한식" onclick="loadCategory('한식')">한식</a></li>
+                        <li id="menu2"><a href="/search/category?category=일식" onclick="loadCategory('일식')">일식</a></li>
+                        <li id="menu3"><a href="/search/category?category=양식" onclick="loadCategory('양식')">양식</a></li>
+                        <li id="menu4"><a href="/search/category?category=중식" onclick="loadCategory('중식')">중식</a></li>
+                        <li id="menu5"><a href="/search/category?category=디저트" onclick="loadCategory('디저트')">디저트</a></li>
+                        <li id="menu6"><a href="/search/category?category=기타" onclick="loadCategory('기타')">기타</a></li>
                     </ul>
                 </nav>
             </div>
@@ -295,7 +295,9 @@
                             required
                         />
                         <span class="stepbutton"
-                            ><button type="submit" id="btnCheckCodeSend" onclick="emailCode()">
+                            >
+                            <button type="button" onclick="resetBtn()">리셋</button>
+                            <button type="submit" id="btnCheckCodeSend" onclick="emailCode()">
                                 확인코드전송
                             </button></span
                         >
@@ -306,7 +308,7 @@
                 <!-- 이메일 확인 -->
                 <div>
                     <h4>
-                        <label for="email">이메일 확인</label>
+                        <label for="email">인증번호 확인</label>
                     </h4>
                     <span class="box intName">
                         <input
@@ -315,13 +317,18 @@
                             name="emailChk"
                             class="int"
                             maxlength="20"
+                            onkeydown="inputCodeCk()"
                             required
                         />
-                        <span class="stepbutton"
-                            ><button type="button" id="btnCheckCode" onclick="btnEmailCk()">
-                                확인
-                            </button></span
-                        >
+                        <span class="stepbutton">
+                            <button type="button" id="btnCheckCode" onclick="btnEmailCk()">확인</button>
+                            <input
+                                type="hidden"
+                                name="codeDuplication"
+                                id="codeDuplication"
+                                value="codeUncheck"
+                            />
+                        </span>
                     </span>
                     <span class="error_next_box"></span>
                 </div>
@@ -355,9 +362,6 @@
     <script>
         // 아이디 중복체크 화면 열기
         function idCheck() {
-            // var left = (window.innerWidth - width) / 2;
-            // var top = (window.innerHeight - height) / 2;
-
             window.name = "parentForm";
             window.open(
                 "/user/idCheckForm",
@@ -374,11 +378,16 @@
     <!-- 이메일 확인 코드 전송 -->
 
     <script>
-        function validateEmail(email) {
         // 간단한 이메일 형식 유효성 검사
-        const re = /\S+@\S+\.\S+/;
-        return re.test(email);
-    }
+        function validateEmail(email) {
+        const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return re.test(email); 
+        }
+
+        function resetBtn() {
+            document.getElementById("email").value = "";
+            document.getElementById("email").removeAttribute("readonly");
+        }
 
         function emailCode() {
             const emailInput = document.getElementById("email");
@@ -397,14 +406,15 @@
                 },
             })
                 .then((response) => {
-                    console.log("res 작동 확인", response.data);
-
+                    // console.log("res 작동 확인", response.data);
                     if (response.data.ok) {
+                        // 성공했을 때 email 값 고정
+                        emailInput.setAttribute("readonly", true);
                         alert("메일 전송에 성공하였습니다.");
-                        // btnEmailCk();
                     } else {
                         alert("메일 전송에 실패하였습니다.");
                     }
+                    
                 })
 
                 .catch((error) => {
@@ -416,10 +426,10 @@
 
     <!-- 이메일 코드 확인 -->
     <script>
-        function btnEmailCk() {
+        function btnEmailCk(callback) {
             const emailChk = document.getElementById("emailChk");
             const codeValue = emailChk.value;
-
+    
             axios({
                 method: "POST",
                 url: "/form/checkCode",
@@ -427,42 +437,62 @@
                     codeValue: codeValue,
                 },
             })
-                .then((response) => {
-                    if (response.data.ok) {
-                        alert("인증번호가 일치합니다.");
-                    } else {
-                        alert("인증번호가 일치하지 않습니다.");
-                        emailChk.value = "";
+            .then((response) => {
+                if (response.data.ok) {
+                    alert("인증번호가 일치합니다.");
+                    // 인증번호 일치시 코드값을 변경하여 회원가입 가능하도록 설정
+                    document.getElementById("codeDuplication").value = "btnEmailCk";
+                    if (callback) {
+                        callback(true);
                     }
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+                } else {
+                    alert("인증번호가 일치하지 않습니다.");
+                    emailChk.value = "";
+                    if (callback) {
+                        callback(false);
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                if (callback) {
+                    callback(false);
+                }
+            });
         }
-    </script>
-
-    <!-- 회원가입 입력값 검사 -->
-    <script>
+    
         document.getElementById("modal_register").addEventListener("submit", function (event) {
             event.preventDefault();
-
+    
             const form = document.forms["modal_register"];
-
-            if (form.idDuplication.value != "idCheck") {
-                alert("아이디 중복체크를 해주세요.");
-                return false;
+    
+            function inputCodeCk() {
+                document.modal_register.codeDuplication.value = "codeUncheck";
             }
-
-            axios({
-                method: "POST",
-                url: "/form/register",
-                data: {
-                    id: form.id.value,
-                    pw: form.pw.value,
-                    nickname: form.nickname.value,
-                    email: form.email.value,
-                },
-            })
+    
+            // 중복확인, 이메일 인증 확인
+            btnEmailCk(function(success) {
+                if (!success) {
+                    alert("인증번호 확인을 해주세요.");
+                    return false;
+                }
+    
+                if (form.idDuplication.value != "idCheck") {
+                    alert("아이디 중복체크를 해주세요.");
+                    return false;
+                }
+    
+                // 회원가입 진행
+                axios({
+                    method: "POST",
+                    url: "/form/register",
+                    data: {
+                        id: form.id.value,
+                        pw: form.pw.value,
+                        nickname: form.nickname.value,
+                        email: form.email.value,
+                    },
+                })
                 .then((result) => {
                     console.log(result);
                     if (result) {
@@ -473,9 +503,10 @@
                     }
                 })
                 .catch((err) => {
-                    console.error(error);
+                    console.error(err);
                     res.status(500).send("회원가입 실패");
                 });
+            });
         });
     </script>
 

@@ -10,7 +10,6 @@
         <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <% console.log(isLogin) %>
         <%- include('../include/header'), {isLogin: isLogin, user: user} %>
         <%- include('../include/mypageNav', { title: "내 좋아요 목록" }) %>
         <% try { %>
@@ -20,17 +19,16 @@
             <div class="like">
                 <a href="/restaurantDetail/<%=likeList[i].rest_index%>">
                     <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdnvUCVlZTyFm3ylGKkQHUqG54GvkQ9w6S0A&s"
-                        alt="식당 이미지"
+                        src="/static/images/<%= likeList[i].rest_index %>.png"
                     />
                     <span class="restName"><%= likeList[i].Restaurant.rest_name%></span>
                 </a>
                 <span class="heart">
                     <i
-                        id="filledHeart"
+                        id="filledHeart<%= i + 1 %>"
                         class="fa-solid fa-heart fa-2xl"
                         style="color: #ff0000"
-                        onclick="likePlus('<%=likeList[i].rest_index%>', '<%= isLogin %>')"
+                        onclick="likePlus('<%=likeList[i].rest_index%>', '<%= isLogin %>', '<%= i + 1 %>')"
                     >
                     </i>
                 </span>
@@ -43,11 +41,11 @@
         <%-include('../include/footer') %>
     </body>
     <script>
-        function likePlus(restIndex, isLogin) {
+        function likePlus(restIndex, isLogin, index) {
             // 로그인 되어있을 때
             // console.log("로그인 상태 >> ",isLogin)
             if (isLogin === "true") {
-                const filledHeart = document.querySelector("#filledHeart");
+                const filledHeart = document.querySelector(`#filledHeart${index}`);
                 // console.log(filledHeart)
                 // 채워진 하트 좋아요 o) 라면
                 if (filledHeart) {
@@ -59,7 +57,7 @@
                         data: { restIndex: restIndex },
                     })
                         .then((response) => {
-                            filledHeart.id = "emptyHeart";
+                            filledHeart.id = `emptyHeart${index}`;
                             filledHeart.classList.remove("fa-solid");
                             filledHeart.classList.add("fa-regular");
                             console.log(response);
@@ -71,7 +69,7 @@
                         });
                 } else {
                     // 빈 하트 (로그인 o 좋아요 x) 라면
-                    const emptyHeart = document.querySelector("#emptyHeart");
+                    const emptyHeart = document.querySelector(`#emptyHeart${index}`);
                     console.log(emptyHeart);
                     // 좋아요 등록 후 채워진 하트
                     axios({
@@ -80,7 +78,7 @@
                         data: { restIndex: restIndex },
                     })
                         .then((response) => {
-                            emptyHeart.id = "filledHeart";
+                            emptyHeart.id = `filledHeart${index}`;
                             emptyHeart.classList.remove("fa-regular");
                             emptyHeart.classList.add("fa-solid");
                             console.log(response);

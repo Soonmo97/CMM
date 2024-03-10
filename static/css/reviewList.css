@@ -11,6 +11,7 @@ main {
 
 .review {
     display: flex;
+    height: 334px;
     border: 1px solid gray;
     border-radius: 25px;
     margin: 20px;
@@ -24,7 +25,7 @@ main {
 }
 
 .rest img {
-    width: 250px;
+    width: 270px;
     height: 250px;
     border-radius: 25px;
 }
@@ -45,10 +46,7 @@ main {
     flex-direction: column;
     height: 250px;
     align-items: center;
-    margin: 50px 35px 0 10px;
-}
-
-.rating {
+    margin: 50px 35px 0 30px;
 }
 
 .content {

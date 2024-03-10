@@ -9,7 +9,7 @@ const Restaurant = (sequelize, DataTypes) => {
                 autoIncrement: true,
             },
             rest_name: {
-                type: DataTypes.STRING(20),
+                type: DataTypes.STRING(30),
                 allowNull: false,
             },
             rest_desc: {

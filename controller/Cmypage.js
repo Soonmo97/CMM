@@ -91,6 +91,33 @@ exports.getReviewList = async (req, res) => {
     }
 };
 
+// GET /mypage/reviewList/:reviewIndex
+// 내 리뷰 목록 -> 리뷰 상세 (조회, 수정, 삭제)
+exports.getReviewListDetail = async (req, res) => {
+    try {
+        let isLogin = false;
+        const user = req.session.user;
+        if (user) isLogin = true;
+        userIndex = req.session.index;
+        const reviewList = await Review.findAll({
+            where: {
+                user_index: userIndex,
+            },
+            include: {
+                model: Restaurant,
+                attributes: ["rest_name"],
+            },
+            attributes: ["review_index", "rest_index", "review_rating", "review_content"],
+        }).catch((err) => {
+            console.log("내 리뷰 조회 error", err);
+        });
+        res.render("./mypage/reviewList", { reviewList: reviewList, user: user, isLogin: isLogin });
+    } catch (err) {
+        console.log("err", err);
+        res.status(500).send("sever error");
+    }
+};
+
 // GET /mypage/profile
 // 내 정보 조회
 exports.getProfile = async (req, res) => {

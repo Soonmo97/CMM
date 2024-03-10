@@ -1,32 +1,107 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
     <head>
-        <!-- axios CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>아이디 중복체크</title>
+        <!-- axios CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <!-- 브라우저 상단 LOGO -->
+        <link rel="icon" type="images/png" href="/static/images/CMM-circle.png" />
     </head>
+
+    <style>
+        body {
+            background-color: whitesmoke;
+        }
+
+        .logoImg {
+            display: flex;
+            align-items: center;
+        }
+
+        .logoImg p {
+            font-size: 18px;
+            font-weight: bold;
+            color: "gray";
+        }
+
+        .logoImg img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+
+        .inputId {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        #idCk {
+            margin-left: 15px;
+            border: none;
+            padding: 7px 7px;
+            border-radius: 5px;
+            background-color: #ffc064;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .chkBtn {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .chkBtn #cancleBtn {
+            margin-right: 25px;
+            border: none;
+            padding: 7px 7px;
+            border-radius: 5px;
+            background-color: #ffc064;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .chkBtn #useBtn {
+            border: none;
+            padding: 7px 7px;
+            border-radius: 5px;
+            background-color: #ffc064;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #msg {
+            margin-left: 20px;
+            color: #c47500;
+        }
+   
+    </style>
 
     <body onload="pValue()">
         <div id="wrap">
             <br />
-            <b>
-                <p size="4" color="gray">아이디 중복체크</p>
-            </b>
+            <div class="logoImg">
+                <img src="/static/images/CMM-removebg.png" alt="cmm logo" />
+                <p>아이디 중복체크</p>
+            </div>
             <hr size="1" width="460" />
             <br />
             <div id="chk">
                 <form id="checkForm">
-                    <input type="text" name="userId" id="userId" />
-                    <input type="button" value="중복확인" onclick="idCheck()" />
+                    <div class="inputId">
+                        <input type="text" name="userId" id="userId" />
+                        <input type="button" value="중복확인" id="idCk" onclick="idCheck()" />
+                    </div>
                 </form>
                 <div id="msg"></div>
                 <br />
-                <input id="cancelBtn" type="button" value="취소" onclick="cancelBtn()" />
-                <br />
-                <input id="useBtn" type="button" value="사용하기" onclick="sendCheckValue()" />
+                <div class="chkBtn">
+                    <input id="cancleBtn" type="button" value="취소" onclick="cancleBtn()" />
+                    <input id="useBtn" type="button" value="사용하기" onclick="sendCheckValue()" />
+                </div>
             </div>
         </div>
     </body>
@@ -53,13 +128,13 @@
                         if (result.data.available) {
                             console.log("사용가능");
                             alert("사용 가능한 아이디입니다.");
-                            document.getElementById("cancelBtn").style.visibility = "hidden";
+                            document.getElementById("cancleBtn").style.visibility = "hidden";
                             document.getElementById("useBtn").style.visibility = "visible";
                             document.getElementById("msg").innerHTML = "사용 가능한 아이디입니다.";
                         } else {
                             console.log("사용불가능");
                             alert("사용할 수 없는 아이디입니다.");
-                            document.getElementById("cancelBtn").style.visibility = "visible";
+                            document.getElementById("cancleBtn").style.visibility = "visible";
                             document.getElementById("useBtn").style.visibility = "hidden";
                             document.getElementById("msg").innerHTML = "";
                         }
@@ -82,7 +157,7 @@
     </script>
 
     <script>
-        function cancelBtn() {
+        function cancleBtn() {
             document.getElementById("userId").value = "";
             opener.document.modal_register.id.value = "";
             window.close();

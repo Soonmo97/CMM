@@ -131,9 +131,7 @@
                 <button id="signupBtn" class="signBtn">회원가입</button>
                 <button id="loginBtn" class="signBtn">로그인</button>
                 <button class="signBtn">
-                    <a href="/suggestion/list" style="text-decoration: none; color: black"
-                        >건의사항</a
-                    >
+                    <a href="/suggestion/list" style="text-decoration: none; color: black" >건의사항</a>
                 </button>
                 <% } %>
                 <br />
@@ -146,7 +144,7 @@
         <div class="modal-content">
             <h2>로그인</h2>
             <div>
-                <img src="../static/images/CMM.png" width="150px" height="200px" />
+                <img src="/static/images/CMM.png" width="150px" height="200px" />
             </div>
             <a href=""><span class="signupLabel" id="closeModalBtn">닫기</span></a>
 
@@ -192,7 +190,7 @@
         <div class="modal-content">
             <h2>회원가입</h2>
             <div>
-                <img src="../static/images/CMM.png" width="150px" height="200px" />
+                <img src="/static/images/CMM.png" width="150px" height="200px" />
             </div>
 
             <a href=""><span class="signupLabel" id="closeLikeBtn">닫기</span></a>
@@ -297,7 +295,7 @@
                             required
                         />
                         <span class="stepbutton"
-                            ><button type="button" id="btnCheckCodeSend" onclick="emailCode()">
+                            ><button type="submit" id="btnCheckCodeSend" onclick="emailCode()">
                                 확인코드전송
                             </button></span
                         >
@@ -357,11 +355,14 @@
     <script>
         // 아이디 중복체크 화면 열기
         function idCheck() {
+            // var left = (window.innerWidth - width) / 2;
+            // var top = (window.innerHeight - height) / 2;
+
             window.name = "parentForm";
             window.open(
                 "/user/idCheckForm",
                 "chkForm",
-                "width=500, height=300, resizable=no, scrollbars=no"
+                "width=500, height=300, , top=300, left=500 + leftresizable=no, scrollbars=no"
             );
         }
         // 중복체크 후 다시 새로운 아이디를 입력했을 때 다시 중복체크 하도록 함
@@ -373,9 +374,20 @@
     <!-- 이메일 확인 코드 전송 -->
 
     <script>
+        function validateEmail(email) {
+        // 간단한 이메일 형식 유효성 검사
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
         function emailCode() {
             const emailInput = document.getElementById("email");
             const emailValue = emailInput.value;
+
+            if (!validateEmail(emailValue)) {
+            alert("올바른 이메일 형식이 아닙니다.");
+            return;
+        }
 
             axios({
                 method: "POST",
@@ -392,12 +404,12 @@
                         // btnEmailCk();
                     } else {
                         alert("메일 전송에 실패하였습니다.");
-                        emailChk.value = "";
                     }
                 })
 
                 .catch((error) => {
                     console.error(error);
+                    alert("서버 오류가 발생했습니다.");
                 });
         }
     </script>

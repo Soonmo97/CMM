@@ -53,6 +53,10 @@ main {
     margin-bottom: 20px;
 }
 
+.rating {
+    margin-top: 10px;
+}
+
 .content {
     height: 200px;
 }

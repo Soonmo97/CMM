@@ -53,17 +53,18 @@
                         </div>
                         
                     </div>
+                    <hr />
                     
                     <div class="restDes">
                         <p><%= restaurant.rest_desc%></p>
                         <br />
                         <div class="otherInfo">
                             <div class="timeAndNum">
-                                - 영업시간: <%= restaurant.rest_time%><br /><br />
-                                - 번호: <%= restaurant.rest_number%><br /><br />  
+                                ⏰  영업시간: <%= restaurant.rest_time%><br /><br />
+                                📞  번호: <%= restaurant.rest_number%><br /><br />  
                             </div>
                             <div class="menu">
-                                - 대표메뉴:
+                                📜 대표메뉴:
                                 <!-- 메뉴 정보가 있을 때 -->
                                 <% if (menuList.length > 0) { %>
                                             <ul>

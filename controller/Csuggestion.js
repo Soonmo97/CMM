@@ -174,7 +174,7 @@ exports.deletePost = async (req, res) => {
         });
         if (result) {
             console.log("삭제 성공!");
-            res.redirect("list?page=1");
+            res.redirect("/suggestion/list");
         }
     } catch (err) {
         console.log(err);

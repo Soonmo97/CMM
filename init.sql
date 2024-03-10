@@ -1,4 +1,3 @@
-
 -- Active: 1707101284088@@127.0.0.1@3306@cmm
 create database cmm DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -12,7 +11,6 @@ SELECT host, user from mysql.user;
 show DATABASES;
 
 show tables;
-
 
 use cmm
 
@@ -113,3 +111,5 @@ drop TABLE user;
 delete from Restaurant
 
 alter table `Restaurant` AUTO_INCREMENT = 1;
+
+drop TABLE category;

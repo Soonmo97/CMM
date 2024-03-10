@@ -53,6 +53,9 @@ main {
 .otherInfo {
     display: flex;
     justify-content: space-between;
+    border: 1px solid lightgray;
+    border-radius: 25px;
+    padding: 10px;
 }
 
 .otherInfo .menu {

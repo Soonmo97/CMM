@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <%-include('../include/head.ejs')%>
+        <link rel="stylesheet" href="/static/css/adminRest.css" />
+        <title>관리 페이지</title>
+        <style>
+            label {
+                width: 100px;
+                vertical-align: top;
+            }
+            .btn-add {
+                width: 80px;
+                height: 37px;
+            }
+            fieldset label {
+                width: 100px;
+                vertical-align: top;
+            }
+        </style>
+    </head>
+    <body>
+        <%- include('./sidebar.ejs') %>
+        <main class="admin-main">
+            <h2>메뉴 추가</h2>
+            <div class="addRestaurants">
+                <form name="menus" id="menuForm">
+                    <p>메뉴를 등록해주세요!</p>
+                    <label for="menu1">메뉴 1* </label>
+                    <input type="text" id="menu1" name="menu1" placeholder="메뉴 이름" required />
+                    <input type="number" id="price1" name="price1" placeholder="가격" required />
+                </form>
+            </div>
+            <div id="addMenuFormDiv">
+                <button type="button" id="addBtn" onclick="addMenuField()">+</button>
+            </div>
+            <div id="submitMenuDiv">
+                <button onclick="addMenu()">등록</button>
+                <button onclick="addLater()">다음에 하기</button>
+            </div>
+        </main>
+        <script>
+            let menuCount = 2;
+
+            function addMenuField() {
+                if (menuCount <= 3) {
+                    const formDiv = document.getElementById("menuForm");
+
+                    const label = document.createElement("label");
+                    label.htmlFor = "menu" + menuCount;
+                    label.innerText = "메뉴 " + menuCount;
+
+                    const menuInput = document.createElement("input");
+                    menuInput.type = "text";
+                    menuInput.name = "menu" + menuCount;
+                    menuInput.placeholder = "메뉴 이름";
+
+                    const priceInput = document.createElement("input");
+                    priceInput.type = "text";
+                    priceInput.name = "price" + menuCount;
+                    priceInput.placeholder = "가격";
+
+                    const br = document.createElement("br");
+                    const space = document.createTextNode(" ");
+                    const space2 = document.createTextNode(" ");
+
+                    formDiv.appendChild(br);
+                    formDiv.appendChild(label);
+                    formDiv.appendChild(space);
+                    formDiv.appendChild(menuInput);
+                    formDiv.appendChild(space2);
+                    formDiv.appendChild(priceInput);
+
+                    menuCount++;
+                } else {
+                    const addBtn = document.querySelector("#addBtn");
+                    addBtn.remove();
+                    alert("한번에 최대 3개의 메뉴를 입력할 수 있습니다.");
+                }
+            }
+
+            async function addMenu() {
+                const form = document.querySelectorAll("#menuForm input");
+                const menus = {};
+                let j = 1;
+
+                // 현재 URL의 쿼리 문자열 가져오기
+                const queryString = window.location.search;
+                console.log(queryString);
+
+                // 쿼리 파라미터 추출
+                const urlParams = new URLSearchParams(queryString);
+                console.log(urlParams);
+
+                // 파라미터 값 가져오기
+                const rest_index = urlParams.get("rest_index");
+                console.log(rest_index);
+
+                for (let i = 0; i < form.length; i += 2) {
+                    menus[`menu${j}`] = {
+                        menu: form[i].value,
+                        price: form[i + 1].value,
+                        rest_index: rest_index,
+                    };
+                    j++;
+                }
+
+                // 유효성 검사
+
+                try {
+                    const result = await axios({
+                        method: "post",
+                        url: "/admin/addMenu",
+                        data: menus,
+                    });
+                    if (result.data.isSuccess) {
+                        alert("메뉴를 추가했습니다.");
+                        window.location.href = "/admin/restaurants";
+                    }
+                } catch (error) {
+                    console.log(error);
+                    if (!error.response.data.isSuccess) {
+                        alert("메뉴를 추가하지 못했습니다.");
+                    }
+                }
+            }
+
+            function addLater() {
+                let isExit = confirm("다음에 작성하시겠습니까?");
+                if (isExit) {
+                    window.location.href = "/admin/restaurants";
+                }
+            }
+        </script>
+    </body>
+</html>

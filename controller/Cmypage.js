@@ -114,7 +114,9 @@ exports.getReviewDetail = async (req, res) => {
             attributes: ["user_index"],
         });
         if (check.user_index !== userIndex) {
-            return res.send("올바르지 못한 접근입니다.");
+            return res.send(
+                "<script>alert('올바르지 못한 접근입니다.'); window.location.href = '/';</script>"
+            );
         }
         const reviewDetail = await Review.findOne({
             where: {

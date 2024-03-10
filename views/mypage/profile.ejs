@@ -26,14 +26,17 @@
                 <span>닉네임</span><input type="text" disabled value="<%= userInfo.nickname%>" />
                 <span>이메일</span><input type="email" disabled value="<%= userInfo.email%>" />
                 <div class="updateAndDeleteUser">
-                    <button type="button" onclick="nicknameUpdateUser()">닉네임 수정</button>
+                    <button type="button" onclick="nicknameUpdateUser()">닉네임 변경</button>
                     <button type="button" onclick="pwUpdateUser()">비밀번호 변경</button>
                     <button type="button" onclick="deleteUser()">회원탈퇴</button>
                 </div>
             </div>
         </main>
         <% } catch(err) { %>
-        <h1>세션이 만료되었습니다. 다시 로그인해주세요.</h1>
+        <script>
+            alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
+            window.location.href = "/";
+        </script>
         <% }%> <%-include('../include/footer') %>
     </body>
 </html>

@@ -12,46 +12,52 @@
     <body>
         <!-- header include -->
         <%- include('./include/header') %>
+        <div
+            style="
+                padding-top: 100px;
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                text-align: center;
+            "
+        >
+            <img src="/static/images/CMM.png" alt="" style="width: 70px; height: auto" />
 
-        <div class="restaurantMenu" id="restaurantMenu1">
-            <table style="border-spacing: 70px; border-collapse: separate">
-                <tr>
-                    <th style="font-size: 30px">
-                        <img
-                            class="logo"
-                            src="/static/images/CMM.png"
-                            alt=""
-                            style="width: 50px; height: 50px"
-                        />
-                        모든식당
-                    </th>
-                    <th></th>
-                </tr>
-                <tbody id="restaurantContainer">
-                    <% console.log("레스토랑 정보 >> ",restaurants) %>
-                    <tr>
-                        <% for (let i = 0; i < restaurants.length; i++) { %> <%#
-                        restaurants.forEach((el, index) => { %> <% if ((i % 3 === 0 && i!== 0)) { %>
-                        <%# if (index % 3 === 0 && index!== 0) { %>
-                    </tr>
-                    <tr>
-                        <% } %> <%# } %>
-                        <td>
+            <h1>모든식당</h1>
+        </div>
+
+        <div style="width: 1350px; margin: 0 auto">
+            <div style="max-width: 1350px; margin: 0 auto">
+                <div class="restaurantMenu" id="restaurantMenu1" style="padding-top: 50px">
+                    <div
+                        class="restaurantContainer"
+                        style="
+                            display: grid;
+                            grid-template-columns: repeat(3, minmax(0, 1fr));
+                            gap: 20px;
+                            justify-items: center;
+                        "
+                    >
+                        <% console.log("레스토랑 정보 >> ",restaurants) %> <% for (let i = 0; i <
+                        restaurants.length; i++) { %>
+                        <div class="restaurantItem" style="max-width: 410px">
                             <a href="/restaurantDetail/<%=restaurants[i].rest_index%>">
                                 <div class="imageContainer">
                                     <img
                                         src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDNfMTA1%2FMDAxNzAxNTc1Mzc1MTA4.dN9S9wJppXhDjB9fdVjzf911R91YMES1K8IbCekCMjgg.tYmyq6JD-7LetCAkfz5KQFzEikonrjlL59_LRklghykg.JPEG.jelly877%2F20231203%25A3%25DF115342.jpg"
                                         alt="Restaurant 1"
                                         class="RestaurantImage"
+                                        style="width: 100%; height: auto"
                                     />
                                     <span class="label"><%= restaurants[i].rest_name %></span>
+                                    <span class="labelStar">리뷰</span>
                                 </div>
                             </a>
-                        </td>
-                        <% } %> <%# }) %>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <br /><br />

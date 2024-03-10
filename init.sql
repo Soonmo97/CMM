@@ -76,6 +76,11 @@ insert into restaurant VALUES(null, '마쯔무라 돈까스', '소개글', '주�
 insert into restaurant VALUES(null, '수유리 우동집', '소개글', '주소' , '전화번호','영업시간' );
 insert into restaurant VALUES(null, '빽다방','홍콩반점입니다~', '주소' , '전화번호','영업시간' );
 insert into restaurant VALUES(null, '리얼파스타', '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '국밥집', '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '김밥나라', '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '칼국수집', '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
+insert into restaurant VALUES(null, '비빔밥집', '홍콩반점입니다~', '주소' , '전화번호','영업시간' );
+
 
 insert into category VALUES(null, "한식",1);
 
@@ -88,6 +93,8 @@ insert into category VALUES(null, "중식",4);
 insert into category VALUES(null, "디저트",5);
 insert into category VALUES(null, "한식",6);
 insert into category VALUES(null, "한식",7);
+insert into category VALUES(null, "한식",8);
+insert into category VALUES(null, "한식",9);
 
 Select * from restaurant;
 

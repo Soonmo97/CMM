@@ -297,11 +297,14 @@
     <script>
         // 아이디 중복체크 화면 열기
         function idCheck() {
+            // var left = (window.innerWidth - width) / 2;
+            // var top = (window.innerHeight - height) / 2;
+
             window.name = "parentForm";
             window.open(
                 "/user/idCheckForm",
                 "chkForm",
-                "width=500, height=300, resizable=no, scrollbars=no"
+                "width=500, height=300, , top=300, left=500 + leftresizable=no, scrollbars=no"
             );
         }
         // 중복체크 후 다시 새로운 아이디를 입력했을 때 다시 중복체크 하도록 함

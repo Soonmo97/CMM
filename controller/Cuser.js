@@ -160,21 +160,6 @@ exports.checkWindow = async (req, res) => {
 };
 
 // POST /form/sendCode
-    // 메일 재시도 가능 함수
-
-    // await smtpTransport.sendMail(mailOptions, (err, response) => {
-    //     console.log("response", response);
-    //     if (err) {
-    //         res.send({ ok: false, msg: " 메일 전송에 실패하였습니다. " });
-    //         smtpTransport.close(); //전송종료
-    //     } else {
-    //         res.send({ ok: true, msg: " 메일 전송에 성공하였습니다. " });
-    //         console.log();
-    //         smtpTransport.close(); //전송종료
-    //     }
-    // });
-
-
 exports.sendCode = async (req, res) => {
     // 인증 코드 생성
     const generateRandomNumber = (min, max) => {
@@ -242,5 +227,24 @@ exports.checkCode = async (req, res) => {
         res.json({ ok: true, msg: "인증번호가 일치합니다." });
     } else {
         res.json({ ok: false, msg: "인증번호가 일치하지 않습니다." });
+    }
+};
+
+// GET /loadMoreRestaurants
+exports.loadMoreRestaurants = async (req, res) => {
+    const user = req.session.user;
+    const newRestaurants = await Restaurant.findAll({
+        attributes: ["rest_index", "rest_name"],
+    });
+
+    console.log(newRestaurants);
+    if (user) {
+        res.render("index", {
+            isLogin: true,
+            user: user,
+            newRestaurants: newRestaurants,
+        });
+    } else {
+        res.render("index", { isLogin: false, newRestaurants: newRestaurants });
     }
 };

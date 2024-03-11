@@ -37,18 +37,12 @@
     width: 100%;
     margin: 5px 0;
 }
-.back-link {
-    display: inline-block;
-    width: 92px;
-    text-decoration: none;
-    color: #2da3d6;
-}
-.back-link p {
-    font-weight: 700;
-    font-size: 18px;
-}
 .btn-container {
     width: 100%;
-    padding: 20px 0;
-    text-align: right;
+    padding: 20px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+.btn-container div button {
+    margin: 0 3px;
 }

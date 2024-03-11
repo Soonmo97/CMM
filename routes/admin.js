@@ -6,6 +6,9 @@ const controller = require("../controller/Cadmin");
 router.get("/", controller.getAdminPage);
 router.get("/restaurants", controller.getAdminPage);
 
+// 회원 관리 페이지 요청
+router.get("/users", controller.getAdminUserPage);
+
 // 식당 등록 페이지 요청
 router.get("/addRestaurant", controller.getAddPage);
 // 식당 메뉴 등록 페이지 요청

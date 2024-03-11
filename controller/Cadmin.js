@@ -220,12 +220,13 @@ exports.editRestCategory = async (req, res) => {
         let isblank2 = category.filter((obj) => obj.category_name === "");
         let resultArray = [];
 
-        // console.log(category);
-        // console.log("인덱스", isblank1);
-        // console.log("이름", isblank2);
+        console.log(category);
+        console.log("인덱스", isblank1);
+        console.log("이름", isblank2);
+        console.log(isblank1.length == 0 || isblank2.length == 0);
 
         // 빈칸 없음 -> 인덱스 개수와 카테고리명 개수가 같음 -> 추가/삭제X
-        if (isblank1.length == 0 || !isblank2 == 0) {
+        if (isblank1.length == 0 && isblank2.length == 0) {
             console.log("변경! (1개 혹은 2개)");
             for (let i = 0; i < category.length; i++) {
                 let result = await Category.update(
@@ -292,6 +293,17 @@ exports.editRestMenu = async (req, res) => {
         } else {
             res.json({ isSuccess: true });
         }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ isSuccess: false });
+    }
+};
+
+// 회원 조회
+exports.getAdminUserPage = async (req, res) => {
+    try {
+        const result = await User.findAll();
+        res.render("admin/adminDeleteUser", { userInfo: result });
     } catch (error) {
         console.log(error);
         res.status(500).json({ isSuccess: false });

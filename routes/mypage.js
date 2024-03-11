@@ -22,6 +22,14 @@ router.get("/reviewList", controller.getReviewList);
 // 내 리뷰 상세
 router.get("/reviewList/:reviewIndex", controller.getReviewDetail);
 
+// PATCH /mypage/reviewList/update
+// 내 리뷰 수정(상세)
+router.patch("/reviewList/update", controller.updateReview);
+
+// DELETE /mypage/reviewList/delete
+// 내 리뷰 삭제
+router.delete("/reviewList/delete", controller.deleteReview);
+
 // GET /mypage/profile
 // 내 정보 조회
 router.get("/profile", controller.getProfile);

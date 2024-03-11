@@ -1,4 +1,5 @@
 const { LikeList, Restaurant, Review, User } = require("../models");
+const updateCheck = false;
 
 // GET /mypage/likeList
 // 내 좋아요 목록 조회
@@ -142,6 +143,65 @@ exports.getReviewDetail = async (req, res) => {
             user: user,
             isLogin: isLogin,
         });
+    } catch (err) {
+        console.log("err", err);
+        res.status(500).send("sever error");
+    }
+};
+
+// PATCH /mypage/reviewList/update
+// 내 리뷰 수정(상세)
+exports.updateReview = async (req, res) => {
+    try {
+        const { updateRating, updateContent, reviewIndex } = req.body;
+        console.log("reviewIndex >>>> ", reviewIndex);
+        let isLogin = false;
+        const user = req.session.user;
+        if (user) isLogin = true;
+        userIndex = req.session.index;
+        await Review.update(
+            {
+                review_rating: updateRating,
+                review_content: updateContent,
+            },
+            {
+                where: {
+                    review_index: reviewIndex,
+                },
+            }
+        )
+            .then(() => {
+                res.send();
+            })
+            .catch((err) => {
+                res.send("서버에러", err);
+            });
+    } catch (err) {
+        console.log("err", err);
+        res.status(500).send("sever error");
+    }
+};
+
+// DELETE /mypage/reviewList/:
+// 내 리뷰 삭제
+exports.deleteReview = async (req, res) => {
+    try {
+        const { reviewIndex } = req.body;
+        let isLogin = false;
+        const user = req.session.user;
+        if (user) isLogin = true;
+        userIndex = req.session.index;
+        await Review.destroy({
+            where: {
+                review_index: reviewIndex,
+            },
+        })
+            .then(() => {
+                res.send();
+            })
+            .catch((err) => {
+                console.log("내 리뷰 삭제 error", err);
+            });
     } catch (err) {
         console.log("err", err);
         res.status(500).send("sever error");

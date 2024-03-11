@@ -12,7 +12,7 @@ main {
 .review {
     width: 1320px;
     display: flex;
-    height: 334px;
+    height: 380px;
     border: 1px solid gray;
     border-radius: 25px;
     margin: 20px;
@@ -20,14 +20,14 @@ main {
 
 .rest {
     width: 400px;
-    height: 250px;
+    height: 300px;
     margin: 40px 0 40px 35px;
     position: relative;
 }
 
 .rest img {
     width: 400px;
-    height: 250px;
+    height: 300px;
     border-radius: 25px;
 }
 
@@ -47,7 +47,7 @@ main {
     flex-direction: column;
     height: 250px;
     align-items: center;
-    margin: 40px 35px 0 30px;
+    margin: 50px 35px 0 30px;
 }
 
 .time {

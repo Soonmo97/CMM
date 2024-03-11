@@ -11,7 +11,7 @@ main {
 
 .profile {
     width: 1000px;
-    height: 580px;
+    height: 680px;
     border-radius: 25px;
     display: flex;
     flex-direction: column;

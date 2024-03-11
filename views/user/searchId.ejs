@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이디 찾기</title>
+    <%- include('../include/head') %>
+</head>
+<style>
+     body {
+            margin-top: 20px;
+            margin-left: 25px;
+            margin-right: 25px;
+            background-color: whitesmoke;
+        }
+
+        .logoImg {
+            display: flex;
+            align-items: center;
+        }
+
+        .logoImg p {
+            font-size: 18px;
+            font-weight: bold;
+            color: "gray";
+        }
+
+        .logoImg img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+
+        #msg {
+            font-family: "Gowun Dodum", sans-serif;
+            color: #c47500;
+            font-size: 12px;
+        }
+
+        #emailCk {
+            border: none;
+            padding: 7px 7px;
+            border-radius: 5px;
+            background-color: #ffc064;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+
+        #email {
+            width: 250px;
+        }
+
+        #resultId {
+            font-family: "Gowun Dodum", sans-serif;
+            font-weight: bolder;
+            visibility: hidden;
+            font-size: 18px;
+        }
+</style>
+<body>
+        <div class="logoImg">
+        <img src="/static/images/CMM-removebg.png" alt="cmm logo" />
+        <p>아이디 찾기</p>
+        </div>
+        <hr size="3" width="440" />
+        <br />
+        <form id="searchId">
+            <div class="inputEmail">
+                <input type="email" name="email" id="email" placeholder="가입 이메일을 입력해주세요."/> 
+                <input type="button" value="확인" id="emailCk" onclick="emailCheck()"/>
+            </div>
+            <div id="msg"></div>
+            <br><br>
+            <div id="resultId"></div>
+        </form> 
+</body>
+
+
+<script>
+            function emailCheck() {
+            const email = document.getElementById("email").value;
+
+            const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            if (!email) {
+                alert("이메일을 입력하지 않았습니다.");
+                return false;
+            } else if (!re.test(email)) {
+                alert("이메일 형식이 아닙니다.");
+                return false;
+            } else {
+                axios({
+                    method: "POST",
+                    url: "/user/searchId",
+                    data: {
+                        email: email,
+                    },
+                })
+                    .then((response) => {
+                        if (response.data.ok) {
+                            console.log("이메일 일치");
+                            document.getElementById("msg").innerHTML = "이메일 확인에 성공했습니다.";
+                            document.getElementById("resultId").style.visibility = "visible";
+                            // const resultId = response.data.id;
+                            // const resultElement = document.getElementById(resultId);
+                            // resultElement.style.color = "blue";
+                            document.getElementById("resultId").innerHTML = "아이디값은 " + response.data.id + "입니다.";
+
+                        } else {
+                            console.log("이메일 불일치");
+                            alert("존재하지 않는 이메일 입니다.");
+                            document.getElementById("msg").innerHTML = "이메일을 다시 입력해주세요.";
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }
+        }
+</script>
+</html>

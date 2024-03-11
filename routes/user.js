@@ -22,7 +22,7 @@ router.post("/user/login", controller.postLogin);
 router.post("/form/sendCode", controller.sendCode);
 // POST /form/checkCode
 router.post("/form/checkCode", controller.checkCode);
-// GET /loadMoreRestaurants
-// router.get("/loadMoreRestaurants", controller.loadMoreRestaurants);
+// GET /load-more
+router.get("load-more", controller.loadMoreData);
 
 module.exports = router;

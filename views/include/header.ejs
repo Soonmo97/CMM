@@ -47,23 +47,8 @@
                     </ul>
                 </nav>
             </div>
-                
-            <script>
-               
-            </script>
 
             
-                <!-- <nav class="nav">
-                    <a href="/" class="nav-item is-active" active-color="red">홈</a>
-                    <a href="/search/category?category=한식" class="nav-item" active-color="orange">한식</a>
-                    <a href="/search/category?category=일식" class="nav-item" active-color="yellow">일식</a>
-                    <a href="/search/category?category=양식" class="nav-item" active-color="green">양식</a>
-                    <a href="/search/category?category=중식" class="nav-item" active-color="blue">중식</a>
-                    <a href="/search/category?category=디저트" class="nav-item" active-color="darkblue">디저트</a>
-                    <a href="/search/category?category=기타" class="nav-item" active-color="rebeccapurple">기타</a>
-                    <span class="nav-indicator"></span>
-                  </nav>
-            </div>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
             const indicator = document.querySelector('.nav-indicator');
@@ -97,7 +82,7 @@
                 }
             });
         });
-            </script> -->
+            </script>
           
         </div>
 
@@ -180,6 +165,11 @@
                     <button type="submit" id="btnLogin">
                         <span>로그인</span>
                     </button>
+                </div>
+
+                <div class="searchUser">
+                    <a href="/views/user/searchId.ejs" target="_blank">아이디 찾기</a>
+                    <a href="">비밀번호 찾기</a>
                 </div>
             </form>
         </div>
@@ -408,10 +398,14 @@
                 .then((response) => {
                     // console.log("res 작동 확인", response.data);
                     if (response.data.ok) {
-                        // 성공했을 때 email 값 고정
                         emailInput.setAttribute("readonly", true);
                         alert("메일 전송에 성공하였습니다.");
-                    } else {
+                    } 
+                    if (response.data.emailCk) {
+                        alert("중복된 이메일 입니다.");
+                        email.value = "";
+                    }
+                    else {
                         alert("메일 전송에 실패하였습니다.");
                     }
                     

@@ -77,7 +77,6 @@
 
         <!-- footer include -->
         <%- include('./include/footer') %>
-
         <script>
             // 검색 버튼에 이벤트 리스너 추가
             document.getElementById("searchButton").addEventListener("click", searchKeyword);
@@ -102,5 +101,45 @@
                 }
             });
         </script>
+
+        <!-- 무한 스크롤 작업 -->
+
+        <script>
+            // 무한 스크롤 기능
+            window.addEventListener("scroll", function() {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                loadMoreData();
+            }
+            });
+
+            async function loadMoreData() {
+            try {
+                // axios를 사용하여 서버에 추가 데이터 요청 보내기
+                const response = await axios.get('/');
+                const newData = response.data.restaurants;
+
+                console.log("무한 스크롤 작업 중.. " , response.data.restaurants);
+
+                // 받은 데이터를 이용하여 화면에 추가하는 작업 수행
+                restaurants.forEach(restaurants => {
+                const restaurantItem = document.createElement('div');
+                restaurantItem.classList.add('restaurantItem');
+                restaurantItem.innerHTML = `
+                <a href="/restaurantDetail/${restaurants.rest_index}">
+                <div class="imageContainer">
+                    <img src="/static/images/${restaurants.rest_index}.png" alt="${restaurants.rest_name}" class="RestaurantImage" style="width: 300px; height: 300px" />
+                    <span class="label">${restaurants.rest_name}</span>
+                    <span class="labelStar">리뷰</span>
+                </div>
+            </a>
+        `;
+        document.querySelector('.restaurantContainer').appendChild(restaurantItem);
+    });
+            } catch (error) {
+                console.error("데이터 가져오기 오류:", error);
+            }
+        }
+</script>
+
     </body>
 </html>

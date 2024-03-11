@@ -10,21 +10,48 @@ const { assign } = require("nodemailer/lib/shared");
 
 // GET /index
 exports.getMain = async (req, res) => {
-    const user = req.session.user;
-    const restaurants = await Restaurant.findAll({
-        attributes: ["rest_index", "rest_name"],
-    });
+    // const user = req.session.user;
+    // const restaurants = await Restaurant.findAll({
+    //     attributes: ["rest_index", "rest_name"],
+    // });
 
-    // console.log(restaurants);
-    console.log("유저 세션 정보>> ", user);
-    if (user) {
-        res.render("index", {
-            isLogin: true,
-            user: user,
-            restaurants: restaurants,
+    // // console.log(restaurants);
+    // console.log("유저 세션 정보>> ", user);
+    // if (user) {
+    //     res.render("index", {
+    //         isLogin: true,
+    //         user: user,
+    //         restaurants: restaurants,
+    //     });
+    // } else {
+    //     res.render("index", { isLogin: false, restaurants: restaurants });
+    // }
+
+    try {
+        const user = req.session.user;
+        const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
+        const perPage = 9; // 페이지당 항목 수
+        const offset = (currentPage - 1) * perPage; // OFFSET 계산
+
+        // 데이터베이스에서 다음 페이지의 데이터를 가져오는 쿼리 실행
+        const restaurants = await Restaurant.findAll({
+            attributes: ["rest_index", "rest_name"],
+            offset: offset,
+            limit: perPage
         });
-    } else {
-        res.render("index", { isLogin: false, restaurants: restaurants });
+
+        if (user) {
+            res.render("index", {
+                isLogin: true,
+                user: user,
+                restaurants: restaurants,
+            });
+        } else {
+            res.render("index", { isLogin: false, restaurants: restaurants });
+        }
+    } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+        res.status(500).send("Internal Server Error");
     }
 };
 
@@ -42,7 +69,6 @@ exports.loginHeader = async (req, res) => {
             console.log("세션 연결 완료>>  ", req.session.index);
             res.redirect("/");
         } else {
-            // res.render("index", { isLogin: false });
             res.send(`<script>
             alert("아이디 또는 비밀번호가 일치하지 않습니다.");
             window.location.href = "/";
@@ -182,7 +208,7 @@ exports.sendCode = async (req, res) => {
             "<div style='font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 540px; height: 600px; border-top: 4px solid #348fe2; margin: 100px auto; padding: 30px 0; box-sizing: border-box;'>" +
             "<h1 style='margin: 0; padding: 0 5px; font-size: 28px; font-weight: 400;'>" +
             "<span style='font-size: 15px; margin: 0 0 10px 3px;'></span><br />" +
-            "<span style='color: #348fe2;'>인증번호</span> 안내입니다." +
+            "<span style='color: #ffc064;'>CMM 인증번호</span> 안내입니다." +
             "</h1>" +
             "<p style='font-size: 16px; line-height: 26px; margin-top: 50px; padding: 0 5px;'>" +
             "안녕하세요.<br />" +
@@ -200,15 +226,21 @@ exports.sendCode = async (req, res) => {
             "</div>",
     };
 
-    await smtpTransport.sendMail(mailOptions, (err, response) => {
-        console.log("response", response);
-        if (err) {
-            return res.send({ ok: false, msg: " 메일 전송에 실패하였습니다. " });
-        } else {
-            res.send({ ok: true, msg: " 메일 전송에 성공하였습니다. " });
-        }
-        smtpTransport.close(); //전송종료
-    }); 
+    const emailCk = User.findOne({ where: { email } });
+    if (emailCk ===  null) {
+        await smtpTransport.sendMail(mailOptions, (err, response) => {
+            console.log("response", response);
+            if (err) {
+                res.send({ ok: false, msg: " 메일 전송에 실패하였습니다."});
+            } else {
+                res.send({ ok: true, msg: " 메일 전송에 성공하였습니다. " });
+            }
+                smtpTransport.close(); //전송종료
+            }); 
+    }
+    else {
+        res.send({emailCk : true});
+    }
 };
 // POST /form/checkCode
 exports.checkCode = async (req, res) => {
@@ -227,21 +259,32 @@ exports.checkCode = async (req, res) => {
     }
 };
 
-// GET /loadMoreRestaurants
-// exports.loadMoreRestaurants = async (req, res) => {
-//     const user = req.session.user;
-//     const newRestaurants = await Restaurant.findAll({
-//         attributes: ["rest_index", "rest_name"],
-//     });
+// GET /load-more
+exports.loadMoreData = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
+        const perPage = 9; // 페이지당 항목 수
+        const offset = (currentPage - 1) * perPage; // OFFSET 계산
 
-//     console.log(newRestaurants);
-//     if (user) {
-//         res.render("index", {
-//             isLogin: true,
-//             user: user,
-//             newRestaurants: newRestaurants,
-//         });
-//     } else {
-//         res.render("index", { isLogin: false, newRestaurants: newRestaurants });
-//     }
-// };
+        // 데이터베이스에서 다음 페이지의 데이터를 가져오는 쿼리 실행
+        const restaurants = await Restaurant.findAll({
+            attributes: ["rest_index", "rest_name"],
+            offset: offset,
+            limit: perPage
+        });
+
+        if (user) {
+            res.render("index", {
+                isLogin: true,
+                user: user,
+                restaurants: restaurants,
+            });
+        } else {
+            res.render("index", { isLogin: false, restaurants: restaurants });
+        }
+    } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+        res.status(500).send("Internal Server Error");
+    }
+};

@@ -1,5 +1,5 @@
 const { LikeList, Restaurant, Review, User } = require("../models");
-const updateCheck = false;
+const bcrypt = require("bcrypt");
 
 // GET /mypage/likeList
 // 내 좋아요 목록 조회
@@ -224,6 +224,104 @@ exports.getProfile = async (req, res) => {
             console.log("내 프로필 조회 error", err);
         });
         res.render("./mypage/profile", { userInfo: userinfo, user: user, isLogin: isLogin });
+    } catch (err) {
+        console.log("err", err);
+        res.status(500).send("sever error");
+    }
+};
+
+// PATCH /mypage/profile/updateNickname
+// 닉네임 수정
+exports.updateNickname = async (req, res) => {
+    try {
+        const { updateNickname } = req.body;
+        let isLogin = false;
+        const user = req.session.user;
+        if (user) isLogin = true;
+        userIndex = req.session.index;
+        console.log("변경할 닉네임 >> ", updateNickname);
+        console.log("변경할 유저 인덱스> > >", userIndex);
+        await User.update(
+            {
+                nickname: updateNickname,
+            },
+            {
+                where: {
+                    user_index: userIndex,
+                },
+            }
+        )
+            .then(() => {
+                res.send();
+            })
+            .catch((err) => {
+                res.send("닉네임 변경 서버에러", err);
+            });
+    } catch (err) {
+        console.log("err", err);
+        res.status(500).send("sever error");
+    }
+};
+
+// PATCH /mypage/profile/updatePw
+// 비밀번호 변경
+exports.updatePw = async (req, res) => {
+    try {
+        const { updatePw } = req.body;
+        let isLogin = false;
+        const user = req.session.user;
+        if (user) isLogin = true;
+        userIndex = req.session.index;
+        console.log("변경할 pw >> ", updatePw);
+        console.log("변경할 유저 인덱스> > >", userIndex);
+        const encryptPw = bcrypt.hash(updatePw, 10);
+        await User.update(
+            {
+                pw: encryptPw,
+            },
+            {
+                where: {
+                    user_index: userIndex,
+                },
+            }
+        )
+            .then(() => {
+                res.send();
+            })
+            .catch((err) => {
+                res.send("비밀번호 변경 서버에러", err);
+            });
+    } catch (err) {
+        console.log("err", err);
+        res.status(500).send("sever error");
+    }
+};
+
+// DELETE /mypage/profile/deleteUser
+// 회원탈퇴
+exports.deleteUser = async (req, res) => {
+    try {
+        let isLogin = false;
+        const user = req.session.user;
+        if (user) isLogin = true;
+        userIndex = req.session.index;
+        await User.destroy({
+            where: {
+                user_index: userIndex,
+            },
+        })
+            .then(() => {
+                req.session.destroy((err) => {
+                    if (err) {
+                        res.status(500).send("회원탈퇴 중 오류 발생");
+                    } else {
+                        res.send();
+                    }
+                });
+            })
+            .catch((err) => {
+                console.log("회원탈퇴 error", err);
+            });
     } catch (err) {
         console.log("err", err);
         res.status(500).send("sever error");

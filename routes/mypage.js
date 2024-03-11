@@ -34,4 +34,16 @@ router.delete("/reviewList/delete", controller.deleteReview);
 // 내 정보 조회
 router.get("/profile", controller.getProfile);
 
+// PATCH /mypage/profile/updateNickname
+// 닉네임 수정
+router.patch("/profile/updateNickname", controller.updateNickname);
+
+// PATCH /mypage/profile/updatePw
+// 비밀번호 변경
+router.patch("/profile/updatePw", controller.updatePw);
+
+// DELETE /mypage/profile/deleteUser
+// 회원탈퇴
+router.delete("/profile/deleteUser", controller.deleteUser);
+
 module.exports = router;

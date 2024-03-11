@@ -84,6 +84,7 @@ exports.listPage = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
+        res.status(500).send("게시글을 조회하지 못했습니다.");
     }
 };
 
@@ -111,6 +112,7 @@ exports.writeSuggestion = async (req, res) => {
         res.redirect("post/" + sug_index);
     } catch (err) {
         console.log(err);
+        res.status(500).send("게시글을 등록하지 못했습니다.");
     }
 };
 
@@ -156,12 +158,12 @@ exports.getPost = async (req, res) => {
             });
         } else {
             res.send(
-                '<script>alert("해당 포스트가 존재하지 않습니다."); document.location.href="/suggestion/list?page=1"</script>'
+                '<script>alert("해당 게시글이 존재하지 않습니다."); document.location.href="/suggestion/list?page=1"</script>'
             );
         }
-        console.log("글 정보", postInfo);
     } catch (err) {
         console.log(err);
+        res.status(500).send("게시글을 불러오지 못했습니다.");
     }
 };
 
@@ -173,11 +175,11 @@ exports.deletePost = async (req, res) => {
             where: { sug_index: post },
         });
         if (result) {
-            console.log("삭제 성공!");
             res.redirect("/suggestion/list");
         }
     } catch (err) {
         console.log(err);
+        res.status(500).send("게시글을 삭제하지 못했습니다.");
     }
 };
 
@@ -196,9 +198,9 @@ exports.editPage = async (req, res) => {
         } else {
             res.render("user/login", { isLogin, user });
         }
-        console.log("수정할 글", postInfo);
     } catch (err) {
         console.log(err);
+        res.status(500).send("페이지를 불러오지 못했습니다.");
     }
 };
 
@@ -218,6 +220,7 @@ exports.editPost = async (req, res) => {
         }
     } catch (err) {
         console.log(err);
+        res.status(500).send("게시글을 수정하지 못했습니다.");
     }
 };
 
@@ -238,5 +241,6 @@ exports.likePost = async (req, res) => {
         res.send({ likeCount: likeCount });
     } catch (err) {
         console.log(err);
+        res.status(500).send("게시글을 추천하지 못했습니다.");
     }
 };

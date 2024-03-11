@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+body * {
+    /* border: 1px solid black; */
+}
+header {
+    height: 80px;
+}
+.admin-main {
+    position: relative;
+    width: 85%;
+    float: right;
+}
+fieldset {
+    margin: 20px 0px;
+    padding: 10px;
+}
+fieldset label {
+    width: 100px;
+    vertical-align: top;
+}
+#btnAdd,
+#btnRmv {
+    width: 30px;
+}
+.btn-hidden {
+    display: none;
+}
+.restInfo input {
+    width: 600px;
+    height: 36px;
+    margin-bottom: 5px;
+}
+.restInfo textarea {
+    width: 600px;
+}

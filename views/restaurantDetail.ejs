@@ -6,9 +6,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>식당 상세페이지</title>
         <%- include('include/head') %>
-        <link rel="stylesheet" href="/static/css/restDetail.css">
-        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=czcpt81ovb"></script>
-        <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=czcpt81ovb&submodules=geocoder"></script>
+        <link rel="stylesheet" href="/static/css/restDetail.css" />
+        <script
+            type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=czcpt81ovb"
+        ></script>
+        <script
+            type="text/javascript"
+            src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=czcpt81ovb&submodules=geocoder"
+        ></script>
         <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -16,7 +22,7 @@
         <main>
             <div class="rest">
                 <div class="restImg">
-                    <img src="/static/images/<%= restaurant.rest_index %>.png" alt="식당 이미지">
+                    <img src="/static/images/<%= restaurant.rest_index %>.png" alt="식당 이미지" />
                 </div>
                 <div class="restInfo">
                     <div class="restTitle">
@@ -29,32 +35,40 @@
                         <div class="restRankLike">
                             <span class="reviewCount">리뷰 수: <%=reviewList.length%></span>
                             <!-- 별점 -->
-                            <i class="fa-solid fa-star fa-2xl" style="color: #FFD43B;"></i>
+                            <i class="fa-solid fa-star fa-2xl" style="color: #ffd43b"></i>
                             <% let rating = 0%>
                             <!-- 리뷰가 있을 때 -->
-                            <% if (reviewList.length > 0) { %>
-                                <% for (review of reviewList) { %>
-                                    <% rating += review.review_rating %>
-                                <% } %>
+                            <% if (reviewList.length > 0) { %> <% for (review of reviewList) { %> <%
+                            rating += review.review_rating %> <% } %>
                             <!-- 평균, 소수점 첫 번째 자리까지 반올림 -->
-                            <span class="rating"><%= (rating / reviewList.length).toFixed(1) %></span>
+                            <span class="rating"
+                                ><%= (rating / reviewList.length).toFixed(1) %></span
+                            >
                             <% } else { %>
-                                <span class="rating">0</span>
+                            <span class="rating">0</span>
                             <% } %>
                             <!-- 채운 하트 fa-regular -> fa-solid -->
 
                             <% if (!likeCheckResult) { %>
                             <!-- 로그인 x, 로그인 o 좋아요 x -->
-                            <i id="emptyHeart" class="fa-regular fa-heart fa-2xl" style="color: #ff0000;" onclick="likePlus('<%= restaurant.rest_index%>', '<%= isLogin %>')"></i>
+                            <i
+                                id="emptyHeart"
+                                class="fa-regular fa-heart fa-2xl"
+                                style="color: #ff0000"
+                                onclick="likePlus('<%= restaurant.rest_index%>', '<%= isLogin %>')"
+                            ></i>
                             <% } else { %>
                             <!-- 로그인 o 좋아요 o -->
-                            <i id="filledHeart" class="fa-solid fa-heart fa-2xl" style="color: #ff0000;" onclick="likePlus('<%= restaurant.rest_index%>', '<%= isLogin %>')"></i>
+                            <i
+                                id="filledHeart"
+                                class="fa-solid fa-heart fa-2xl"
+                                style="color: #ff0000"
+                                onclick="likePlus('<%= restaurant.rest_index%>', '<%= isLogin %>')"
+                            ></i>
                             <% } %>
                         </div>
-                        
                     </div>
                     <hr />
-                    
                     <div class="restDes">
                         <p><%= restaurant.rest_desc%></p>
                         <br />
@@ -67,11 +81,13 @@
                                 📜 대표메뉴:
                                 <!-- 메뉴 정보가 있을 때 -->
                                 <% if (menuList.length > 0) { %>
-                                            <ul>
-                                                <% for (menu of menuList) { %>
-                                                    <li><span><%=menu.menu%></span> ------------- <%=menu.price%>원</li>
-                                                <% } %>
-                                            </ul>     
+                                <ul>
+                                    <% for (menu of menuList) { %>
+                                    <li>
+                                        <span><%=menu.menu%></span> ------------- <%=menu.price%>원
+                                    </li>
+                                    <% } %>
+                                </ul>
                                 <% } %>
                             </div>
                         </div>
@@ -82,25 +98,28 @@
             <div class="maps">
                 <div class="address">주소: <%= restaurant.rest_address%></div>
                 <div id="map"></div>
-            </div>     
+            </div>
             <script>
                 const address = "<%=restaurant.rest_address%>";
                 let lat, lng;
                 // console.log(address);
                 function geo() {
                     return new Promise((resolve, reject) => {
-                        naver.maps.Service.geocode({
-                            query: address
-                        }, function(status, response) {
-                            if (status !== naver.maps.Service.Status.OK) {
-                                reject("주소 -> 위도,경도 변환 error");
+                        naver.maps.Service.geocode(
+                            {
+                                query: address,
+                            },
+                            function (status, response) {
+                                if (status !== naver.maps.Service.Status.OK) {
+                                    reject("주소 -> 위도,경도 변환 error");
+                                }
+                                let result = response.v2; // 검색 결과의 컨테이너
+                                let items = result.addresses; // 검색 결과의 배열
+                                lat = items[0].x;
+                                lng = items[0].y;
+                                resolve(); // Promise를 이용하여 비동기 동작이 완료됨을 알림
                             }
-                            let result = response.v2; // 검색 결과의 컨테이너
-                            let items = result.addresses; // 검색 결과의 배열
-                            lat = items[0].x;
-                            lng = items[0].y;
-                            resolve(); // Promise를 이용하여 비동기 동작이 완료됨을 알림
-                        });
+                        );
                     });
                 }
                 function map() {
@@ -112,7 +131,7 @@
                         zoom: 18,
                         scaleControl: false,
                         mapDataControl: false,
-                        zoomControl: true
+                        zoomControl: true,
                     };
 
                     // mapOptions의 옵션으로 map 생성
@@ -121,7 +140,7 @@
                     // 지도 마커 설정
                     let marker = new naver.maps.Marker({
                         position: new naver.maps.LatLng(lng, lat),
-                        map: map
+                        map: map,
                     });
                 }
                 async function geoAndMap() {
@@ -130,60 +149,61 @@
                 }
 
                 geoAndMap();
-
             </script>
 
-            
             <div class="reviewAll">
                 <h2>리뷰</h2>
                 <div class="reviews">
                     <% let reviewCount = 0; %>
                     <!-- 리뷰 개수 1개 -->
-                    <% if (reviewList.length === 1) {%>
-                        <% for (let i = 0; i < reviewList.length; i++) { %>
-                            <div class="review"">
-                                <div class="reviewTitle">
-                                    <i class="fa-regular fa-user fa-xl"></i>
-                                    <span><%= reviewList[i].User.nickname%> | </span>
-                                    <% const originalDate = new Date(reviewList[i].createdAt);
-                                    const formattedDate = originalDate.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false});
-                                    %>
-                                    <span><%=formattedDate %></span>
-                                    <span class="reviewRating">
-                                        <% for(let j = 0; j < reviewList[i].review_rating; j++) { %>
-                                        <i class="fa-solid fa-star fa-xl" style="color: #FFD43B;"></i>    
-                                        <% } %>
-                                    </span>
-                                </div>
-                                <hr>
-                                <p><%= reviewList[i].review_content%></p>
-                            </div>
-                        <% } %>
-                    <% } else if(reviewList.length >= 2) { %>
-                            <!-- 리뷰 개수 2개 이상 -->
-                            <% for (let i = 0; i < 2; i++) { %>
-                                <div class="review"">
-                                    <div class="reviewTitle">
-                                        <i class="fa-regular fa-user fa-xl"></i>
-                                        <span><%= reviewList[i].User.nickname%> | </span>
-                                        <% const originalDate = new Date(reviewList[i].createdAt);
-                                        const formattedDate = originalDate.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false});
-                                        %>
-                                        <span><%=formattedDate %></span>
-                                        <span class="reviewRating">
-                                            <% for(let j = 0; j < reviewList[i].review_rating; j++) { %>
-                                            <i class="fa-solid fa-star fa-xl" style="color: #FFD43B;"></i>    
-                                            <% } %>
-                                        </span>
-                                    </div>
-                                    <hr>
-                                    <p><%= reviewList[i].review_content%></p>
-                                </div>
-                            <% } %>
-                            <% if (reviewList.length > 2) { %>
-                            <button id="reviewPlusBtn" type="button" onclick="reviewPlus('<%= restaurant.rest_index%>', this)">리뷰 더보기 +</button>
-                            <% } %>
-                        <% } %>
+                    <% if (reviewList.length === 1) {%> <% for (let i = 0; i < reviewList.length;
+                    i++) { %>
+                    <div class="review">
+                        <div class="reviewTitle">
+                            <i class="fa-regular fa-user fa-xl"></i>
+                            <span><%= reviewList[i].User.nickname%> | </span>
+                            <% const originalDate = new Date(reviewList[i].createdAt); const
+                            formattedDate = originalDate.toLocaleString('ko-KR', {timeZone:
+                            'Asia/Seoul', hour12: false}); %>
+                            <span><%=formattedDate %></span>
+                            <span class="reviewRating">
+                                <% for(let j = 0; j < reviewList[i].review_rating; j++) { %>
+                                <i class="fa-solid fa-star fa-xl" style="color: #ffd43b"></i>
+                                <% } %>
+                            </span>
+                        </div>
+                        <hr />
+                        <p><%= reviewList[i].review_content%></p>
+                    </div>
+                    <% } %> <% } else if(reviewList.length >= 2) { %>
+                    <!-- 리뷰 개수 2개 이상 -->
+                    <% for (let i = 0; i < 2; i++) { %>
+                    <div class="review">
+                        <div class="reviewTitle">
+                            <i class="fa-regular fa-user fa-xl"></i>
+                            <span><%= reviewList[i].User.nickname%> | </span>
+                            <% const originalDate = new Date(reviewList[i].createdAt); const
+                            formattedDate = originalDate.toLocaleString('ko-KR', {timeZone:
+                            'Asia/Seoul', hour12: false}); %>
+                            <span><%=formattedDate %></span>
+                            <span class="reviewRating">
+                                <% for(let j = 0; j < reviewList[i].review_rating; j++) { %>
+                                <i class="fa-solid fa-star fa-xl" style="color: #ffd43b"></i>
+                                <% } %>
+                            </span>
+                        </div>
+                        <hr />
+                        <p><%= reviewList[i].review_content%></p>
+                    </div>
+                    <% } %> <% if (reviewList.length > 2) { %>
+                    <button
+                        id="reviewPlusBtn"
+                        type="button"
+                        onclick="reviewPlus('<%= restaurant.rest_index%>', this)"
+                    >
+                        리뷰 더보기 +
+                    </button>
+                    <% } %> <% } %>
                 </div>
                 <hr />
                 <div class="createReview">
@@ -194,10 +214,20 @@
                         <%} %>
                         </span>
                     </div>
-                    <textarea maxlength="255" class="createReviewContent" name="create_review" cols="92" rows="3"
-                    placeholder="내용을 입력해주세요."
+                    <textarea
+                        maxlength="255"
+                        class="createReviewContent"
+                        name="create_review"
+                        cols="92"
+                        rows="3"
+                        placeholder="내용을 입력해주세요."
                     ></textarea>
-                    <button type="button" onclick="createReview('<%= restaurant.rest_index %>', '<%= isLogin %>')">리뷰 등록하기</button>
+                    <button
+                        type="button"
+                        onclick="createReview('<%= restaurant.rest_index %>', '<%= isLogin %>')"
+                    >
+                        리뷰 등록하기
+                    </button>
                 </div>
             </div>
         </main>
@@ -209,7 +239,7 @@
             // 로그인 되어있을 때
             // console.log("로그인 상태 >> ",isLogin)
             if (isLogin === "true") {
-                const filledHeart = document.querySelector('#filledHeart')
+                const filledHeart = document.querySelector("#filledHeart");
                 // console.log(filledHeart)
                 // 채워진 하트 좋아요 o) 라면
                 if (filledHeart) {
@@ -218,37 +248,40 @@
                     axios({
                         url: `/restaurantDetail/${restIndex}/deleteLike`,
                         method: "delete",
-                        data: { restIndex: restIndex }
-                    }).then((response)=>{
-                        filledHeart.id = "emptyHeart";
-                        filledHeart.classList.remove("fa-solid");
-                        filledHeart.classList.add('fa-regular');
-                        // console.log(response)
-                        alert(response.data.message);
-                    }).catch((err) => {
-                        alert("좋아요 삭제 실패");
-                        console.log("err", err)
+                        data: { restIndex: restIndex },
                     })
-                    
+                        .then((response) => {
+                            filledHeart.id = "emptyHeart";
+                            filledHeart.classList.remove("fa-solid");
+                            filledHeart.classList.add("fa-regular");
+                            // console.log(response)
+                            alert(response.data.message);
+                        })
+                        .catch((err) => {
+                            alert("좋아요 삭제 실패");
+                            console.log("err", err);
+                        });
                 } else {
                     // 빈 하트 (로그인 o 좋아요 x) 라면
-                    const emptyHeart = document.querySelector('#emptyHeart');
+                    const emptyHeart = document.querySelector("#emptyHeart");
                     // console.log(emptyHeart);
                     // 좋아요 등록 후 채워진 하트
                     axios({
                         url: `/restaurantDetail/${restIndex}/createLike`,
                         method: "post",
-                        data: { restIndex: restIndex }
-                    }).then((response)=>{
-                        emptyHeart.id = "filledHeart";
-                        emptyHeart.classList.remove("fa-regular");
-                        emptyHeart.classList.add('fa-solid');
-                        // console.log(response)
-                        alert(response.data.message);
-                    }).catch((err) => {
-                        alert("좋아요 등록 실패");
-                        console.log("err", err)
+                        data: { restIndex: restIndex },
                     })
+                        .then((response) => {
+                            emptyHeart.id = "filledHeart";
+                            emptyHeart.classList.remove("fa-regular");
+                            emptyHeart.classList.add("fa-solid");
+                            // console.log(response)
+                            alert(response.data.message);
+                        })
+                        .catch((err) => {
+                            alert("좋아요 등록 실패");
+                            console.log("err", err);
+                        });
                 }
             } else {
                 // 로그인 안되어있을 때
@@ -261,127 +294,134 @@
 
         function reviewPlus(restIndex) {
             axios({
-                        url: `/restaurantDetail/${restIndex}/reviewPlus`,
-                        method: "get",
-                        params: { restIndex: restIndex }
-                    }).then((response)=>{
-                        // console.log(response.data.reviewList);
-                        const reviewList = response.data.reviewList
-                        // 리뷰가 더보기 할 리뷰가 없을 때
-                        if (reviewCount === reviewList.length) {
-                            return alert("리뷰가 더 이상 없습니다!");
-                        }
-                        // console.log(reviewList);
-                        // 더보기 리뷰가 1개 남았을 때
-                        if (reviewList.length - reviewCount === 1) {
-                            for (let i = reviewCount; i < reviewCount + 1; i++) {
-                                // console.log(reviewList[i].review_content);
-                                // 리뷰 전체 감싸는 div
-                                const plusReview = document.createElement("div");
-                                plusReview.classList.add("review")
+                url: `/restaurantDetail/${restIndex}/reviewPlus`,
+                method: "get",
+                params: { restIndex: restIndex },
+            })
+                .then((response) => {
+                    // console.log(response.data.reviewList);
+                    const reviewList = response.data.reviewList;
+                    // 리뷰가 더보기 할 리뷰가 없을 때
+                    if (reviewCount === reviewList.length) {
+                        return alert("리뷰가 더 이상 없습니다!");
+                    }
+                    // console.log(reviewList);
+                    // 더보기 리뷰가 1개 남았을 때
+                    if (reviewList.length - reviewCount === 1) {
+                        for (let i = reviewCount; i < reviewCount + 1; i++) {
+                            // console.log(reviewList[i].review_content);
+                            // 리뷰 전체 감싸는 div
+                            const plusReview = document.createElement("div");
+                            plusReview.classList.add("review");
 
-                                // 리뷰 타이틀 div와 콘텐츠 p
-                                const reviewTitle = document.createElement("div");
-                                reviewTitle.classList.add("reviewTitle")
-                                const hr = document.createElement("hr");
-                                const content = document.createElement("p");
-                                content.textContent = reviewList[i].review_content;
-                                plusReview.append(reviewTitle, hr, content)
-                                
-                                // 유저이미지, 닉네임, 생성일, 별점
-                                const userImage = document.createElement("i");
-                                const userNickname = document.createElement("span");
-                                const createAt = document.createElement("span");
-                                const rating = document.createElement("span"); // reviewRating 클래스
+                            // 리뷰 타이틀 div와 콘텐츠 p
+                            const reviewTitle = document.createElement("div");
+                            reviewTitle.classList.add("reviewTitle");
+                            const hr = document.createElement("hr");
+                            const content = document.createElement("p");
+                            content.textContent = reviewList[i].review_content;
+                            plusReview.append(reviewTitle, hr, content);
 
-                                // <i class="fa-regular fa-user fa-xl"></i> 유저 이미지
-                                userImage.classList.add("fa-regular")
-                                userImage.classList.add("fa-user")
-                                userImage.classList.add("fa-xl")
-                                userNickname.textContent = `${reviewList[i].User.nickname} | `;
-                                const originalDate = new Date(reviewList[i].createdAt);
-                                const formattedDate = originalDate.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false});
-                                createAt.textContent = formattedDate 
-                                rating.classList.add("reviewRating");
-                                for (let j = 0; j < reviewList[i].review_rating; j++) {
-                                    const ratingOne = document.createElement("i");
-                                    ratingOne.classList.add("fa-solid");
-                                    ratingOne.classList.add("fa-star");
-                                    ratingOne.classList.add("fa-xl");
-                                    ratingOne.style.color = "#FFD43B";
-                                    rating.append(ratingOne);
-                                }
-                                reviewTitle.append(userImage, userNickname, createAt, rating)
-                                const reviews = document.querySelector(".reviews");
-                                const reviewPlusBtn = document.querySelector("#reviewPlusBtn");
-                                // console.log(reviewPlusBtn)
-                                reviews.insertBefore(plusReview, reviewPlusBtn);
+                            // 유저이미지, 닉네임, 생성일, 별점
+                            const userImage = document.createElement("i");
+                            const userNickname = document.createElement("span");
+                            const createAt = document.createElement("span");
+                            const rating = document.createElement("span"); // reviewRating 클래스
+
+                            // <i class="fa-regular fa-user fa-xl"></i> 유저 이미지
+                            userImage.classList.add("fa-regular");
+                            userImage.classList.add("fa-user");
+                            userImage.classList.add("fa-xl");
+                            userNickname.textContent = `${reviewList[i].User.nickname} | `;
+                            const originalDate = new Date(reviewList[i].createdAt);
+                            const formattedDate = originalDate.toLocaleString("ko-KR", {
+                                timeZone: "Asia/Seoul",
+                                hour12: false,
+                            });
+                            createAt.textContent = formattedDate;
+                            rating.classList.add("reviewRating");
+                            for (let j = 0; j < reviewList[i].review_rating; j++) {
+                                const ratingOne = document.createElement("i");
+                                ratingOne.classList.add("fa-solid");
+                                ratingOne.classList.add("fa-star");
+                                ratingOne.classList.add("fa-xl");
+                                ratingOne.style.color = "#FFD43B";
+                                rating.append(ratingOne);
                             }
-                            reviewCount += 1;
+                            reviewTitle.append(userImage, userNickname, createAt, rating);
+                            const reviews = document.querySelector(".reviews");
+                            const reviewPlusBtn = document.querySelector("#reviewPlusBtn");
+                            // console.log(reviewPlusBtn)
+                            reviews.insertBefore(plusReview, reviewPlusBtn);
+                        }
+                        reviewCount += 1;
                         // 2개이상 남았을 때
-                        } else {
-                            // 3번째 리뷰 부터 2개추가
-                            for (let i = reviewCount; i < reviewCount + 2; i++) {
-                                // console.log(reviewList[i].review_content);
-                                // 리뷰 전체 감싸는 div
-                                const plusReview = document.createElement("div");
-                                plusReview.classList.add("review")
+                    } else {
+                        // 3번째 리뷰 부터 2개추가
+                        for (let i = reviewCount; i < reviewCount + 2; i++) {
+                            // console.log(reviewList[i].review_content);
+                            // 리뷰 전체 감싸는 div
+                            const plusReview = document.createElement("div");
+                            plusReview.classList.add("review");
 
-                                // 리뷰 타이틀 div와 콘텐츠 p
-                                const reviewTitle = document.createElement("div");
-                                reviewTitle.classList.add("reviewTitle")
-                                const hr = document.createElement("hr");
-                                const content = document.createElement("p");
-                                content.textContent = reviewList[i].review_content;
-                                plusReview.append(reviewTitle, hr, content)
-                                
-                                // 유저이미지, 닉네임, 생성일, 별점
-                                const userImage = document.createElement("i");
-                                const userNickname = document.createElement("span");
-                                const createAt = document.createElement("span");
-                                const rating = document.createElement("span"); // reviewRating 클래스
+                            // 리뷰 타이틀 div와 콘텐츠 p
+                            const reviewTitle = document.createElement("div");
+                            reviewTitle.classList.add("reviewTitle");
+                            const hr = document.createElement("hr");
+                            const content = document.createElement("p");
+                            content.textContent = reviewList[i].review_content;
+                            plusReview.append(reviewTitle, hr, content);
 
-                                // <i class="fa-regular fa-user fa-xl"></i> 유저 이미지
-                                userImage.classList.add("fa-regular")
-                                userImage.classList.add("fa-user")
-                                userImage.classList.add("fa-xl")
-                                userNickname.textContent = `${reviewList[i].User.nickname} | `;
-                                const originalDate = new Date(reviewList[i].createdAt);
-                                const formattedDate = originalDate.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul', hour12: false});
-                                createAt.textContent = formattedDate 
-                                rating.classList.add("reviewRating");
-                                for (let j = 0; j < reviewList[i].review_rating; j++) {
-                                    const ratingOne = document.createElement("i");
-                                    ratingOne.classList.add("fa-solid");
-                                    ratingOne.classList.add("fa-star");
-                                    ratingOne.classList.add("fa-xl");
-                                    ratingOne.style.color = "#FFD43B";
-                                    rating.append(ratingOne);
-                                }
-                                reviewTitle.append(userImage, userNickname, createAt, rating)
-                                const reviews = document.querySelector(".reviews");
-                                const reviewPlusBtn = document.querySelector("#reviewPlusBtn");
-                                // console.log(reviewPlusBtn)
-                                reviews.insertBefore(plusReview, reviewPlusBtn);
+                            // 유저이미지, 닉네임, 생성일, 별점
+                            const userImage = document.createElement("i");
+                            const userNickname = document.createElement("span");
+                            const createAt = document.createElement("span");
+                            const rating = document.createElement("span"); // reviewRating 클래스
+
+                            // <i class="fa-regular fa-user fa-xl"></i> 유저 이미지
+                            userImage.classList.add("fa-regular");
+                            userImage.classList.add("fa-user");
+                            userImage.classList.add("fa-xl");
+                            userNickname.textContent = `${reviewList[i].User.nickname} | `;
+                            const originalDate = new Date(reviewList[i].createdAt);
+                            const formattedDate = originalDate.toLocaleString("ko-KR", {
+                                timeZone: "Asia/Seoul",
+                                hour12: false,
+                            });
+                            createAt.textContent = formattedDate;
+                            rating.classList.add("reviewRating");
+                            for (let j = 0; j < reviewList[i].review_rating; j++) {
+                                const ratingOne = document.createElement("i");
+                                ratingOne.classList.add("fa-solid");
+                                ratingOne.classList.add("fa-star");
+                                ratingOne.classList.add("fa-xl");
+                                ratingOne.style.color = "#FFD43B";
+                                rating.append(ratingOne);
                             }
-                            reviewCount += 2;
+                            reviewTitle.append(userImage, userNickname, createAt, rating);
+                            const reviews = document.querySelector(".reviews");
+                            const reviewPlusBtn = document.querySelector("#reviewPlusBtn");
+                            // console.log(reviewPlusBtn)
+                            reviews.insertBefore(plusReview, reviewPlusBtn);
                         }
-                    }).catch((err) => {
-                        alert('리뷰 더보기 실패');
-                        console.log("err", err)
-                    })
-            
+                        reviewCount += 2;
+                    }
+                })
+                .catch((err) => {
+                    alert("리뷰 더보기 실패");
+                    console.log("err", err);
+                });
         }
 
         // 현재 선택한 별점 수
         let selectRating = 0;
         function reviewRating(restIndex, click) {
             console.log("클릭이 발생한 요소의 id 값:", click.id);
-            selectRating = Number(click.id[click.id.length-1])
+            selectRating = Number(click.id[click.id.length - 1]);
             console.log("선택한 별점 수 >", selectRating);
-            
+
             // 선택한 별점보다 더 채원진 별 빈 별로
-            for (let i = selectRating + 1; i <= 5; i++ ) {
+            for (let i = selectRating + 1; i <= 5; i++) {
                 const ratingChange = document.querySelector(`#ratingCount${i}`);
                 if (ratingChange.classList.contains("fa-solid")) {
                     ratingChange.classList.remove("fa-solid");
@@ -396,7 +436,7 @@
                     ratingChange.classList.add("fa-solid");
                 }
             }
-            
+
             // for(let i = 1; i <= createRating; i++) {
             //     const ratingChange = document.querySelector(`#ratingCount${i}`);
             //     ratingChange.classList.remove("fa-regular");
@@ -414,8 +454,8 @@
                 }
 
                 if (content === "") {
-                    return alert("리뷰 내용을 입력해주세요!")
-                } 
+                    return alert("리뷰 내용을 입력해주세요!");
+                }
 
                 if(confirm("리뷰를 등록하시겠습니까?")) {
                     // 리뷰 등록 요청
@@ -438,6 +478,5 @@
                 alert("리뷰를 등록하려면 로그인이 된 상태여야 합니다. 로그인을 해주세요!");
             }
         }
-        
     </script>
 </html>

@@ -14,6 +14,12 @@ body {
     /* --baseContainer: 1400px; */
 }
 
+body {
+    font-family: "Gowun Dodum", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 ::placeholder {
     color: black;
 }
@@ -106,6 +112,13 @@ header img {
     width: 11.875rem;
     padding: 0.75rem 0;
 }
+
+/* input register */
+input:read-only {
+    background-color: lightyellow;
+}
+
+
 /* /////////////// */
 /* @import url("https://fonts.googleapis.com/css?family=DM+Sans:500,700&display=swap");
 
@@ -266,7 +279,7 @@ header nav ul li:last-child {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: whitesmoke;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -330,8 +343,25 @@ header nav ul li:last-child {
     height: 300%;
 }
 
+/* modal창 이미지 */
+.imgLogo {
+    margin: 20px;
+    /* width: 300px;
+    height: 300px; */
+}
+
+
 .modal-content {
+    padding: 60px;
     text-align: center;
+    border: none;
+    background-color: whitesmoke;
+}
+
+.modal-title {
+    font-size: 40px;
+    font-weight: 1000;
+    margin: 15px;
 }
 
 /* 어두운 오버레이 스타일 */
@@ -381,9 +411,27 @@ h3 {
 
 .stepbutton {
     position: absolute;
-    top: 10px;
-    right: 13px;
+    top: 7px;
+    right: 7px;
     font-size: 15px;
+}
+
+button {
+    border: none;
+    padding: 7px 7px;
+    border-radius: 5px;
+    background-color: #ffc064;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* #btnJoin {
+    left: 100px;
+} */
+
+label {
+    margin: 20px;
+    font-weight: 600;
 }
 
 /* 에러메세지 */

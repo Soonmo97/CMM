@@ -4,15 +4,14 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>아이디 중복체크</title>
-        <!-- axios CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-        <!-- 브라우저 상단 LOGO -->
-        <link rel="icon" type="images/png" href="/static/images/CMM-circle.png" />
+        <%- include('../include/head') %>
     </head>
 
     <style>
         body {
+            margin-top: 20px;
+            margin-left: 25px;
+            margin-right: 25px;
             background-color: whitesmoke;
         }
 
@@ -72,10 +71,12 @@
             background-color: #ffc064;
             font-weight: bold;
             cursor: pointer;
+            visibility: hidden;
         }
         #msg {
             margin-left: 20px;
             color: #c47500;
+            font-size: 12px;
         }
    
     </style>
@@ -87,7 +88,7 @@
                 <img src="/static/images/CMM-removebg.png" alt="cmm logo" />
                 <p>아이디 중복체크</p>
             </div>
-            <hr size="1" width="460" />
+            <hr size="3" width="440" />
             <br />
             <div id="chk">
                 <form id="checkForm">

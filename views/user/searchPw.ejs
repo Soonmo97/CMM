@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>비밀번호 찾기</title>
+        <%- include('../include/head') %>
+    </head>
+    <style>
+        body {
+            margin-top: 20px;
+            margin-left: 25px;
+            margin-right: 25px;
+            background-color: whitesmoke;
+        }
+
+        .logoImg {
+            display: flex;
+            align-items: center;
+        }
+
+        .logoImg p {
+            font-size: 18px;
+            font-weight: bold;
+            color: "gray";
+        }
+
+        .logoImg img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+
+        #msg {
+            font-family: "Gowun Dodum", sans-serif;
+            color: #c47500;
+            font-size: 12px;
+        }
+
+        #idCheck {
+            border: none;
+            padding: 7px 7px;
+            border-radius: 5px;
+            background-color: #ffc064;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+
+        .newPw {
+            visibility: hidden;
+        }
+
+        #pwCheck {
+            border: none;
+            padding: 7px 7px;
+            border-radius: 5px;
+            background-color: #ffc064;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+    </style>
+    <body>
+        <div class="logoImg">
+            <img src="/static/images/CMM-removebg.png" alt="cmm logo" />
+            <p>비밀번호 찾기</p>
+        </div>
+        <hr size="3" width="440" />
+        <br />
+        <form id="searchPw">
+            <div class="inputId">
+                <label for="id"
+                    >아이디 :
+                    <input
+                        type="text"
+                        name="inputId"
+                        id="inputId"
+                        placeholder="아이디를 입력해주세요."
+                    />
+                    <input type="button" value="확인" id="idCheck" onclick="checkId();" />
+                </label>
+                <br />
+                <div id="msg"></div>
+                <br /><br />
+                <div class="newPw">
+                    <label for="id">
+                        새 비밀번호 :
+                        <input
+                            type="password"
+                            name="inputPw"
+                            id="inputPw"
+                            placeholder="새로운 비밀번호를 입력해주세요."
+                        />
+                    </label>
+                    <br /><br />
+                    <label for="pw"
+                        >새 비밀번호 확인 :
+                        <input
+                            type="password"
+                            name="valiPw"
+                            id="valiPw"
+                            placeholder="비밀번호를 확인해주세요."
+                        />
+                        <input type="button" value="변경" id="pwCheck" onclick="checkPw()" />
+                    </label>
+                </div>
+            </div>
+            <br /><br /><br />
+        </form>
+    </body>
+
+    <script>
+        // 일치 아이디 찾기
+        function checkId() {
+            const id = document.getElementById("inputId").value;
+
+            if (!id) {
+                alert("아이디를 입력하지 않았습니다.");
+                return false;
+            } else {
+                axios({
+                    method: "POST",
+                    url: "/user/searchPw",
+                    data: {
+                        id: id,
+                    },
+                })
+                    .then((response) => {
+                        if (response.data.ok) {
+                            console.log("아이디 확인");
+                            alert("아이디 확인에 성공했습니다.");
+                            document.getElementById("msg").innerHTML =
+                                "존재하는 아이디입니다. 새 비밀번호를 입력해주세요.";
+                            document.querySelector(".newPw").style.visibility = "visible";
+                        } else {
+                            console.log("아이디 미확인");
+                            alert("존재하지 않는 아이디 입니다.");
+                            document.getElementById("msg").innerHTML =
+                                "아이디를 다시 입력해주세요.";
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }
+        }
+
+        // 새 비밀번호 변경
+        function checkPw() {
+            const id = document.getElementById("inputId").value;
+            const inputPw = document.getElementById("inputPw").value;
+            const valiPw = document.getElementById("valiPw").value;
+
+            if (!inputPw || !valiPw) {
+                alert("비밀번호를 입력해주세요");
+                return false;
+            }
+            if (inputPw != valiPw) {
+                alert("비밀번호가 다릅니다.");
+                return false;
+            }
+            else {
+                axios({
+                    method: "POST",
+                    url: "/user/alterPw",
+                    data: {
+                        id: id,
+                        pw: inputPw,
+                    },
+                })
+                    .then((response) => {
+                        if (response.data.ok) {
+                            console.log("비밀번호 변경 성공");
+                            alert("비밀번호 변경 성공했습니다.");
+                            window.close();
+                        } else {
+                            console.log("비밀번호 변경 실패");
+                            alert("비밀번호 변경 실패했습니다.");
+                            res.redirect("/");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }
+        }
+    </script>
+</html>

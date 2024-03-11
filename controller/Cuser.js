@@ -6,7 +6,6 @@ const { render } = require("ejs");
 const nodemailer = require("nodemailer");
 const { smtpTransport } = require("../config/email");
 const { response } = require("express");
-const { assign } = require("nodemailer/lib/shared");
 
 // GET /index
 exports.getMain = async (req, res) => {
@@ -80,7 +79,6 @@ exports.loginHeader = async (req, res) => {
             console.log("세션 연결 완료>>  ", req.session.index);
             res.redirect("/");
         } else {
-            // res.render("index", { isLogin: false });
             res.send(`<script>
             alert("아이디 또는 비밀번호가 일치하지 않습니다.");
             window.location.href = "/";
@@ -95,7 +93,6 @@ exports.loginHeader = async (req, res) => {
 // POST /include/header/form/register
 exports.registerHeader = async (req, res) => {
     const { id, pw, nickname, email } = req.body;
-    console.log("id 전달이 됐나요", id);
     try {
         const hashedPassword = await bcrypt.hash(pw, 10);
         const user = await User.findOne({ where: { id } });
@@ -221,7 +218,7 @@ exports.sendCode = async (req, res) => {
             "<div style='font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 540px; height: 600px; border-top: 4px solid #348fe2; margin: 100px auto; padding: 30px 0; box-sizing: border-box;'>" +
             "<h1 style='margin: 0; padding: 0 5px; font-size: 28px; font-weight: 400;'>" +
             "<span style='font-size: 15px; margin: 0 0 10px 3px;'></span><br />" +
-            "<span style='color: #348fe2;'>인증번호</span> 안내입니다." +
+            "<span style='color: #ffc064;'>CMM 인증번호</span> 안내입니다." +
             "</h1>" +
             "<p style='font-size: 16px; line-height: 26px; margin-top: 50px; padding: 0 5px;'>" +
             "안녕하세요.<br />" +
@@ -239,22 +236,29 @@ exports.sendCode = async (req, res) => {
             "</div>",
     };
 
-    await smtpTransport.sendMail(mailOptions, (err, response) => {
-        console.log("response", response);
-        if (err) {
-            res.send({ ok: false, msg: " 메일 전송에 실패하였습니다. " });
-            smtpTransport.close(); //전송종료
-        } else {
-            res.send({ ok: true, msg: " 메일 전송에 성공하였습니다. " });
-            console.log();
-            smtpTransport.close(); //전송종료
-        }
-    });
+    // const user = await User.findOne({ where: { email: email } });
+
+    const emailCk = await User.findOne({ where: { email: email } });
+    console.log("이메일 중복이 있나요? >>", emailCk );
+    if (emailCk ===  null) {
+        await smtpTransport.sendMail(mailOptions, (err, response) => {
+            console.log("response", response);
+            if (err) {
+                res.send({ ok: false, msg: " 메일 전송에 실패하였습니다." });
+            } else {
+                res.send({ ok: true, msg: " 메일 전송에 성공하였습니다."});
+            }
+                smtpTransport.close(); //전송종료
+            }); 
+    }
+    else {
+        res.send({ check : true });
+    }
 };
 // POST /form/checkCode
 exports.checkCode = async (req, res) => {
     const { codeValue } = req.body;
-    console.log("쿠키 값 : ", req.session);
+    console.log("세션 값: ", req.session);
 
     const hashAuth = req.session.hashAuth;
 
@@ -268,21 +272,77 @@ exports.checkCode = async (req, res) => {
     }
 };
 
-// GET /loadMoreRestaurants
-exports.loadMoreRestaurants = async (req, res) => {
-    const user = req.session.user;
-    const newRestaurants = await Restaurant.findAll({
-        attributes: ["rest_index", "rest_name"],
-    });
-
-    console.log(newRestaurants);
-    if (user) {
-        res.render("index", {
-            isLogin: true,
-            user: user,
-            newRestaurants: newRestaurants,
-        });
-    } else {
-        res.render("index", { isLogin: false, newRestaurants: newRestaurants });
-    }
+// GET /user/searchId
+exports.getSearchId = async (req, res) => {
+    res.render("user/searchId");
 };
+
+// POST /user/searchId
+exports.postSearchId = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ where: { email: email } });
+        if (user === null) {
+            console.log("존재하지 않는 이메일 ", email);
+            res.send({ ok:false });
+        } else {
+            console.log("가입 이메일과 일치 ", user);
+            res.send({ ok:true , id: user.id });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send("서버 오류");
+    }
+}
+
+
+// GET /searchPw
+exports.getSearchPw = async (req, res) => {
+    res.render("user/searchPw");
+};
+
+// POST /searchPw
+exports.postSearchPw = async (req, res) => {
+    const { id } = req.body;
+
+    try {
+        const user = await User.findOne({ where: { id: id } });
+        if (user === null) {
+            console.log("존재하지 않는 아이디 ", id);
+            res.send({ ok:false });
+        } else {
+            console.log("존재하는 아이디 ", user);
+            res.send({ ok:true , id: user.id });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send("서버 오류");
+    }
+}
+
+// POST /user/alterPw
+exports.alterPw = async (req, res) => {
+    const { id, pw } = req.body;
+    const hashedPassword = await bcrypt.hash(pw, 10);
+
+    try {
+        const user = await User.findOne({ where: { id: id } });
+
+        if (!user) {
+            return res.status(404).json({ ok: false, error: '사용자를 찾을 수 없습니다.' });
+        }
+        else {
+            user.password = hashedPassword;
+            await user.save();
+            console.log("변경된 비번 >> ", user.password);
+            return res.status(200).json({ ok: true, message: '비밀번호 변경 성공' });
+        }
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ ok: false, error: '비밀번호 변경 실패' });
+    }
+
+}
+

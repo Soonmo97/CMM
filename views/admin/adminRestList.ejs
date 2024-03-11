@@ -39,26 +39,6 @@
                         <p class="restinfo address">식당주소</p>
                         <p class="restinfo time">영업시간</p>
                         <p class="restinfo number">전화번호</p>
-                        <p class="restinfo menus">메뉴</p>
-                    </div>
-                    <div class="restmodal modal-edit">
-                        <input type="hidden" class="restedit index" name="rest_index">
-                        <input type="text" class="restedit name" placeholder="식당 이름">
-                        <select name="category" class="restedit category">
-                            <option value="한식">한식</option>
-                            <option value="일식">일식</option>
-                            <option value="양식">양식</option>
-                            <option value="중식">중식</option>
-                            <option value="디저트">디저트</option>
-                        </select>
-                        <input type="text" class="restedit desc" placeholder="식당 설명">
-                        <input type="text" class="restedit address" placeholder="식당 주소">
-                        <input type="text" class="restedit time" placeholder="식당 영업시간">
-                        <input type="text" class="restedit number" placeholder="식당 전화번호">
-                        <button type="button" class="restedit editbtn" onclick="editRestInfo()">수정</button>
-                    </div>
-                    <div class="restmodal modal-add">
-
                     </div>
                     <div class="restmodal modal-bottom"><span class="close-modal">&times;</span></div>
                 </div>
@@ -92,26 +72,26 @@
                 window.location.href=`/admin/addRestaurantMenu?rest_index=${idx}`
             }
 
+            function openEdit(idx){
+                window.location.href=`/admin/editRestaurant?rest_index=${idx}`;
+            }
+
             async function openRestInfo(idx){
+                console.log("index:", idx);
                 modal.style.display = "block";
                 document.querySelector('.modal-info').style.display = "block";
-                document.querySelector('.modal-edit').style.display = "none";
 
+                const restModal = document.querySelector('.modal-info');
                 const restInfo = document.getElementsByClassName('restinfo');
-                const [name, category, desc, address, time, number, menus] = restInfo;
-
+                const [name, category, desc, address, time, number] = restInfo;
+                
                 const result = await getOneRestInfo(idx);
-                console.log(result);
                 const {rest_index, rest_name, rest_desc, rest_address, rest_number, rest_time, Categories:cateInfo, Menus} = result.data.restInfo;
 
                 const categories = cateInfo.map((category) => category.category_name);
                 let category_name = categories.join(', ');
-                let menuList = [];
-                Menus.forEach(el => {
-                    let menu = el.menu+" ----------- "+el.price;
-                    menuList.push(menu);
-                });
-                const menuHTML = menuList.join('<br />')
+
+                // const menuHTML = menuList.join('<br />');
 
                 name.innerHTML = rest_name;
                 desc.innerHTML = rest_desc;
@@ -119,7 +99,12 @@
                 address.innerHTML = rest_address;
                 time.innerHTML = rest_time;
                 number.innerHTML = rest_number;
-                menus.innerHTML = menuHTML;
+                Menus.forEach(el => {
+                    let menu = el.menu+" ----------- "+el.price;
+                    let menuP = document.createElement('p');
+                    menuP.innerText = menu;
+                    restModal.append(menuP);
+                });
             }
 
             async function deleteRest(idx, name){
@@ -127,7 +112,7 @@
                 if(isDelete){
                     try{
                         const result = await axios({
-                            method:'post',
+                            method:'delete',
                             url:'/admin/deleteRestaurant',
                             data: {rest_index:idx}                    
                         });
@@ -143,64 +128,6 @@
                         console.log("error!!", error);
                         alert('삭제하지 못했습니다.');
                         location.reload(true);
-                    }
-                }
-            }
-
-            async function openEdit(idx){
-                modal.style.display = "block";
-                document.querySelector('.modal-info').style.display = "none";
-                document.querySelector('.modal-edit').style.display = "block";
-                
-                const restEdit = document.getElementsByClassName('restedit');
-                const [index, name, category, desc, address, time, number] = restEdit;
-                console.log(category);
-
-                const result = await getOneRestInfo(idx);
-
-                const {rest_index, rest_name, rest_desc, rest_address, rest_number, rest_time, Categories:cateInfo} = result.data.restInfo;
-                
-                index.value = rest_index;
-                name.value = rest_name;
-                // category.value = category_name;
-                desc.value = rest_desc;
-                address.value = rest_address;
-                time.value = rest_time;
-                number.value = rest_number;
-            }
-
-            async function editRestInfo(){
-                const isEdit = confirm("수정하시겠습니까?");
-                const restEdit = document.getElementsByClassName('restedit');
-                const [index, name, category, desc, address, time, number] = restEdit;
-
-                if(isEdit){
-                    // null 또는 공백일 경우 경고 + return
-                    for(let i=0; i<restEdit.length-1; i++){
-                        let rmvSpace = restEdit[i].value.replace(/ |\s+/g, '');
-                        if(rmvSpace === ''){
-                            alert('모든 정보를 입력해주세요.');
-                            return;
-                        }
-                    }
-                    const result = await axios({
-                        method:'post',
-                        url:'/admin/editRestInfo',
-                        data:{
-                            rest_index: index.value,
-                            rest_name: name.value,
-                            category_name: category.value,
-                            rest_desc: desc.value,
-                            rest_address: address.value,
-                            rest_time: time.value,
-                            rest_number: number.value
-                        }
-                    });
-                    if(result.data.result === 1){
-                        openRestInfo(index.value);
-                    }else{
-                        alert('정보를 수정하지 못했습니다.');
-                        openRestInfo(index.value);
                     }
                 }
             }

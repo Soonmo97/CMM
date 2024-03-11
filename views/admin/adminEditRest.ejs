@@ -3,7 +3,447 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <%-include('../include/head.ejs')%>
+        <title>관리 페이지</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                width: 100%;
+                margin: 0px;
+                padding: 0px;
+            }
+            header {
+                height: 80px;
+            }
+            .admin-main {
+                position: relative;
+                width: 85%;
+                float: right;
+            }
+            h2{
+                margin: 20px 0px;
+            }
+            #info-div, #category-div, #menu-div{
+                width: 60%;
+                border-radius: 25px;
+                padding: 20px;
+                margin: 5px;
+                border: 3px solid #edededb2;
+                margin-bottom: 10px;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+            }
+            .title-div{
+                width: 100%;
+                margin: 5px;
+                display: flex;
+                justify-content: space-between;
+            }
+            .enable-edit-btn, .edit-do-btn{
+                width: 100px;
+                height: 42px;
+                line-height: 42px;
+                border-radius: 30px;
+                border:none;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                font-size: 20px;
+                font-weight: 700;
+            }
+            .enable-edit-btn{
+                color: #f2f2f2;
+                background-color: #ffc064;
+            }
+            .enable-edit-btn:hover{
+                cursor: pointer;
+                background-color: #e1a000;
+            }
+            .hidden{
+                display: none;
+            }
+            .edit-do-btn{
+                color: #f2f2f2;
+                background-color: #9ed26b;
+            }
+            .edit-do-btn:hover{
+                cursor: pointer;
+                background-color: #8cbf4f ;
+            }
+            label{
+                width: 100px;
+                vertical-align: top;
+            }
+            .edit-restinfo input {
+                width: 600px;
+                height: 36px;
+                margin-bottom: 5px;
+            }
+            .edit-category select{
+                width: 100px;
+                height: 36px;
+                border-radius: 5px;
+                margin-bottom: 5px;
+            }
+            .edit-menus input{
+                width: 150px;
+                height: 36px;
+            }
+            .edit-restinfo-form input,
+            .edit textarea {
+                width: 600px;
+            }
+            .edit-category select{
+                width: 200px;
+            }
+            #btn-add, #btn-rmv{
+                width: 34px;
+                height: 34px;
+                border-radius: 5px;
+                border:none;
+                background-color: #eeeeee;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            }
+            #btn-add:hover, #btn-rmv:hover{
+                cursor:pointer;
+                background-color: #d6d6d6fa;;
+            }
+            .form-title{
+                font-size: 26px;
+                font-weight: 700;
+            }
+            input, textarea {
+                background-color: #ffffff;
+                color: #000000;
+                padding: 10px;
+                border-radius: 5px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                margin-bottom: 10px;
+            }
+            input:disabled, textarea:disabled, select:disabled{
+                background-color: #f3f2f2;
+                border: 1px solid #cbcbcb;
+            }
+        </style>
     </head>
-    <body></body>
+    <body>
+        <%- include('./sidebar.ejs') %>
+        <main class="admin-main">
+            <h2>식당 정보 수정</h2>
+            <div class="edit-form-div">
+                <div id="info-div">
+                    <div class="title-div">
+                        <p class="form-title">정보</p>
+                        <button type="button" class="enable-edit-btn" id="b-info" onclick="enable('f-info', this)">수정</button>
+                        <button type="button" class="edit-do-btn hidden" id="b-editinfo" onclick="editInfo()">수정완료</button>
+                    </div>
+                    <form id="f-info" class="edit edit-restinfo-form" name="restinfo">
+                        <input type="hidden" name="index" class="edit-restinfo" id="i-index" value="<%=restInfo.rest_index%>">
+                        <label for="i-name">이름</label>
+                        <input type="text" name="name" class="edit-restinfo" id="i-name" value="<%=restInfo.rest_name%>"/><br>
+                        <label for="i-desc">설명</label>
+                        <textarea name="desc" class="edit-restinfo" id="i-desc" cols="50" rows="10"><%=restInfo.rest_desc%></textarea><br>
+                        <label for="i-address">주소</label>
+                        <input type="text" name="address" class="edit-restinfo" id="i-address" value="<%=restInfo.rest_address%>" /><br>
+                        <label for="i-time">영업시간</label>
+                        <input type="text" name="time" class="edit-restinfo" id="i-time" value="<%=restInfo.rest_time%>" /><br>
+                        <label for="i-number">전화번호</label>
+                        <input type="text" name="number" class="edit-restinfo" id="i-number" value="<%=restInfo.rest_number%>" maxlength="15" /><br>
+                    </form>
+                </div>
+                <div id="category-div">
+                    <div class="title-div">
+                        <p class="form-title">카테고리</p>
+                        <button type="button" class="enable-edit-btn" id="b-cate" onclick="enable('f-category', this)">수정</button>
+                        <button type="button" class="edit-do-btn hidden" id="b-editcate" onclick="editCategory('<%=restInfo.rest_index%>')">수정완료</button>
+                    </div>
+                    <form id="f-category" class="edit edit-category">
+                        <% for(let i=0; i<category.length; i++){ %>
+                            <input type="hidden" name="category_index<%=i+1%>" id="category_index<%=i+1%>" value="<%=category[i].category_index%>">
+                            <label for="s-category<%=i+1%>" id="label<%=i+1%>">카테고리 <%=i+1%></label>
+                            <select name="category<%=i+1%>" id="s-category<%=i+1%>">
+                                <option value="한식" <% if (category[i].category_name === '한식') { %>selected<% } %>>한식</option>
+                                <option value="일식" <% if (category[i].category_name === '일식') { %>selected<% } %>>일식</option>
+                                <option value="양식" <% if (category[i].category_name === '양식') { %>selected<% } %>>양식</option>
+                                <option value="중식" <% if (category[i].category_name === '중식') { %>selected<% } %>>중식</option>
+                                <option value="디저트" <% if (category[i].category_name === '디저트') { %>selected<% } %>>디저트</option>
+                                <option value="기타" <% if (category[i].category_name === '기타') { %>selected<% } %>>기타</option>
+                            </select>
+                            <br id="br<%=i+1%>">
+                        <% } %>
+                    </form>
+                    <button type="button" id="btn-add" class="hidden" onclick="addCategory()">+</button>
+                    <button type="button" id="btn-rmv" class="hidden" onclick="removeCategory()">-</button>
+                </div>
+                <div id="menu-div">
+                    <div class="title-div">
+                        <p class="form-title">메뉴</p>
+                        <button type="button" class="enable-edit-btn" id="b-menu" onclick="enable('f-menu', this)">수정</button>
+                        <button type="button" class="edit-do-btn hidden" id="b-editmenu" onclick="editMenu()">수정완료</button>
+                    </div>
+                    <form id="f-menu" class="edit edit-menus">
+                        <% for(let i=0; i<menus.length; i++){%>
+                            <label for="i-menu<%=i+1%>">메뉴 <%=i+1%></label>
+                            <input type="hidden" name="menu_id" value="<%=menus[i].menu_id%>">
+                            <input type="text" name="menu" class="edit-menus" value="<%=menus[i].menu%>"/>
+                            <input type="text" name="price" class="edit-menus" value="<%=menus[i].price%>">
+                            <br>
+                            <%}%>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <script>
+            const addBtn = document.querySelector('#btn-add');
+            const rmvBtn = document.querySelector('#btn-rmv');
+
+            window.onload = () => {
+                const select = document.forms['f-category'].querySelectorAll('select');
+                const form = document.forms;
+                let el = form.elements;
+
+                for (let i = 0; i < form.length; i++) {
+                    let el = form[i].elements;
+                    for(let j=0; j < el.length; j++){
+                        el[j].disabled = true;
+                    }
+                }
+            }
+
+            function enable(formName, btn) {
+                let form = document.getElementById(formName);
+                let el = form.elements;
+                const btnAdd = document.querySelector('#btn-add');
+                const btnRmv = document.querySelector('#btn-rmv');
+                console.log(btnAdd);
+                console.log(btnRmv);
+                console.log("<%=category.length%>");
+                if("<%=category.length%>"==="1"){
+                    console.log("add -> display");
+                    btnAdd.classList.toggle('hidden');
+                }else if("<%=category.length%>"==="2"){
+                    console.log("rmv -> display");
+                    btnRmv.classList.toggle('hidden');
+                }
+                
+                for (let i = 0; i < el.length; i++) {
+                    el[i].disabled = false;
+                }
+                btn.classList.toggle('hidden');
+                btn.nextElementSibling.classList.toggle('hidden');
+            }
+
+            async function editInfo(){
+                const form = document.forms['f-info'];
+                const [index, name, desc, address, time, number] = form.elements;
+                let isEdit = confirm('수정하시겠습니까?');
+                if(isEdit){
+                    try {
+                        const result = await axios({
+                            method:'post',
+                            url:'/admin/editRestInfo',
+                            data:{
+                                rest_index: index.value,
+                                rest_name: name.value,
+                                rest_desc: desc.value,
+                                rest_address: address.value,
+                                rest_time: time.value,
+                                rest_number: number.value
+                            }
+                        });
+                        if(result.data.result){
+                            alert('수정되었습니다.');
+                            window.location.reload();
+                        }else{
+                            alert('변경된 내용이 없거나 수정하지 못했습니다.');
+                        }
+                    } catch (error) {
+                        console.log(error);
+                        alert('수정하지 못했습니다.');
+                    }
+                }
+            }
+
+            async function editMenu(){
+                let isEdit = confirm('수정하시겠습니까?');
+                if(isEdit){
+                    const form = document.forms['f-menu'];
+                    const menu_ids = form.menu_id;
+                    const menus = form.menu;
+                    const prices = form.price;
+                    const data = [];
+
+                    if(!menu_ids.length){
+                        const menuItem = { menu: menus.value,
+                            menu_id: menu_ids.value,
+                            price: prices.value
+                        };
+                        data.push(menuItem);
+                    }else{
+                        for (let i = 0; i < menus.length; i++) {
+                        const menuItem = {
+                            menu: menus[i].value,
+                            menu_id: menu_ids[i].value,
+                            price: prices[i].value
+                        };
+                        data.push(menuItem);
+                        }
+                    }
+
+                    for (let i = 0; i < menus.length; i++) {
+                        const menuItem = {
+                            menu: menus[i].value,
+                            menu_id: menu_ids[i].value,
+                            price: prices[i].value
+                        };
+                        data.push(menuItem);
+                    }
+                    try {
+                        const result = await axios({
+                            method:"post",
+                            url:"/admin/editRestMenu",
+                            data:data
+                        });
+                        if(result.data.isSuccess){
+                            alert("메뉴를 수정했습니다.");
+                            window.location.reload();
+                        }
+                    } catch (error) {
+                        console.log(error);
+                        alert("메뉴를 수정하지 못했습니다.");
+                    }
+                }
+            }
+
+            async function editCategory(idx){
+                const form = document.forms['f-category'];
+                const index1 = form['category_index1'];
+                const index2 = form['category_index2'];
+                const select1 = form['s-category1'];
+                const select2 = form['s-category2'];
+
+                const data = [];
+                    
+                if(!select2){   // 데이터 1개일 경우
+                    if(!index2){// 인덱스 1, 데이터 1
+                        console.log('인덱스1, 데이터1');
+                        const category = { 
+                            category_index: index1.value,
+                            category_name: select1.value,
+                        };
+                        data.push(category);
+                    }else{  // 인덱스 2, 데이터 1
+                        console.log("인덱스2, 데이터1 (1개 삭제)");
+                        const category1 = {category_index:index1.value, category_name:select1.value}
+                        data.push(category1);
+                        const category2 = {category_index:index2.value, category_name:''};
+                        data.push(category2);
+                    }
+                }else{  // 데이터 2개인 경우
+                    // 인덱스 1 데이터 2 
+                    if(!index2){
+                        console.log('인덱스1, 데이터2 (1개 추가)');
+                        const category1 = {category_index:index1.value, category_name:select1.value}
+                        data.push(category1);
+                        const category2 = {category_index:'', category_name:select2.value};
+                        data.push(category2);
+                    }else{  // 인덱스 2 데이터 2
+                        console.log("인덱스2, 데이터2");
+                        const category1 = {category_index:index1.value, category_name:select1.value};
+                        data.push(category1);
+                        const category2 = {category_index:index2.value, category_name:select2.value};
+                        data.push(category2);
+                    }
+
+                    // 카테고리 두 개일 때 유효성 검사
+                    if (data[0].category_name===data[1].category_name) {
+                        alert("카테고리를 서로 다르게 설정해주세요.");
+                        return;
+                    }
+                    if(data[1].category_name===""){
+                        alert('빈 값입니다');
+                        return;
+                    }
+                }
+                let isEdit = confirm("수정하시겠습니까?");
+                if(isEdit){
+                    try{
+                        const result = await axios({
+                            method:'post',
+                            url:'/admin/editRestCategory',
+                            data:{data, rest_index:idx}
+                        })
+                        if(result.data.isSuccess){
+                            alert('카테고리를 수정했습니다.');
+                            location.reload();
+                        }
+                        console.log(result);
+                    }catch(error){
+                        console.log(error);
+                            alert('카테고리를 수정하지 못했습니다.');
+                    }
+                }
+            }
+
+            function addCategory(){
+                const form = document.forms["f-category"];
+                const btnAdd = document.querySelector("#btn-add");
+                const btnRmv = document.querySelector("#btn-rmv");
+
+                const category2 = document.createElement("select");
+                const label2 = document.createElement("label");
+                label2.htmlFor = "s-category2";
+                label2.innerText = "카테고리 2";
+                label2.id = 'label2'
+                category2.id = "s-category2";
+                category2.name = "category2";
+                console.log(category2);
+
+                let categories = [
+                    "카테고리를 설정해주세요",
+                    "한식",
+                    "일식",
+                    "양식",
+                    "중식",
+                    "디저트",
+                    "기타",
+                ];
+
+                for (let i = 0; i < categories.length; i++) {
+                    option = document.createElement("option");
+                    option.value = categories[i];
+                    option.text = categories[i];
+                    category2.add(option);
+                }
+
+                // 카테고리를 설정해주세요 -> 값 입력x
+                category2[0].disabled = true;
+                category2[0].hidden = true;
+                category2[0].value = "";
+
+                const space = document.createTextNode(" ");
+                const space2 = document.createTextNode(" ");
+
+                form.appendChild(label2);
+                form.appendChild(space2);
+                form.appendChild(category2);
+
+                // 추가 버튼 안 보이게 처리
+                btnAdd.classList.toggle("hidden");
+                btnRmv.classList.toggle("hidden");
+            };
+
+            function removeCategory() {
+                const btnAdd = document.querySelector("#btn-add");
+                const btnRmv = document.querySelector("#btn-rmv");
+
+                const label2 = document.querySelector('#label2');
+                const category2 = document.querySelector('#s-category2');
+                label2.remove();
+                category2.remove();
+
+                btnRmv.classList.toggle("hidden"); 
+                btnAdd.classList.toggle("hidden");
+            };
+        </script>
+    </body>
 </html>

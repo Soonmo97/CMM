@@ -8,7 +8,7 @@
         <%- include('../include/head.ejs') %>
     </head>
     <body>
-        <%- include('../include/header.ejs', {isLogin, user}) %>
+        <%- include('../include/header.ejs',{isLogin, user}) %>
         <div class="main-container">
             <div class="cmm-title">
             <img id="cmm-logo" src="/static/images/CMM-circle.png" alt="CMM_logo">
@@ -59,9 +59,19 @@
                     </ul>
                 </nav>
                 <div class="btn-div">
-                    <a href="/suggestion/write"><button type="button" class="btn btn-info">글쓰기</button></a>
+                    <button type="button" class="btn btn-info" onclick="writePage('<%- isLogin %>')">글쓰기</button>
                 </div>
             </div>
         </div>
+        <%- include('../include/footer.ejs') %>
+        <script>
+            function writePage(isLogin){
+                if(isLogin=="true"){
+                    window.location.href='/suggestion/write'
+                }else{
+                    alert("로그인 후에 이용 가능합니다.");
+                }
+            }
+        </script>
     </body>
 </html>

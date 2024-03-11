@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
-const { User, Restaurant, Category } = require("../models");
+// const { session }  = require("../session");
+const { User, Restaurant, Review, Category } = require("../models");
 const bcrypt = require("bcrypt");
 const { render } = require("ejs");
 const nodemailer = require("nodemailer");
@@ -8,48 +9,59 @@ const { response } = require("express");
 
 // GET /index
 exports.getMain = async (req, res) => {
-    // const user = req.session.user;
-    // const restaurants = await Restaurant.findAll({
-    //     attributes: ["rest_index", "rest_name"],
-    // });
+    const user = req.session.user;
 
-    // // console.log(restaurants);
-    // console.log("유저 세션 정보>> ", user);
-    // if (user) {
-    //     res.render("index", {
-    //         isLogin: true,
-    //         user: user,
-    //         restaurants: restaurants,
-    //     });
-    // } else {
-    //     res.render("index", { isLogin: false, restaurants: restaurants });
-    // }
+    const restaurants = await Restaurant.findAll({
+        attributes: ["rest_index", "rest_name"],
+    });
 
-    try {
-        const user = req.session.user;
-        const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
-        const perPage = 9; // 페이지당 항목 수
-        const offset = (currentPage - 1) * perPage; // OFFSET 계산
+    const indexReview = await Restaurant.findAll({
+        attributes: ["rest_index", "rest_name"],
+        include: {
+            model: Review,
+            attributes: ["review_rating"],
+        },
+    });
 
-        // 데이터베이스에서 다음 페이지의 데이터를 가져오는 쿼리 실행
-        const restaurants = await Restaurant.findAll({
-            attributes: ["rest_index", "rest_name"],
-            offset: offset,
-            limit: perPage
+    const categories = await Category.findAll({
+        include: [
+            {
+                model: Restaurant,
+                attributes: ["rest_index", "rest_name"],
+            },
+        ],
+    });
+
+    console.log("categories", categories);
+    // categories [
+    //     Category {
+    //       dataValues: {
+    //         category_index: 9,
+    //         category_name: '한식',
+    //         rest_index: 10,
+    //         Restaurant: [Restaurant]
+    //       },
+
+    console.log("//////////////////////////////////////");
+    console.log("indexReview", indexReview);
+    console.log("//////////////////////////////////////");
+    console.log("restaurants:", restaurants);
+    console.log("유저 세션 정보>> ", user);
+    if (user) {
+        res.render("index", {
+            isLogin: true,
+            user: user,
+            restaurants: restaurants,
+            indexReview: indexReview,
+            // categories: categories,
         });
-
-        if (user) {
-            res.render("index", {
-                isLogin: true,
-                user: user,
-                restaurants: restaurants,
-            });
-        } else {
-            res.render("index", { isLogin: false, restaurants: restaurants });
-        }
-    } catch (error) {
-        console.error("데이터 가져오기 오류:", error);
-        res.status(500).send("Internal Server Error");
+    } else {
+        res.render("index", {
+            isLogin: false,
+            restaurants: restaurants,
+            indexReview: indexReview,
+            // categories: categories,
+        });
     }
 };
 
@@ -259,36 +271,6 @@ exports.checkCode = async (req, res) => {
         res.json({ ok: false, msg: "인증번호가 일치하지 않습니다." });
     }
 };
-
-// GET /load-more
-// exports.loadMoreData = async (req, res) => {
-//     try {
-//         const user = req.session.user;
-//         const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
-//         const perPage = 9; // 페이지당 항목 수
-//         const offset = (currentPage - 1) * perPage; // OFFSET 계산
-
-//         // 데이터베이스에서 다음 페이지의 데이터를 가져오는 쿼리 실행
-//         const restaurants = await Restaurant.findAll({
-//             attributes: ["rest_index", "rest_name"],
-//             offset: offset,
-//             limit: perPage
-//         });
-
-//         if (user) {
-//             res.render("index", {
-//                 isLogin: true,
-//                 user: user,
-//                 restaurants: restaurants,
-//             });
-//         } else {
-//             res.render("index", { isLogin: false, restaurants: restaurants });
-//         }
-//     } catch (error) {
-//         console.error("데이터 가져오기 오류:", error);
-//         res.status(500).send("Internal Server Error");
-//     }
-// };
 
 // GET /user/searchId
 exports.getSearchId = async (req, res) => {

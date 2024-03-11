@@ -5,7 +5,7 @@
                 <img src="/static/images/CMM.png" alt="" style="width: auto; height: 200px" />
             </a>
         </div>
-        <div class="searchResponse" style="z-index: 999">
+        <div class="searchResponse" style="z-index: 999; margin-right: -7rem;">
             <div class="search" style="width: 500px">
                 <div
                     class="collapse navbar-collapse d-flex justify-content-center"
@@ -37,18 +37,17 @@
             <div>
                 <nav class="menu" style="flex: 0 0 auto; margin-top: -15px">
                     <ul>
-                        <li class="active" id="menuHome"><a href="/">홈</a></li>
-                        <li id="menu1"><a href="/search/category?category=한식" onclick="loadCategory('한식')">한식</a></li>
-                        <li id="menu2"><a href="/search/category?category=일식" onclick="loadCategory('일식')">일식</a></li>
-                        <li id="menu3"><a href="/search/category?category=양식" onclick="loadCategory('양식')">양식</a></li>
-                        <li id="menu4"><a href="/search/category?category=중식" onclick="loadCategory('중식')">중식</a></li>
-                        <li id="menu5"><a href="/search/category?category=디저트" onclick="loadCategory('디저트')">디저트</a></li>
-                        <li id="menu6"><a href="/search/category?category=기타" onclick="loadCategory('기타')">기타</a></li>
+                        <li id="menuHome" ><a href="/">홈</a></li>
+                        <li id="menu1"><a href="/search/category?category=한식" onclick="categoryMenu('menu1')">한식</a></li>
+                        <li id="menu2"><a href="/search/category?category=일식" onclick="categoryMenu('menu2')">일식</a></li>
+                        <li id="menu3"><a href="/search/category?category=양식" onclick="categoryMenu('menu3')">양식</a></li>
+                        <li id="menu4"><a href="/search/category?category=중식" onclick="categoryMenu('menu4')">중식</a></li>
+                        <li id="menu5"><a href="/search/category?category=디저트" onclick="categoryMenu('menu5')">디저트</a></li>
+                        <li id="menu6"><a href="/search/category?category=기타" onclick="categoryMenu('menu6')">기타</a></li>
                     </ul>
+                    
                 </nav>
             </div>
-
-            
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
             const indicator = document.querySelector('.nav-indicator');
@@ -86,37 +85,38 @@
           
         </div>
 
-        <div class="InfoResponse">
+        <div class="InfoResponse"  >
             <div class="buttons">
                 <!-- 로그인 유무에 따른 헤더 변경 -->
                 <%if (isLogin) { %>
-            
+                <div>
                 <div class="welcomeResponse" style="right: 25%">
-                    <p><%= user %>님 환영합니다.</p>
+                   <p class="signBtn" style="background-color: white; text-align: center; border-radius: 25px; padding: 5px 0; font-weight: 600;"><i class="fa-regular fa-user fa-xl"></i>&nbsp;&nbsp;<%= user %>님 환영합니다.</p>
                 </div>
                 
                 <form name="form_logout" action="/form/logout" method="post">
-                    <button id="logoutBtn" class="signBtn" type="submit">로그아웃</button>
+                    <div>
+                    <button id="logoutBtn" class="signBtn" type="submit" style="font-weight: 600;">로그아웃</button>
                    
                         <button
                             type="button"
                             class="signBtn"
                             id="menu"
                             onclick="window.location.href = '/mypage/likeList';"
+                            style="font-weight: 600;"
                         >
                             마이페이지
                         </button>
                         <button class="signBtn">
-                            <a href="/suggestion/list" style="text-decoration: none; color: black"
-                                >건의사항</a
-                            >
-              
+                            <a href="/suggestion/list" style="text-decoration: none; color: black; font-weight: 600;">건의사항</a>
+                            </div>
                 </form>
+            </div>
                 <% } else { %>
-                <button id="signupBtn" class="signBtn">회원가입</button>
-                <button id="loginBtn" class="signBtn">로그인</button>
+                <button id="signupBtn" class="signBtn" style="font-weight: 600;">회원가입</button>
+                <button id="loginBtn" class="signBtn" style="font-weight: 600;">로그인</button>
                 <button class="signBtn">
-                    <a href="/suggestion/list" style="text-decoration: none; color: black" >건의사항</a>
+                    <a href="/suggestion/list" style="text-decoration: none; color: black; font-weight: 600;" >건의사항</a>
                 </button>
                 <% } %>
                 <br />
@@ -576,7 +576,7 @@
     </script>
 
     <script>
-        (() => {
+        
             // 회원가입 버튼 클릭 이벤트 처리
             document.getElementById("signupBtn").addEventListener("click", function () {
                 // 팝업창과 어두운 오버레이 표시
@@ -606,7 +606,9 @@
                 document.getElementById("overlay").style.display = "none";
             });
 
-            // search
-        })();
+            
+        
     </script>
+
+    
 </header>

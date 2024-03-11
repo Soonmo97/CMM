@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 // const { session }  = require("../session");
-const { User, Restaurant, Category } = require("../models");
+const { User, Restaurant, Review, Category } = require("../models");
 const bcrypt = require("bcrypt");
 const { render } = require("ejs");
 const nodemailer = require("nodemailer");
@@ -11,20 +11,58 @@ const { assign } = require("nodemailer/lib/shared");
 // GET /index
 exports.getMain = async (req, res) => {
     const user = req.session.user;
+
     const restaurants = await Restaurant.findAll({
         attributes: ["rest_index", "rest_name"],
     });
 
-    console.log(restaurants);
+    const indexReview = await Restaurant.findAll({
+        attributes: ["rest_index", "rest_name"],
+        include: {
+            model: Review,
+            attributes: ["review_rating"],
+        },
+    });
+
+    const categories = await Category.findAll({
+        include: [
+            {
+                model: Restaurant,
+                attributes: ["rest_index", "rest_name"],
+            },
+        ],
+    });
+
+    console.log("categories", categories);
+    // categories [
+    //     Category {
+    //       dataValues: {
+    //         category_index: 9,
+    //         category_name: '한식',
+    //         rest_index: 10,
+    //         Restaurant: [Restaurant]
+    //       },
+
+    console.log("//////////////////////////////////////");
+    console.log("indexReview", indexReview);
+    console.log("//////////////////////////////////////");
+    console.log("restaurants:", restaurants);
     console.log("유저 세션 정보>> ", user);
     if (user) {
         res.render("index", {
             isLogin: true,
             user: user,
             restaurants: restaurants,
+            indexReview: indexReview,
+            // categories: categories,
         });
     } else {
-        res.render("index", { isLogin: false, restaurants: restaurants });
+        res.render("index", {
+            isLogin: false,
+            restaurants: restaurants,
+            indexReview: indexReview,
+            // categories: categories,
+        });
     }
 };
 
@@ -211,7 +249,7 @@ exports.sendCode = async (req, res) => {
             console.log();
             smtpTransport.close(); //전송종료
         }
-    }); 
+    });
 };
 // POST /form/checkCode
 exports.checkCode = async (req, res) => {

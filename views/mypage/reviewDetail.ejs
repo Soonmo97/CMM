@@ -21,9 +21,259 @@
                     width: 100% !important;
                 "
             />
+
+            <div class="review">
+                <div class="rest">
+                    <a href="/restaurantDetail/<%=reviewDetail.review_index%>">
+                        <img
+                            src="/static/images/<%= reviewDetail.rest_index %>.png"
+                            alt="식당 이미지"
+                        />
+                    </a>
+                    <span class="restName"><%= reviewDetail.Restaurant.rest_name%></span>
+                </div>
+                <div class="ratingAndContent">
+                    <div class="time">
+                        <% const originalDate = new Date(reviewDetail.createdAt); const
+                        formattedDate = originalDate.toLocaleString('ko-KR', {timeZone:
+                        'Asia/Seoul', hour12: false}); %> <%= formattedDate %>
+                        <!-- 수정됐으면 수정됨 붙이기 -->
+                    </div>
+                    <div class="rating">
+                        <% for (let j = 0; j < reviewDetail.review_rating; j++) { %>
+                        <i id="filledStar" class="fa-solid fa-star fa-2xl" style="color: #ffd43b">
+                        </i>
+                        <% } %>
+                    </div>
+                    <div class="content">
+                        <p class="reviewDetailContent"><%= reviewDetail.review_content %></p>
+                    </div>
+                    <div class="updateAndDeleteReview">
+                        <button
+                            type="button"
+                            id="updateBtn"
+                            onclick="updateReview('<%= reviewDetail.review_index %>', '<%= reviewDetail.review_rating %>')"
+                        >
+                            수정
+                        </button>
+                        <button
+                            type="button"
+                            id="deleteBtn"
+                            onclick="deleteReview('<%= reviewDetail.review_index %>')"
+                        >
+                            삭제
+                        </button>
+                    </div>
+                </div>
+            </div>
         </main>
         <% } catch(err) { %>
-        <h1>세션이 만료되었습니다. 다시 로그인해주세요.</h1>
+        <script>
+            alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
+            window.location.href = "/";
+        </script>
         <% }%> <%-include('../include/footer') %>
     </body>
+    <script>
+        let orgContent; // 기존 리뷰 내용
+        let updateReviewIndex; // 업데이트 할 리뷰 인덱스
+        let orgRating; // 기존 리뷰 별점
+        let selectRating = 0; // 현재 선택한 별점 수
+        function updateReview(reviewIndex, rating) {
+            updateReviewIndex = reviewIndex;
+            orgRating = rating;
+            const starts = document.querySelectorAll(".fa-star");
+            // console.log("orgRating >> ", orgRating);
+            // console.log(starts);
+            starts.forEach((star) => {
+                star.remove();
+            });
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement("i");
+                star.id = `ratingCount${i}`;
+                star.classList.add("fa-regular");
+                star.classList.add("fa-star");
+                star.classList.add("fa-2xl");
+                star.style.color = "#FFD43B";
+                star.setAttribute("onclick", "reviewRating('" + updateReviewIndex + "', this)");
+                const rating = document.querySelector(".rating");
+                // console.log(rating);
+                rating.append(star);
+            }
+            const p = document.querySelector(".reviewDetailContent");
+            orgContent = p.textContent;
+            p.remove();
+            const textArea = document.createElement("textarea");
+            const content = document.querySelector(".content");
+            textArea.setAttribute("maxlength", "255");
+            textArea.setAttribute("cols", "92");
+            textArea.setAttribute("row", "3");
+            textArea.setAttribute("placeholder", "수정할 내용을 입력해주세요.");
+            textArea.textContent = orgContent;
+            textArea.style.marginTop = "40px";
+            textArea.style.borderRadius = "25px";
+            textArea.style.padding = "10px";
+            // maxlength="255" class="createReviewContent" name="create_review" cols="92" rows="3"
+            // placeholder="내용을 입력해주세요."
+            content.append(textArea);
+            const updateBtn = document.querySelector("#updateBtn");
+            const deleteBtn = document.querySelector("#deleteBtn");
+
+            updateBtn.textContent = "수정완료";
+            deleteBtn.textContent = "취소";
+            updateBtn.setAttribute("onclick", "updateReviewTrue()");
+            deleteBtn.setAttribute("onclick", "updateReviewFalse()");
+        }
+
+        function updateReviewTrue() {
+            if (selectRating === 0) {
+                return alert("수정할 별점을 입력해주세요!");
+            }
+            const area = document.querySelector("textarea");
+            if (area.value === "") {
+                return alert("수정할 내용을 입력해주세요!");
+            }
+
+            if (confirm("리뷰 수정을 완료하시겠습니까?")) {
+                // textArea value DB에 review_content 업데이트
+                // /mypage/reviewList/update
+                axios({
+                    //  /reviewList/update
+                    url: `/mypage/reviewList/update`,
+                    method: "patch",
+                    data: {
+                        updateRating: selectRating,
+                        updateContent: area.value,
+                        reviewIndex: updateReviewIndex,
+                    },
+                })
+                    .then(() => {
+                        // 업데이트 정상적으로 완료 된 후 응답(then)
+                        const starts = document.querySelectorAll(".fa-star");
+                        // console.log(starts);
+                        starts.forEach((star) => {
+                            star.remove();
+                        });
+                        for (let i = 1; i <= selectRating; i++) {
+                            const star = document.createElement("i");
+                            // <i id="filledStar" class="fa-solid fa-star fa-2xl" style="color: #ffd43b">
+                            star.id = "filledStar";
+                            star.classList.add("fa-solid");
+                            star.classList.add("fa-star");
+                            star.classList.add("fa-2xl");
+                            star.style.color = "#ffd43b";
+                            const rating = document.querySelector(".rating");
+                            rating.append(star);
+                        }
+                        const textArea = document.querySelector("textarea");
+                        let updateContent = textArea.value;
+                        textArea.remove();
+                        const updateBtn = document.querySelector("#updateBtn");
+                        const deleteBtn = document.querySelector("#deleteBtn");
+
+                        updateBtn.textContent = "수정";
+                        deleteBtn.textContent = "삭제";
+                        updateBtn.setAttribute(
+                            "onclick",
+                            "updateReview('<%= reviewDetail.review_index %>', '<%= reviewDetail.review_rating %>')"
+                        );
+                        deleteBtn.setAttribute(
+                            "onclick",
+                            "deleteReview('<%= reviewDetail.review_index %>')"
+                        );
+
+                        const p = document.createElement("p");
+                        p.classList.add("reviewDetailContent");
+                        p.textContent = updateContent;
+                        const content = document.querySelector(".content");
+                        content.append(p);
+                        alert("리뷰가 수정되었습니다.");
+                    })
+                    .catch((error) => {
+                        // 요청이 실패한 경우
+                        console.error("리뷰 수정 Error:", error);
+                    });
+            }
+        }
+
+        function updateReviewFalse() {
+            selectRating = 0;
+            const starts = document.querySelectorAll(".fa-star");
+            // console.log(starts);
+            starts.forEach((star) => {
+                star.remove();
+            });
+            // console.log("orgRating >> ", orgRating);
+            for (let i = 1; i <= orgRating; i++) {
+                const star = document.createElement("i");
+                // <i id="filledStar" class="fa-solid fa-star fa-2xl" style="color: #ffd43b">
+                star.id = "filledStar";
+                star.classList.add("fa-solid");
+                star.classList.add("fa-star");
+                star.classList.add("fa-2xl");
+                star.style.color = "#ffd43b";
+                const rating = document.querySelector(".rating");
+                rating.append(star);
+            }
+            const textArea = document.querySelector("textarea");
+            textArea.remove();
+            const updateBtn = document.querySelector("#updateBtn");
+            const deleteBtn = document.querySelector("#deleteBtn");
+
+            updateBtn.textContent = "수정";
+            deleteBtn.textContent = "삭제";
+            updateBtn.setAttribute(
+                "onclick",
+                "updateReview('<%= reviewDetail.review_index %>', '<%= reviewDetail.review_rating %>')"
+            );
+            deleteBtn.setAttribute("onclick", "deleteReview('<%= reviewDetail.review_index %>')");
+
+            const p = document.createElement("p");
+            p.classList.add("reviewDetailContent");
+            p.textContent = orgContent;
+            const content = document.querySelector(".content");
+            content.append(p);
+        }
+
+        function reviewRating(restIndex, click) {
+            console.log("클릭이 발생한 요소의 id 값:", click.id);
+            selectRating = Number(click.id[click.id.length - 1]);
+            console.log("선택한 별점 수 >", selectRating);
+
+            // 선택한 별점보다 더 채원진 별 빈 별로
+            for (let i = selectRating + 1; i <= 5; i++) {
+                const ratingChange = document.querySelector(`#ratingCount${i}`);
+                if (ratingChange.classList.contains("fa-solid")) {
+                    ratingChange.classList.remove("fa-solid");
+                    ratingChange.classList.add("fa-regular");
+                }
+            }
+            // 선택한 별만큼 빈 별 채워주기
+            for (let i = 1; i <= selectRating; i++) {
+                const ratingChange = document.querySelector(`#ratingCount${i}`);
+                if (ratingChange.classList.contains("fa-regular")) {
+                    ratingChange.classList.remove("fa-regular");
+                    ratingChange.classList.add("fa-solid");
+                }
+            }
+        }
+
+        // 리뷰 삭제
+        function deleteReview(reviewIndex) {
+            if (confirm("리뷰를 삭제하시겠습까?")) {
+                axios({
+                    url: "/mypage/reviewList/delete",
+                    method: "delete",
+                    data: { reviewIndex: reviewIndex },
+                })
+                    .then(() => {
+                        alert("리뷰가 삭제되었습니다.");
+                        window.location.href = "/mypage/reviewList";
+                    })
+                    .catch((err) => {
+                        console.log("리뷰 삭제 err", err);
+                    });
+            }
+        }
+    </script>
 </html>

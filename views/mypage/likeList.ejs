@@ -13,8 +13,14 @@
         <%- include('../include/header'), {isLogin: isLogin, user: user} %>
         <%- include('../include/mypageNav', { title: "내 좋아요 목록" }) %>
         <% try { %>
-        <main>
+        <% if(likeList.length === 0) { %>
+        <main style="height: 400px;">
             <hr style="border: 3px solid#878787; height: 3px !important; display: block !important; width: 100% !important; "/>
+            <h2 style="width: 1350px; text-align: center;" >좋아요 하신 식당이 없습니다.</h2>
+        <% } else { %>
+        <main>
+        <hr style="border: 3px solid#878787; height: 3px !important; display: block !important; width: 100% !important; "/>
+        <% } %>
             <% for (let i=0; i<likeList.length; i++) { %>
             <div class="like">
                 <a href="/restaurantDetail/<%=likeList[i].rest_index%>">
@@ -36,7 +42,10 @@
             <% } %>
         </main>
         <% }  catch(err) { %>
-            <h1>세션이 만료되었습니다. 다시 로그인해주세요.</h1>
+            <script>
+            alert("세션이 만료되었습니다. 다시 로그인 해주세요.")
+            window.location.href = "/";
+            </script>
         <% }%>
         <%-include('../include/footer') %>
     </body>

@@ -9,8 +9,8 @@
         <link rel="stylesheet" href="/static/css/profile.css" />
     </head>
     <body>
-        <%- include('../include/header'), {isLogin: isLogin, user: user} %> <%-
-        include('../include/mypageNav', { title: "내 정보" }) %> <% try { %>
+        <%- include('../include/header'), {isLogin: isLogin, user: user} %>
+        <%-include('../include/mypageNav', { title: "내 정보" }) %> <% try { %>
         <main>
             <hr
                 style="
@@ -20,9 +20,213 @@
                     width: 100% !important;
                 "
             />
+            <div class="profile">
+                <span>아이디</span>
+                <input type="text" id="id" disabled value="<%= userInfo.id%>" />
+                <span>비밀번호</span>
+                <input
+                    type="password"
+                    id="password"
+                    disabled
+                    value="● ● ● ●"
+                    placeholder="새로 변경할 비밀번호를 입력하세요."
+                />
+                <span>닉네임</span
+                ><input
+                    type="text"
+                    maxlength="10"
+                    id="nickname"
+                    disabled
+                    value="<%= userInfo.nickname%>"
+                    placeholder="닉네임 최대 글자는 10글자 입니다."
+                />
+                <span>이메일</span
+                ><input type="email" id="email" disabled value="<%= userInfo.email%>" />
+                <div class="updateAndDeleteUser">
+                    <button type="button" id="nicknameBtn" onclick="nicknameUpdate()">
+                        닉네임 변경
+                    </button>
+                    <button type="button" id="pwBtn" onclick="pwUpdate()">비밀번호 변경</button>
+                    <button type="button" id="deleteBtn" onclick="deleteUser()">회원탈퇴</button>
+                </div>
+            </div>
         </main>
         <% } catch(err) { %>
-        <h1>세션이 만료되었습니다. 다시 로그인해주세요.</h1>
+        <script>
+            alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
+            window.location.href = "/";
+        </script>
         <% }%> <%-include('../include/footer') %>
     </body>
+    <script>
+        let orgNickname;
+        let orgPassword;
+
+        // 닉네임 변경
+        function nicknameUpdate() {
+            const nickname = document.querySelector("#nickname");
+            orgNickname = nickname.value;
+            nickname.disabled = false;
+            nickname.focus();
+            nickname.selectionStart = nickname.selectionEnd = nickname.value.length;
+            const nicknameBtn = document.querySelector("#nicknameBtn");
+            nicknameBtn.remove();
+            const pwBtn = document.querySelector("#pwBtn");
+            pwBtn.setAttribute("onclick", "nicknameUpdateTrue()");
+            pwBtn.textContent = "변경하기";
+            const deleteBtn = document.querySelector("#deleteBtn");
+            deleteBtn.setAttribute("onclick", "nicknameUpdateFalse()");
+            deleteBtn.textContent = "취소";
+        }
+
+        // 닉네임 변경 -> 변경하기
+        function nicknameUpdateTrue() {
+            const nickname = document.querySelector("#nickname");
+            if (nickname.value === "") {
+                return alert("변경할 닉네임을 입력해주세요!");
+            }
+            if (nickname.value === orgNickname) {
+                return alert("기존 닉네임과 같습니다. 변경하실 닉네임을 입력해주세요.");
+            }
+            if (confirm("입력하신 닉네임으로 변경하시겠습니까?")) {
+                axios({
+                    //  /mypage/profile/updateNickname
+                    url: `/mypage/profile/updateNickname`,
+                    method: "patch",
+                    data: {
+                        updateNickname: nickname.value,
+                    },
+                })
+                    .then(() => {
+                        nickname.disabled = true;
+                        alert("닉네임이 변경되었습니다.");
+                        const pwBtn = document.querySelector("#pwBtn");
+                        pwBtn.setAttribute("onclick", "pwUpdate()");
+                        pwBtn.textContent = "비밀번호 변경";
+                        const deleteBtn = document.querySelector("#deleteBtn");
+                        deleteBtn.setAttribute("onclick", "deleteUser()");
+                        deleteBtn.textContent = "회원탈퇴";
+                        const nicknameBtn = document.createElement("Button");
+                        nicknameBtn.setAttribute("onclick", "nicknameUpdate()");
+                        nicknameBtn.id = "nicknameBtn";
+                        nicknameBtn.textContent = "닉네임 변경";
+                        const updateAndDeleteUser = document.querySelector(".updateAndDeleteUser");
+                        updateAndDeleteUser.prepend(nicknameBtn);
+                    })
+                    .catch((err) => {
+                        alert("닉네임 변경 오류 발생");
+                    });
+            }
+        }
+
+        // 닉네임 변경 -> 취소
+        function nicknameUpdateFalse() {
+            const nickname = document.querySelector("#nickname");
+            nickname.value = orgNickname;
+            nickname.disabled = true;
+            const nicknameBtn = document.createElement("Button");
+            nicknameBtn.setAttribute("onclick", "nicknameUpdate()");
+            nicknameBtn.id = "nicknameBtn";
+            nicknameBtn.textContent = "닉네임 변경";
+            const updateAndDeleteUser = document.querySelector(".updateAndDeleteUser");
+            updateAndDeleteUser.prepend(nicknameBtn);
+            const pwBtn = document.querySelector("#pwBtn");
+            pwBtn.setAttribute("onclick", "pwUpdate()");
+            pwBtn.textContent = "비밀번호 변경";
+            const deleteBtn = document.querySelector("#deleteBtn");
+            deleteBtn.setAttribute("onclick", "deleteUser()");
+            deleteBtn.textContent = "회원탈퇴";
+        }
+
+        // 비밀번호 변경
+        function pwUpdate() {
+            const password = document.querySelector("#password");
+            orgPassword = password.value;
+            password.disabled = false;
+            password.focus();
+            password.value = "";
+            const nicknameBtn = document.querySelector("#nicknameBtn");
+            nicknameBtn.remove();
+            const pwBtn = document.querySelector("#pwBtn");
+            pwBtn.setAttribute("onclick", "pwUpdateTrue()");
+            pwBtn.textContent = "변경하기";
+            const deleteBtn = document.querySelector("#deleteBtn");
+            deleteBtn.setAttribute("onclick", "pwUpdateFalse()");
+            deleteBtn.textContent = "취소";
+        }
+
+        // 비밀번호 변경 -> 변경하기
+        function pwUpdateTrue() {
+            // /mypage/profile/updatePw
+            const password = document.querySelector("#password");
+            if (password.value === "") {
+                return alert("변경할 비밀번호을 입력해주세요!");
+            }
+            if (confirm("입력하신 비밀번호로 변경하시겠습니까?")) {
+                axios({
+                    //  /mypage/profile/updatePw
+                    url: `/mypage/profile/updatePw`,
+                    method: "patch",
+                    data: {
+                        updatePw: password.value,
+                    },
+                })
+                    .then(() => {
+                        password.disabled = true;
+                        alert("비밀번호가 변경되었습니다.");
+                        const pwBtn = document.querySelector("#pwBtn");
+                        pwBtn.setAttribute("onclick", "pwUpdate()");
+                        pwBtn.textContent = "비밀번호 변경";
+                        const deleteBtn = document.querySelector("#deleteBtn");
+                        deleteBtn.setAttribute("onclick", "deleteUser()");
+                        deleteBtn.textContent = "회원탈퇴";
+                        const nicknameBtn = document.createElement("Button");
+                        nicknameBtn.setAttribute("onclick", "nicknameUpdate()");
+                        nicknameBtn.id = "nicknameBtn";
+                        nicknameBtn.textContent = "닉네임 변경";
+                        const updateAndDeleteUser = document.querySelector(".updateAndDeleteUser");
+                        updateAndDeleteUser.prepend(nicknameBtn);
+                    })
+                    .catch((err) => {
+                        alert("비밀번호 변경 오류 발생");
+                    });
+            }
+        }
+
+        // 비밀번호 변경 -> 취소
+        function pwUpdateFalse() {
+            const password = document.querySelector("#password");
+            password.value = orgPassword;
+            password.disabled = true;
+            const nicknameBtn = document.createElement("Button");
+            nicknameBtn.setAttribute("onclick", "nicknameUpdate()");
+            nicknameBtn.id = "nicknameBtn";
+            nicknameBtn.textContent = "닉네임 변경";
+            const updateAndDeleteUser = document.querySelector(".updateAndDeleteUser");
+            updateAndDeleteUser.prepend(nicknameBtn);
+            const pwBtn = document.querySelector("#pwBtn");
+            pwBtn.setAttribute("onclick", "pwUpdate()");
+            pwBtn.textContent = "비밀번호 변경";
+            const deleteBtn = document.querySelector("#deleteBtn");
+            deleteBtn.setAttribute("onclick", "deleteUser()");
+            deleteBtn.textContent = "회원탈퇴";
+        }
+
+        // 회원탈퇴
+        function deleteUser() {
+            if (confirm("정말 회원탈퇴 하시겠습니까?")) {
+                axios({
+                    url: "/mypage/profile/deleteUser",
+                    method: "delete",
+                })
+                    .then(() => {
+                        alert("회원탈퇴 되었습니다.");
+                        window.location.href = "/";
+                    })
+                    .catch((err) => {
+                        console.log("회원 탈퇴 err", err);
+                    });
+            }
+        }
+    </script>
 </html>

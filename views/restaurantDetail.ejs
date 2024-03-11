@@ -68,17 +68,17 @@
                             <% } %>
                         </div>
                     </div>
-
+                    <hr />
                     <div class="restDes">
                         <p><%= restaurant.rest_desc%></p>
                         <br />
                         <div class="otherInfo">
                             <div class="timeAndNum">
-                                - 영업시간: <%= restaurant.rest_time%><br /><br />
-                                - 번호: <%= restaurant.rest_number%><br /><br />
+                                ⏰  영업시간: <%= restaurant.rest_time%><br /><br />
+                                📞  번호: <%= restaurant.rest_number%><br /><br />  
                             </div>
                             <div class="menu">
-                                - 대표메뉴:
+                                📜 대표메뉴:
                                 <!-- 메뉴 정보가 있을 때 -->
                                 <% if (menuList.length > 0) { %>
                                 <ul>
@@ -209,14 +209,9 @@
                 <div class="createReview">
                     <div class="rating">
                         <span>
-                            <%for (let i=1; i<=5; i++) { %>
-                            <i
-                                id="ratingCount<%= i %>"
-                                class="fa-regular fa-star fa-xl"
-                                style="color: #ffd43b"
-                                onclick="reviewRating('<%= restaurant.rest_index%>', this)"
-                            ></i>
-                            <%} %>
+                        <%for (let i=1; i<=5; i++) { %>
+                        <i id="ratingCount<%= i %>" class="fa-regular fa-star fa-2xl" style="color: #FFD43B;" onclick="reviewRating('<%= restaurant.rest_index%>', this)"></i>
+                        <%} %>
                         </span>
                     </div>
                     <textarea
@@ -462,22 +457,23 @@
                     return alert("리뷰 내용을 입력해주세요!");
                 }
 
-                // 리뷰 등록 요청
-                await axios({
-                    url: `/restaurantDetail/${restIndex}/createReview`,
-                    method: "post",
-                    data: { restIndex: restIndex, rating: selectRating, content: content },
-                })
-                    .then((response) => {
+                if(confirm("리뷰를 등록하시겠습니까?")) {
+                    // 리뷰 등록 요청
+                    await axios({
+                        url: `/restaurantDetail/${restIndex}/createReview`,
+                        method: "post",
+                        data: { restIndex: restIndex, rating: selectRating, content: content}
+                    }).then((response) => {
                         alert(response.data.message);
+                    }).catch((err) => {
+                                alert('리뷰 등록 실패 err');
+                                console.log("err", err)
                     })
-                    .catch((err) => {
-                        alert("리뷰 등록 실패 err");
-                        console.log("err", err);
-                    });
 
-                // 현재 페이지를 새로고침
-                location.reload();
+                    // 현재 페이지를 새로고침
+                    location.reload();
+                }
+                
             } else {
                 alert("리뷰를 등록하려면 로그인이 된 상태여야 합니다. 로그인을 해주세요!");
             }

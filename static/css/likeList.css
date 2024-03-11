@@ -10,12 +10,12 @@ main {
 
 .like {
     height: 250px;
-    margin: 40px 0 40px 30px;
+    margin: 40px 0 40px 23px;
     position: relative;
 }
 
 .like img {
-    width: 300px;
+    width: 308px;
     height: 250px;
     border-radius: 25px;
 }
@@ -32,6 +32,6 @@ main {
 
 .like .heart {
     position: absolute;
-    left: 285px;
+    left: 292px;
     cursor: pointer;
 }

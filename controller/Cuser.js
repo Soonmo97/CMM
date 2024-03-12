@@ -9,34 +9,6 @@ const { response } = require("express");
 
 // GET /index
 exports.getMain = async (req, res) => {
-    // const user = req.session.user;
-    // const restaurants = await Restaurant.findAll({
-    //     attributes: ["rest_index", "rest_name"],
-    // });
-
-    // const indexReview = await Restaurant.findAll({
-    //     attributes: ["rest_index", "rest_name"],
-    //     include: {
-    //         model: Review,
-    //         attributes: ["review_rating"],
-    //     },
-    // });
-    // if (user) {
-    //     res.render("index", {
-    //         isLogin: true,
-    //         user: user,
-    //         restaurants: restaurants,
-    //         indexReview: indexReview,
-    //         // categories: categories,
-    //     });
-    // } else {
-    //     res.render("index", {
-    //         isLogin: false,
-    //         restaurants: restaurants,
-    //         indexReview: indexReview,
-    //         // categories: categories,
-    //     });
-    // }
     const user = req.session.user;
     try {
         const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
@@ -373,18 +345,31 @@ exports.alterPw = async (req, res) => {
 // GET /load-more
 exports.loadMoreData = async (req, res) => {
     try {
+        const user = req.session.user;
         const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
         const perPage = 9; // 페이지당 항목 수
         const offset = (currentPage - 1) * perPage; // OFFSET 계산
 
-        // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행
-        const restaurants = await Restaurant.findAll({
-            attributes: ["rest_index", "rest_name"],
-            offset: offset,
-            limit: perPage
-        });
+       // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행
+       const restaurants = await Restaurant.findAll({
+        attributes: ["rest_index", "rest_name"],
+        offset: offset,
+        limit: perPage
+    });
 
-        res.status(200).json({ restaurants: restaurants });
+    // 추가적으로 리뷰 데이터도 가져올 수 있도록 설정
+    const indexReview = await Restaurant.findAll({
+        attributes: ["rest_index", "rest_name"],
+        include: {
+            model: Review,
+            attributes: ["review_rating"],
+        },
+        offset: offset,
+        limit: perPage
+    });
+
+    res.status(200).json({ restaurants: restaurants, indexReview: indexReview });
+
     } catch (error) {
         console.error("데이터 가져오기 오류:", error);
         res.status(500).send("Internal Server Error");

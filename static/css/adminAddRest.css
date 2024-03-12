@@ -6,13 +6,26 @@ body {
     margin: 0px;
     padding: 0px;
 }
-header {
-    height: 80px;
-}
 .admin-main {
     position: relative;
     width: 85%;
     float: right;
+}
+.title {
+    padding: 20px 0px;
+}
+.addRestaurants {
+    width: 70%;
+    margin: auto;
+}
+.addRest-form {
+    width: 100%;
+    border-radius: 25px;
+    padding: 20px;
+    margin: 5px;
+    border: 3px solid #edededb2;
+    margin-bottom: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 fieldset {
     margin: 20px 0px;
@@ -20,20 +33,53 @@ fieldset {
 }
 fieldset label {
     width: 100px;
+    margin: 0px;
     vertical-align: top;
 }
-#btnAdd,
-#btnRmv {
-    width: 30px;
-}
-.btn-hidden {
-    display: none;
-}
-.restInfo input {
+.edit-restinfo input {
     width: 600px;
     height: 36px;
     margin-bottom: 5px;
 }
+#btnAdd,
+#btnRmv {
+    width: 36px;
+    height: 36px;
+    border-radius: 5px;
+    border: none;
+}
+#btnAdd:hover,
+#btnRmv:hover {
+    cursor: pointer;
+    background-color: #dbdbdbec;
+}
+.btn-hidden {
+    display: none;
+}
+.restInfo input,
 .restInfo textarea {
-    width: 600px;
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #cbcbcb;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+.restInfo input {
+    height: 40px;
+    margin-bottom: 5px;
+}
+.btn-admin {
+    width: 120px;
+    height: 40px;
+    line-height: 36px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    background-color: #ffc064;
+}
+.btn-admin:hover {
+    cursor: pointer;
+    background-color: #e1a000;
 }

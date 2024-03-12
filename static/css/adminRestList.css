@@ -6,27 +6,36 @@ body {
     margin: 0px;
     padding: 0px;
 }
-body * {
-    /* border: 1px solid black; */
-}
-header {
-    height: 80px;
-}
 .admin-main {
     position: relative;
+    padding: 80px;
     width: 85%;
     float: right;
 }
-.add-rest-div {
+.rest-list-container {
     width: 80%;
-    margin: 40px auto 0px auto;
-    padding: 0 30px 0 0;
+}
+.add-btn-div {
+    width: 100%;
+    margin: 40px auto 30px auto;
     text-align: right;
 }
+.rest-list-div {
+    margin: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #dadada;
+    border-radius: 25px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.08);
+}
 .rest-list-table {
-    width: 80%;
+    width: 100%;
     margin: 10px auto;
     text-align: center;
+}
+.rest-list-table th:not(th:nth-child(2)) {
+    width: 100px;
 }
 .rest-list-table tr td:not(td:nth-child(2)) {
     width: 100px;

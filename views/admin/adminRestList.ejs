@@ -9,43 +9,47 @@
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
-        <main class="admin-main">
-            <h2>식당 목록</h2>
-            <div class="add-rest-div">
-                <button type="button" onclick="addPage()">식당 추가</button>
-            </div>
-            <table class="rest-list-table">
-                <tr>
-                    <th>번호</th>
-                    <th>식당명</th>
-                    <th colspan="3"></th>
-                </tr>
-                <%for(let i=0; i<restInfo.length; i++){%>
-                <tr>
-                    <td><%=restInfo[i].rest_index%></td>
-                    <td onclick="openRestInfo('<%=restInfo[i].rest_index%>')"><%=restInfo[i].rest_name%></td>
-                    <td><button type="button" onclick="addMenuPage('<%=restInfo[i].rest_index%>')">메뉴 추가</button></td>
-                    <td><button type="button" onclick="openEdit('<%=restInfo[i].rest_index%>')">수정</button></td>
-                    <td><button type="button" onclick="deleteRest('<%=restInfo[i].rest_index%>','<%=restInfo[i].rest_name%>')">삭제</button></td>
-                </tr>
-                <%}%>
-            </table>
-            <div class="restmodal modal-container">
-                <div class="restmodal modal-main">
-                    <div class="restmodal modal-info">
-                        <h2 class="restinfo name">식당명</h2>
-                        <p class="restinfo category">카테고리</p>
-                        <p class="restinfo desc">식당정보</p>
-                        <p class="restinfo address">식당주소</p>
-                        <p class="restinfo time">영업시간</p>
-                        <p class="restinfo number">전화번호</p>
-                    </div>
-                    <div class="restmodal modal-bottom"><span class="close-modal">&times;</span></div>
+        <div class="admin-main">
+            <div class="rest-list-container">
+                <h2 class="title">식당 목록</h2>
+                <div class="add-btn-div">
+                    <button type="button" onclick="addPage()">식당 추가</button>
                 </div>
+                <div class="rest-list-div">
+                    <table class="rest-list-table">
+                        <tr>
+                            <th>번호</th>
+                            <th>식당명</th>
+                            <th colspan="3"></th>
+                        </tr>
+                        <%for(let i=0; i<restInfo.length; i++){%>
+                        <tr>
+                            <td><%=restInfo[i].rest_index%></td>
+                            <td onclick="openRestInfo('<%=restInfo[i].rest_index%>')"><%=restInfo[i].rest_name%></td>
+                            <td><button type="button" onclick="addMenuPage('<%=restInfo[i].rest_index%>')">메뉴 추가</button></td>
+                            <td><button type="button" onclick="openEdit('<%=restInfo[i].rest_index%>')">수정</button></td>
+                            <td><button type="button" onclick="deleteRest('<%=restInfo[i].rest_index%>','<%=restInfo[i].rest_name%>')">삭제</button></td>
+                        </tr>
+                        <%}%>
+                    </table>
+                </div>
+                <div class="restmodal modal-container">
+                    <div class="restmodal modal-main">
+                        <div class="restmodal modal-info">
+                            <h2 class="restinfo name">식당명</h2>
+                            <p class="restinfo category">카테고리</p>
+                            <p class="restinfo desc">식당정보</p>
+                            <p class="restinfo address">식당주소</p>
+                            <p class="restinfo time">영업시간</p>
+                            <p class="restinfo number">전화번호</p>
+                        </div>
+                        <div class="restmodal modal-bottom"><span class="close-modal">&times;</span></div>
+                    </div>
+                </div>
+                <!-- pagination -->
+                <nav></nav>
             </div>
-            <!-- pagination -->
-            <nav></nav>
-        </main>
+        </div>
         <script>
             const modal = document.querySelector('.modal-container')
             const modalBtn = document.querySelector(".close-modal");
@@ -117,11 +121,16 @@
                             data: {rest_index:idx}                    
                         });
                         console.log(result);
-                        if(result.data.isSuccess){
+                        console.log(typeof result.data.isSuccess);
+                        const {isLogin, isSuccess} = result.data;
+                        if(isLogin && isSuccess){
                             alert('삭제되었습니다.');
                             location.reload(true);
+                        }else if(isLogin && !isSuccess){
+                            alert('권한이 없습니다.');
+                            window.location.href='/';
                         }else{
-                            alert('접근 권한이 없습니다.');
+                            alert('삭제하지 못했습니다.');
                             location.reload(true);
                         }
                     }catch(error){
@@ -136,7 +145,6 @@
                 modal.style.display = "none";
             }
             modal.addEventListener('click', (e)=>{
-                console.log(e);
                 if(e.target === modal) modal.style.display = "none";
             });
         </script>

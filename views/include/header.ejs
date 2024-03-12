@@ -79,7 +79,7 @@ const remove = async () => {
     await wait(speed);
     
     letter.pop();
-    $text.innerHTML = letter.join(""); 
+    $typingTxt.innerHTML = letter.join(""); 
   }
   
   // 다음 순서의 글자로 지정, 타이핑 함수 다시 실행
@@ -375,7 +375,7 @@ setTimeout(typing, 1500);
                 </div>
                 <!-- 회원가입-->
                 <div class="btnArea">
-                    <button type="button" id="btnJoin" onclick="btnJoin()">가입하기</button>
+                    <button type="submit" id="btnJoin" onclick="btnRegister()">가입하기</button>
                 </div>
             </form>
         </div>
@@ -470,17 +470,9 @@ setTimeout(typing, 1500);
 
     <!-- 이메일 코드 확인 -->
     <script>
-        let isIdChecked = false; // 아이디 중복확인 상태 변수
-        let isCodeChecked = false; // 인증번호 확인 상태 변수
-    
-        function btnEmailCk() {
+        function btnEmailCk(callback) {
             const emailChk = document.getElementById("emailChk");
             const codeValue = emailChk.value;
-    
-            if (!codeValue) {
-                alert("인증번호를 입력해주세요.");
-                return;
-            }
     
             axios({
                 method: "POST",
@@ -492,68 +484,75 @@ setTimeout(typing, 1500);
             .then((response) => {
                 if (response.data.ok) {
                     alert("인증번호가 일치합니다.");
+                    // 인증번호 일치시 코드값을 변경하여 회원가입 가능하도록 설정
                     document.getElementById("codeDuplication").value = "btnEmailCk";
-                    isCodeChecked = true; // 인증번호 확인 완료 상태로 변경
-                } 
-                else {
-                    console.log("인증번호 불일치 >> ", response.data.msg);
+                    if (callback) {
+                        callback(true);
+                    }
+                } else {
                     alert("인증번호가 일치하지 않습니다.");
                     emailChk.value = "";
+                    if (callback) {
+                        callback(false);
+                    }
                 }
             })
             .catch((error) => {
                 console.error(error);
-                alert("오류가 발생했습니다. 다시 시도해주세요.");
-            })
-        };
-    
-    
-        function btnJoin() {
-            if (!isIdChecked) {
-                alert("아이디 중복 확인을 해주세요.");
-                return;
-            }
-    
-            if (!isCodeChecked) {
-                alert("인증번호 확인을 해주세요.");
-                return;
-            }
-    
-            // 회원가입 진행
-            axios({
-                method: "POST",
-                url: "/form/register",
-                data: {
-                    id: form.id.value,
-                    pw: form.pw.value,
-                    nickname: form.nickname.value,
-                    email: form.email.value,
-                },
-            })
-            .then((result) => {
-                if (result) {
-                    alert("회원가입 성공!");
-                    document.location.href = "/";
-                } else {
-                    alert("회원가입 실패");
+                if (callback) {
+                    callback(false);
                 }
-            })
-            .catch((err) => {
-                console.error(err);
-                alert("회원가입 실패");
             });
         }
-
-        function inputCodeCk() {
-    const codeValue = document.getElementById("emailChk").value;
-    // 인증번호를 입력한 경우에만 가입하기 버튼 활성화
-    const btnJoin = document.getElementById("btnJoin");
-    btnJoin.disabled = !codeValue;
-    }
-    </script>
     
-
-    <!-- 아이디 찾기 -->
+        document.getElementById("modal_register").addEventListener("submit", function (event) {
+            event.preventDefault();
+    
+            const form = document.forms["modal_register"];
+    
+            function inputCodeCk() {
+                document.modal_register.codeDuplication.value = "codeUncheck";
+            }
+    
+            // 중복확인, 이메일 인증 확인
+            btnEmailCk(function(success) {
+                if (!success) {
+                    alert("인증번호 확인을 해주세요.");
+                    return false;
+                }
+    
+                if (form.idDuplication.value != "idCheck") {
+                    alert("아이디 중복체크를 해주세요.");
+                    return false;
+                }
+    
+                // 회원가입 진행
+                axios({
+                    method: "POST",
+                    url: "/form/register",
+                    data: {
+                        id: form.id.value,
+                        pw: form.pw.value,
+                        nickname: form.nickname.value,
+                        email: form.email.value,
+                    },
+                })
+                .then((result) => {
+                    console.log(result);
+                    if (result) {
+                        alert("회원가입 성공!");
+                        document.location.href = "/";
+                    } else {
+                        alert("회원가입 실패");
+                    }
+                })
+                .catch((err) => {
+                    console.error(err);
+                    res.status(500).send("회원가입 실패");
+                });
+            });
+        });
+    </script>
 
 
     <!-- 어두운 오버레이 -->

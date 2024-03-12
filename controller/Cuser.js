@@ -40,7 +40,7 @@ exports.getMain = async (req, res) => {
     const user = req.session.user;
     try {
         const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
-        const perPage = 9; // 페이지당 항목 수
+        const perPage = 6; // 페이지당 항목 수
         const offset = (currentPage - 1) * perPage; // OFFSET 계산
 
         // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행

@@ -9,16 +9,14 @@ const { response } = require("express");
 
 // GET /index
 exports.getMain = async (req, res) => {
-    const user = req.session.user;
     try {
+        const user = req.session.user;
         const { category } = req.query;
 
-        // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행
         const restaurants = await Restaurant.findAll({
             attributes: ["rest_index", "rest_name"],
         });
 
-        // 추가적으로 리뷰 데이터도 가져올 수 있도록 설정
         const indexReview = await Restaurant.findAll({
             attributes: ["rest_index", "rest_name"],
             include: {
@@ -27,29 +25,29 @@ exports.getMain = async (req, res) => {
             },
         });
         
-       if (user) {
-        res.render("index", {
-            isLogin: true,
-            user: user,
-            restaurants,
-            indexReview,
-            category,
-          });
-       } else {
-          res.render("index", {
-              isLogin: false,
-              restaurants,
-              indexReview,
-              category,
-          });
-       }
+        if (user) {
+            res.render("index", {
+                isLogin: true,
+                user: user,
+                restaurants: restaurants,
+                indexReview: indexReview,
+                category: category,
+            });
+        } else {
+            res.render("index", {
+                isLogin: false,
+                restaurants: restaurants,
+                indexReview: indexReview,
+                category: category,
+            });
+        }
       
     } catch (error) {
-        console.error("데이터 가져오기 오류:", error);
+        console.error("데이터 불러오기 오류:", error);
         res.status(500).send("Internal Server Error");
     }
-
 };
+
 
 // POST /include/header/form/login
 exports.loginHeader = async (req, res) => {
@@ -198,15 +196,16 @@ exports.sendCode = async (req, res) => {
     const mailOptions = {
         from: process.env.USER_EMAIL,
         to: email,
-        subject: "새싹 노드 이메일 연결용",
+        subject: "창동역 맛집 모음 CMM 회원가입 메일입니다.",
         text: "인증번호는" + number + "입니다.",
         html:
             "<div style='font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 540px; height: 600px; border-top: 4px solid #348fe2; margin: 100px auto; padding: 30px 0; box-sizing: border-box;'>" +
             "<h1 style='margin: 0; padding: 0 5px; font-size: 28px; font-weight: 400;'>" +
             "<span style='font-size: 15px; margin: 0 0 10px 3px;'></span><br />" +
-            "<span style='color: #ffc064;'>CMM 인증번호</span> 안내입니다." +
+            "<b><span style='color: #ffc064;'>CMM 인증번호</span></b> 안내입니다." +
             "</h1>" +
             "<p style='font-size: 16px; line-height: 26px; margin-top: 50px; padding: 0 5px;'>" +
+            "<img src='http://115.85.183.171:8080/static/images/CMM-circle.png'/><br /><br /><br />"+
             "안녕하세요.<br />" +
             "요청하신 인증번호가 생성되었습니다.<br />" +
             "감사합니다." +
@@ -334,31 +333,25 @@ exports.alterPw = async (req, res) => {
 // GET /load-more
 exports.loadMoreData = async (req, res) => {
     try {
-        const user = req.session.user;
-        const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
+        const { page = 1, lastRestIndex = 0 } = req.query; // 현재 페이지와 마지막 레스토랑의 인덱스를 쿼리 매개변수에서 가져옴
         const perPage = 9; // 페이지당 항목 수
-        const offset = (currentPage - 1) * perPage; // OFFSET 계산
+        const offset = (page - 1) * perPage; // OFFSET 계산
 
-       // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행
-       const restaurants = await Restaurant.findAll({
-        attributes: ["rest_index", "rest_name"],
-        offset: offset,
-        limit: perPage
-    });
+        // 데이터베이스에서 해당 페이지의 데이터와 리뷰를 가져오는 쿼리 실행
+        const restaurants = await Restaurant.findAll({
+            attributes: ["rest_index", "rest_name"],
+            where: {
+                rest_index: { [Op.gt]: lastRestIndex } // 이전 페이지에서 마지막으로 가져온 레스토랑 인덱스보다 큰 인덱스만 가져옴
+            },
+            offset: offset,
+            limit: perPage,
+            include: {
+                model: Review,
+                attributes: ["review_rating"],
+            }
+        });
 
-    // 추가적으로 리뷰 데이터도 가져올 수 있도록 설정
-    const indexReview = await Restaurant.findAll({
-        attributes: ["rest_index", "rest_name"],
-        include: {
-            model: Review,
-            attributes: ["review_rating"],
-        },
-        offset: offset,
-        limit: perPage
-    });
-
-    res.status(200).json({ restaurants: restaurants, indexReview: indexReview });
-
+        res.status(200).json({ restaurants: restaurants }); // 레스토랑과 리뷰 데이터를 응답으로 보냄
     } catch (error) {
         console.error("데이터 가져오기 오류:", error);
         res.status(500).send("Internal Server Error");

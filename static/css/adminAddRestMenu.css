@@ -6,22 +6,51 @@ body {
     margin: 0px;
     padding: 0px;
 }
-body * {
-    /* border: 1px solid black; */
-}
-header {
-    height: 80px;
-}
 .admin-main {
     position: relative;
+    padding: 80px;
     width: 85%;
     float: right;
 }
 label {
     width: 100px;
-    vertical-align: top;
 }
-.btn-add {
-    width: 80px;
-    height: 37px;
+input {
+    height: 32px;
+}
+#addMenuFormDiv {
+    padding: 0px 20px 20px 20px;
+}
+#submitMenuDiv {
+    padding: 20px 0px;
+}
+.btn-admin {
+    width: 120px;
+    height: 40px;
+    line-height: 36px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    background-color: #ffc064;
+}
+.btn-admin:hover {
+    cursor: pointer;
+    background-color: #e1a000;
+}
+#addBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 5px;
+    border: none;
+}
+#addBtn:hover {
+    cursor: pointer;
+    background-color: #dbdbdbec;
+}
+#backBtn {
+    background-color: #cfcfcf;
+}
+#backBtn:hover {
+    background-color: #afafafee;
 }

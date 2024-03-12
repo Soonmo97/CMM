@@ -1,11 +1,17 @@
 <header>
     <div class="wrapper">
         <div class="headerLogo">
-            <a href="/">
-                <img src="/static/images/CMM.png" alt="" style="width: auto; height: 200px" />
+            <a href="/?category=모든식당">
+                <img id="headerImg" src="/static/images/CMM-circle.png" alt="" style="width: auto; height: 150px" />
+            </a>
+            <div class='typing'><h2 class="typingTxt"></h2></div>
+        </div>
+        <div>
+            <a href="/roulette">
+                <img src="" alt="" style="height: auto; width: 50px" />
             </a>
         </div>
-        <div class="searchResponse" style="z-index: 999; margin-right: -7rem;">
+        <div class="searchResponse" style="z-index: 999; margin-right: -3rem">
             <div class="search" style="width: 500px">
                 <div
                     class="collapse navbar-collapse d-flex justify-content-center"
@@ -33,57 +39,194 @@
                     </div>
                 </div>
             </div>
+            <script>
+                // 검색 버튼에 이벤트 리스너 추가
+                document.getElementById("searchButton").addEventListener("click", searchKeyword);
+
+                // 키워드로 검색하여 테이블을 채우는 함수
+                async function searchKeyword() {
+                    try {
+                        const keyword = document.getElementById("searchInput").value.trim(); // 입력값의 앞뒤 공백 제거
+                        if (!keyword) {
+                            return; // 검색어가 없으면 함수 종료
+                        }
+                        document.location.href = `/search?keyword=${keyword}`;
+                    } catch (error) {
+                        console.error("데이터 가져오기 오류:", error);
+                    }
+                }
+
+                // 엔터 키 입력 시 검색 실행
+                document
+                    .getElementById("searchInput")
+                    .addEventListener("keypress", function (event) {
+                        if (event.key === "Enter") {
+                            searchKeyword();
+                        }
+                    });
+            <!-- 타이핑 효과 -->
+            <script>
+                const $typingTxt = document.querySelector(".typing .typingTxt");
+
+// 글자 모음 - 개행문자(\n)로 줄바꿈
+const letters = [
+  "창동 맛집 모음"
+];
+
+// 글자 입력 속도
+const speed = 100;
+let i = 0;
+
+// 줄바꿈을 위한 <br> 치환
+const changeLineBreak = (letter) => {
+  return letter.map(typingTxt => typingTxt === "\n" ? "<br>" : typingTxt);
+}
+
+// 타이핑 효과
+const typing = async () => {  
+  // 기존코드에서 개행치환코드 추가
+  const letter = changeLineBreak(letters[i].split(""));
+  
+  while (letter.length) {
+    await wait(speed);
+    $typingTxt.innerHTML += letter.shift(); 
+  }
+  
+  // 잠시 대기
+  await wait(800);
+  
+  // 지우는 효과
+  remove();
+}
+
+// 글자 지우는 효과
+const remove = async () => {
+  // 기존코드에서 개행치환코드 추가
+  const letter = changeLineBreak(letters[i].split(""));
+  
+  while (letter.length) {
+    await wait(speed);
+    
+    letter.pop();
+    $typingTxt.innerHTML = letter.join(""); 
+  }
+  
+  // 다음 순서의 글자로 지정, 타이핑 함수 다시 실행
+  i = !letters[i+1] ? 0 : i + 1;
+  typing();
+}
+
+// 딜레이 기능 ( 마이크로초 )
+function wait(ms) {
+  return new Promise(res => setTimeout(res, ms))
+}
+
+// 초기 실행
+setTimeout(typing, 1500);
+            </script>
+
             <br />
             <div>
                 <nav class="menu" style="flex: 0 0 auto; margin-top: -15px">
                     <ul>
-                        <li id="menuHome" ><a href="/">홈</a></li>
-                        <li id="menu1"><a href="/search/category?category=한식" onclick="categoryMenu('menu1')">한식</a></li>
-                        <li id="menu2"><a href="/search/category?category=일식" onclick="categoryMenu('menu2')">일식</a></li>
-                        <li id="menu3"><a href="/search/category?category=양식" onclick="categoryMenu('menu3')">양식</a></li>
-                        <li id="menu4"><a href="/search/category?category=중식" onclick="categoryMenu('menu4')">중식</a></li>
-                        <li id="menu5"><a href="/search/category?category=디저트" onclick="categoryMenu('menu5')">디저트</a></li>
-                        <li id="menu6"><a href="/search/category?category=기타" onclick="categoryMenu('menu6')">기타</a></li>
+                        <li id="menuHome"><a href="/?category=모든식당">홈</a></li>
+                        <li id="menu1">
+                            <a href="/search/category?category=한식">한식</a>
+                        </li>
+                        <li id="menu2">
+                            <a href="/search/category?category=일식">일식</a>
+                        </li>
+                        <li id="menu3">
+                            <a href="/search/category?category=양식">양식</a>
+                        </li>
+                        <li id="menu4">
+                            <a href="/search/category?category=중식">중식</a>
+                        </li>
+                        <li id="menu5">
+                            <a href="/search/category?category=디저트">디저트</a>
+                        </li>
+                        <li id="menu6">
+                            <a href="/search/category?category=기타">기타</a>
+                        </li>
+                        <li id="roulette">
+                            <a href="/roulette"
+                                ><img
+                                    src="/static/images/roulette0.png"
+                                    alt=""
+                                    style="width: 45px; height: auto"
+                                />
+                            </a>
+                        </li>
                     </ul>
-                    
                 </nav>
             </div>
         </div>
 
-        <div class="InfoResponse"  >
+        <div class="InfoResponse">
             <div class="buttons">
                 <!-- 로그인 유무에 따른 헤더 변경 -->
                 <%if (isLogin) { %>
                 <div>
-                <div class="welcomeResponse" style="right: 25%">
-                   <p class="signBtn" style="background-color: white; text-align: center; border-radius: 25px; padding: 5px 0; font-weight: 600;"><i class="fa-regular fa-user fa-xl"></i>&nbsp;&nbsp;<%= user %>님 환영합니다.</p>
-                </div>
-
-                <form name="form_logout" action="/form/logout" method="post">
-                    <div>
-                    <button id="logoutBtn" class="signBtn" type="submit" style="font-weight: 600;">로그아웃</button>
-                   
-                        <button
-                            type="button"
+                    <div class="welcomeResponse" style="right: 25%">
+                        <p
                             class="signBtn"
-                            id="menu"
-                            onclick="window.location.href = '/mypage/likeList';"
-                            style="font-weight: 600;"
+                            style="
+                                background-color: white;
+                                text-align: center;
+                                border-radius: 25px;
+                                padding: 5px 0;
+                                font-weight: 600;
+                            "
                         >
-                            마이페이지
-                        </button>
-                        <button class="signBtn">
-                            <a href="/suggestion/list" style="text-decoration: none; color: black; font-weight: 600;">건의사항</a>
-                            </div>
-                        </button>
-                </form>
-            </div>
+                            <i class="fa-regular fa-user fa-xl"></i>&nbsp;&nbsp;<%= user %>님
+                            환영합니다.
+                        </p>
+                    </div>
+
+                    <form name="form_logout" action="/form/logout" method="post">
+                        <div>
+                            <button
+                                id="logoutBtn"
+                                class="signBtn"
+                                type="submit"
+                                style="font-weight: 600"
+                            >
+                                로그아웃
+                            </button>
+
+                            <button
+                                type="button"
+                                class="signBtn"
+                                id="menu"
+                                onclick="window.location.href = '/mypage/likeList';"
+                                style="font-weight: 600"
+                            >
+                                마이페이지
+                            </button>
+
+                            <a
+                                href="/suggestion/list?page=1"
+                                class="signBtn"
+                                style="
+                                    text-decoration: none;
+                                    color: black;
+                                    font-weight: 600;
+                                    padding: 1px 6px;
+                                "
+                                >건의사항</a
+                            >
+                        </div>
+                    </form>
+                </div>
                 <% } else { %>
-                <button id="signupBtn" class="signBtn" style="font-weight: 600;">회원가입</button>
-                <button id="loginBtn" class="signBtn" style="font-weight: 600;">로그인</button>
-                <button class="signBtn">
-                    <a href="/suggestion/list" style="text-decoration: none; color: black; font-weight: 600;" >건의사항</a>
-                </button>
+                <button id="signupBtn" class="signBtn" style="font-weight: 600">회원가입</button>
+                <button id="loginBtn" class="signBtn" style="font-weight: 600">로그인</button>
+                <a
+                    href="/suggestion/list?page=1"
+                    class="signBtn"
+                    style="text-decoration: none; color: black; font-weight: 600; padding: 0 5px"
+                    >건의사항</a
+                >
                 <% } %>
                 <br />
             </div>
@@ -135,7 +278,9 @@
 
                 <div class="searchUser">
                     <a href="/user/searchId" target="_blank" onclick="openSearch()">아이디 찾기</a>
-                    <a href="/user/searchPw" target="_blank" onclick="openSearch()">비밀번호 찾기</a>
+                    <a href="/user/searchPw" target="_blank" onclick="openSearch()"
+                        >비밀번호 찾기</a
+                    >
                 </div>
             </form>
         </div>
@@ -143,24 +288,27 @@
 
     <!-- 찾기 onclick -->
     <script>
-    function openSearch() {
+        function openSearch() {
+            event.preventDefault();
 
-    event.preventDefault();
+            var width = 600;
+            var height = 500;
 
-    var width = 600;
-    var height = 500; 
+            // 새 창 열기
+            var newWindow = window.open(
+                event.target.href,
+                "_blank",
+                "width=" + width + ",height=" + height
+            );
 
-    // 새 창 열기
-    var newWindow = window.open(event.target.href, "_blank", "width=" + width + ",height=" + height);
+            // 새 창의 크기 조절
+            newWindow.resizeTo(width, height);
 
-    // 새 창의 크기 조절
-    newWindow.resizeTo(width, height);
-
-    // 새 창을 화면 중앙으로 이동
-    var left = (window.screen.width - width) / 2;
-    var top = (window.screen.height - height) / 2;
-    newWindow.moveTo(left, top);
-    }
+            // 새 창을 화면 중앙으로 이동
+            var left = (window.screen.width - width) / 2;
+            var top = (window.screen.height - height) / 2;
+            newWindow.moveTo(left, top);
+        }
     </script>
 
     <!-- 회원가입 팝업창 -->
@@ -274,7 +422,7 @@
                         />
                         <span class="stepbutton"
                             >
-                            <button type="button" onclick="resetBtn()">리셋</button>
+                            <button type="button" id="btnReset" onclick="resetBtn()">리셋</button>
                             <button type="submit" id="btnCheckCodeSend" onclick="emailCode()">
                                 확인코드전송
                             </button></span
@@ -295,11 +443,13 @@
                             name="emailChk"
                             class="int"
                             maxlength="20"
-                            onkeydown="inputCodeCk()"
+                            oninput="inputCodeCk()"
                             required
                         />
                         <span class="stepbutton">
-                            <button type="button" id="btnCheckCode" onclick="btnEmailCk()">확인</button>
+                            <button type="button" id="btnCheckCode" onclick="btnEmailCk()">
+                                확인
+                            </button>
                             <input
                                 type="hidden"
                                 name="codeDuplication"
@@ -312,9 +462,7 @@
                 </div>
                 <!-- 회원가입-->
                 <div class="btnArea">
-                    <button type="submit" id="btnJoin">
-                        <span>가입하기</span>
-                    </button>
+                    <button type="submit" id="btnJoin" onclick="btnRegister()">가입하기</button>
                 </div>
             </form>
         </div>
@@ -359,8 +507,9 @@
     <script>
         // 간단한 이메일 형식 유효성 검사
         function validateEmail(email) {
-        const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        return re.test(email); 
+            const re =
+                /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            return re.test(email);
         }
 
         function resetBtn() {
@@ -389,15 +538,14 @@
                     if (response.data.ok) {
                         emailInput.setAttribute("readonly", true);
                         alert("메일 전송에 성공하였습니다.");
-                    } 
+                    }
                     if (response.data.check) {
                         alert("중복된 이메일 입니다.");
                         email.value = "";
                     }
-                    if(response.data.ok === false) {
+                    if (response.data.ok === false) {
                         alert("메일 전송에 실패하였습니다.");
                     }
-                    
                 })
 
                 .catch((err) => {
@@ -409,18 +557,10 @@
 
     <!-- 이메일 코드 확인 -->
     <script>
-        // btnEmailCk 함수 실행 여부를 추적하는 변수
-        let isBtnEmailCkRunning = false;
-    
         function btnEmailCk(callback) {
-            // 이미 실행 중인 경우 중복 호출 방지
-            if (isBtnEmailCkRunning) {
-                return;
-            }
-    
             const emailChk = document.getElementById("emailChk");
             const codeValue = emailChk.value;
-    
+
             axios({
                 method: "POST",
                 url: "/form/checkCode",
@@ -428,17 +568,24 @@
                     codeValue: codeValue,
                 },
             })
-            .then((response) => {
-                if (response.data.ok) {
-                    alert("인증번호가 일치합니다.");
-                    // 인증번호 일치시 코드값을 변경하여 회원가입 가능하도록 설정
-                    document.getElementById("codeDuplication").value = "btnEmailCk";
-                    if (callback) {
-                        callback(true);
+                .then((response) => {
+                    if (response.data.ok) {
+                        alert("인증번호가 일치합니다.");
+                        // 인증번호 일치시 코드값을 변경하여 회원가입 가능하도록 설정
+                        document.getElementById("codeDuplication").value = "btnEmailCk";
+                        if (callback) {
+                            callback(true);
+                        }
+                    } else {
+                        alert("인증번호가 일치하지 않습니다.");
+                        emailChk.value = "";
+                        if (callback) {
+                            callback(false);
+                        }
                     }
-                } else {
-                    alert("인증번호가 일치하지 않습니다.");
-                    emailChk.value = "";
+                })
+                .catch((error) => {
+                    console.error(error);
                     if (callback) {
                         callback(false);
                     }
@@ -449,37 +596,30 @@
                 if (callback) {
                     callback(false);
                 }
-            })
-            .finally(() => {
-                // 실행이 끝났으므로 실행 중인 상태를 해제함
-                isBtnEmailCkRunning = false;
             });
-    
-            // 실행 중으로 표시
-            isBtnEmailCkRunning = true;
         }
-    
+
         document.getElementById("modal_register").addEventListener("submit", function (event) {
             event.preventDefault();
-    
+
             const form = document.forms["modal_register"];
-    
+
             function inputCodeCk() {
                 document.modal_register.codeDuplication.value = "codeUncheck";
             }
-    
+
             // 중복확인, 이메일 인증 확인
-            btnEmailCk(function(success) {
+            btnEmailCk(function (success) {
                 if (!success) {
                     alert("인증번호 확인을 해주세요.");
                     return false;
                 }
-    
+
                 if (form.idDuplication.value != "idCheck") {
                     alert("아이디 중복체크를 해주세요.");
                     return false;
                 }
-    
+
                 // 회원가입 진행
                 axios({
                     method: "POST",
@@ -491,26 +631,22 @@
                         email: form.email.value,
                     },
                 })
-                .then((result) => {
-                    console.log(result);
-                    if (result) {
-                        alert("회원가입 성공!");
-                        document.location.href = "/";
-                    } else {
-                        alert("회원가입 실패");
-                    }
-                })
-                .catch((err) => {
-                    console.error(err);
-                    res.status(500).send("회원가입 실패");
-                });
+                    .then((result) => {
+                        console.log(result);
+                        if (result) {
+                            alert("회원가입 성공!");
+                            document.location.href = "/";
+                        } else {
+                            alert("회원가입 실패");
+                        }
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        res.status(500).send("회원가입 실패");
+                    });
             });
         });
     </script>
-    
-
-    <!-- 아이디 찾기 -->
-
 
     <!-- 어두운 오버레이 -->
     <div id="overlay"></div>
@@ -542,39 +678,33 @@
     </script>
 
     <script>
-        
-            // 회원가입 버튼 클릭 이벤트 처리
-            document.getElementById("signupBtn").addEventListener("click", function () {
-                // 팝업창과 어두운 오버레이 표시
-                console.log("테스트");
-                document.getElementById("signupModal").style.display = "block";
-                document.getElementById("overlay").style.display = "block";
-            });
+        // 회원가입 버튼 클릭 이벤트 처리
+        document.getElementById("signupBtn").addEventListener("click", function () {
+            // 팝업창과 어두운 오버레이 표시
+            console.log("테스트");
+            document.getElementById("signupModal").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+        });
 
-            // 모달 닫기 버튼 클릭 이벤트 처리
-            document.getElementById("closeModalBtn").addEventListener("click", function () {
-                // 팝업창과 어두운 오버레이 숨기기
-                document.getElementById("signupModal").style.display = "none";
-                document.getElementById("overlay").style.display = "none";
-            });
+        // 모달 닫기 버튼 클릭 이벤트 처리
+        document.getElementById("closeModalBtn").addEventListener("click", function () {
+            // 팝업창과 어두운 오버레이 숨기기
+            document.getElementById("signupModal").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+        });
 
-            // 로그인 버튼 클릭 이벤트 처리
-            document.getElementById("loginBtn").addEventListener("click", function () {
-                // 팝업창과 어두운 오버레이 표시
-                document.getElementById("loginModal").style.display = "block";
-                document.getElementById("overlay").style.display = "block";
-            });
+        // 로그인 버튼 클릭 이벤트 처리
+        document.getElementById("loginBtn").addEventListener("click", function () {
+            // 팝업창과 어두운 오버레이 표시
+            document.getElementById("loginModal").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+        });
 
-            // 모달 닫기 버튼 클릭 이벤트 처리
-            document.getElementById("closeModalBtn").addEventListener("click", function () {
-                // 팝업창과 어두운 오버레이 숨기기
-                document.getElementById("loginModal").style.display = "none";
-                document.getElementById("overlay").style.display = "none";
-            });
-
-            
-        
+        // 모달 닫기 버튼 클릭 이벤트 처리
+        document.getElementById("closeModalBtn").addEventListener("click", function () {
+            // 팝업창과 어두운 오버레이 숨기기
+            document.getElementById("loginModal").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+        });
     </script>
-
-    
 </header>

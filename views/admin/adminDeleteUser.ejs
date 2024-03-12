@@ -5,27 +5,65 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <%-include('../include/head.ejs')%>
         <title>회원 관리</title>
+        <link rel="stylesheet" href="/static/css/adminUser.css">
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
-        <main class="admin-main">
-            <h2>회원 삭제</h2>
-            <div class="delete-user-div">
-                <table class="user-list-table">
-                    <tr>
-                        <th>번호</th>
-                        <th>아이디</th>
-                        <th colspan="3"></th>
-                    </tr>
-                    <%for(let i=0; i<userInfo.length; i++){%>
+        <div class="admin-main">
+            <div class="user-list-container">
+                <h2 class="title">회원 삭제</h2>
+                <div class="delete-user-div">
+                    <table class="user-list-table">
                         <tr>
-                            <td><%=userInfo[i].user_index%></td>
-                            <td onclick="openRestInfo('<%=userInfo[i].user_index%>')"><%=userInfo[i].user_name%></td>
-                            <td><button type="button" onclick="deleteRest('<%=userInfo[i].user_index%>','<%=userInfo[i].user_name%>')">삭제</button></td>
+                            <th>번호</th>
+                            <th>아이디</th>
+                            <th>닉네임</th>
+                            <th>이메일</th>
+                            <th></th>
                         </tr>
-                        <%}%>
-                </table>
+                        <%for(let i=0; i<userInfo.length; i++){%>
+                            <tr>
+                                <td><%=userInfo[i].user_index%></td>
+                                <td><%=userInfo[i].id%></td>
+                                <td><%=userInfo[i].nickname%></td>
+                                <td><%=userInfo[i].email%></td>
+                                <td><button type="button" class="btn-admin" onclick="deleteUser('<%=userInfo[i].user_index%>','<%=userInfo[i].id%>')">삭제</button></td>
+                            </tr>
+                            <%}%>
+                    </table>
+                </div>
             </div>
-        </main>
+            <!-- pagination -->
+            <nav></nav>
+        </div>
+        <script>
+            const modal = document.querySelector('.modal-container')
+            const modalBtn = document.querySelector(".close-modal");
+
+            async function deleteUser(idx, name){
+                const isDelete = confirm(`회원 ${name}을(를) 삭제하시겠습니까?`);
+                if(isDelete){
+                    try{
+                        const result = await axios({
+                            method:'delete',
+                            url:'/admin/deleteUser',
+                            data: {user_index:idx}
+                        });
+                        console.log(result);
+                        if(result.data.isSuccess){
+                            alert('삭제되었습니다.');
+                            location.reload(true);
+                        }else{
+                            alert('접근 권한이 없습니다.');
+                            location.reload(true);
+                        }
+                    }catch(error){
+                        console.log("error!!", error);
+                        alert('삭제하지 못했습니다.');
+                        location.reload(true);
+                    }
+                }
+            }
+        </script>
     </body>
 </html>

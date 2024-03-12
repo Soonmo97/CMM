@@ -9,10 +9,10 @@
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
-        <main class="admin-main">
-            <h2>식당 추가</h2>
+        <div class="admin-main">
             <div class="addRestaurants">
-                <form name="form-addRestInfo">
+                <h2 class="title">식당 추가</h2>
+                <form name="form-addRestInfo" class="addRest-form">
                     <fieldset class="restInfo">
                         <legend>식당 정보</legend>
                         <p>*은 필수 입력값입니다.</p>
@@ -52,10 +52,10 @@
                         <button type="button" id="btnAdd">+</button>
                         <br />
                     </fieldset>
-                    <button type="button" id="btn-addInfo">등록</button>
+                    <button type="button" id="btn-addInfo" class="btn-admin">등록</button>
                 </form>
             </div>
-        </main>
+        </div>
         <script>
             const btnAdd = document.querySelector("#btnAdd");
             const form = document.forms["form-addRestInfo"];

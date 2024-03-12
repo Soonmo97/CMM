@@ -9,60 +9,80 @@ const { response } = require("express");
 
 // GET /index
 exports.getMain = async (req, res) => {
+    // const user = req.session.user;
+    // const restaurants = await Restaurant.findAll({
+    //     attributes: ["rest_index", "rest_name"],
+    // });
+
+    // const indexReview = await Restaurant.findAll({
+    //     attributes: ["rest_index", "rest_name"],
+    //     include: {
+    //         model: Review,
+    //         attributes: ["review_rating"],
+    //     },
+    // });
+    // if (user) {
+    //     res.render("index", {
+    //         isLogin: true,
+    //         user: user,
+    //         restaurants: restaurants,
+    //         indexReview: indexReview,
+    //         // categories: categories,
+    //     });
+    // } else {
+    //     res.render("index", {
+    //         isLogin: false,
+    //         restaurants: restaurants,
+    //         indexReview: indexReview,
+    //         // categories: categories,
+    //     });
+    // }
     const user = req.session.user;
+    try {
+        const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
+        const perPage = 6; // 페이지당 항목 수
+        const offset = (currentPage - 1) * perPage; // OFFSET 계산
 
-    const restaurants = await Restaurant.findAll({
-        attributes: ["rest_index", "rest_name"],
-    });
+        // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행
+        const restaurants = await Restaurant.findAll({
+            attributes: ["rest_index", "rest_name"],
+            offset: offset,
+            limit: perPage
+        });
 
-    const indexReview = await Restaurant.findAll({
-        attributes: ["rest_index", "rest_name"],
-        include: {
-            model: Review,
-            attributes: ["review_rating"],
-        },
-    });
-
-    const categories = await Category.findAll({
-        include: [
-            {
-                model: Restaurant,
-                attributes: ["rest_index", "rest_name"],
+        // 추가적으로 리뷰 데이터도 가져올 수 있도록 설정
+        const indexReview = await Restaurant.findAll({
+            attributes: ["rest_index", "rest_name"],
+            include: {
+                model: Review,
+                attributes: ["review_rating"],
             },
-        ],
-    });
-
-    console.log("categories", categories);
-    // categories [
-    //     Category {
-    //       dataValues: {
-    //         category_index: 9,
-    //         category_name: '한식',
-    //         rest_index: 10,
-    //         Restaurant: [Restaurant]
-    //       },
-
-    console.log("//////////////////////////////////////");
-    console.log("indexReview", indexReview);
-    console.log("//////////////////////////////////////");
-    console.log("restaurants:", restaurants);
-    console.log("유저 세션 정보>> ", user);
-    if (user) {
-        res.render("index", {
-            isLogin: true,
-            user: user,
-            restaurants: restaurants,
-            indexReview: indexReview,
-            // categories: categories,
+            offset: offset,
+            limit: perPage
         });
-    } else {
-        res.render("index", {
-            isLogin: false,
-            restaurants: restaurants,
-            indexReview: indexReview,
-            // categories: categories,
-        });
+
+        if (user) {
+            res.render("index", {
+                isLogin: true,
+                user: user,
+                restaurants: restaurants,
+                indexReview: indexReview,
+                // categories: categories,
+            });
+        } else {
+            res.render("index", {
+                isLogin: false,
+                restaurants: restaurants,
+                indexReview: indexReview,
+                // categories: categories,
+            });
+        }
+        // res.status(200).json({ restaurants: restaurants, indexReview: indexReview });
+    } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+        res.status(500).send("Internal Server Error");
     }
+
 };
 
 // POST /include/header/form/login
@@ -266,8 +286,10 @@ exports.checkCode = async (req, res) => {
 
     // 클라이언트로부터 받은 코드 값과 이메일로 전송된 인증번호를 비교
     if (bcrypt.compareSync(codeValue, hashAuth)) {
+        console.log("인증번호 일치");
         res.json({ ok: true, msg: "인증번호가 일치합니다." });
     } else {
+        console.log("인증번호 불일치");
         res.json({ ok: false, msg: "인증번호가 일치하지 않습니다." });
     }
 };
@@ -346,3 +368,25 @@ exports.alterPw = async (req, res) => {
 
 }
 
+
+// 무한 스크롤
+// GET /load-more
+exports.loadMoreData = async (req, res) => {
+    try {
+        const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
+        const perPage = 9; // 페이지당 항목 수
+        const offset = (currentPage - 1) * perPage; // OFFSET 계산
+
+        // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행
+        const restaurants = await Restaurant.findAll({
+            attributes: ["rest_index", "rest_name"],
+            offset: offset,
+            limit: perPage
+        });
+
+        res.status(200).json({ restaurants: restaurants });
+    } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+        res.status(500).send("Internal Server Error");
+    }
+};

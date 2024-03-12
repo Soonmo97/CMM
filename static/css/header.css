@@ -1,17 +1,11 @@
 @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
 
-body {
-    font-family: "Gowun Dodum", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-}
-
 :root {
     /** color **/
     --baseColor: #333;
     --whiteColor: rgb(254, 255, 255);
     /** size **/
-    /* --baseContainer: 1400px; */
+    /* --baseContainer: 1400typx; */
 }
 
 body {
@@ -19,6 +13,36 @@ body {
     font-weight: 400;
     font-style: normal;
 }
+
+/* 타이핑 효과 */
+.typing {
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    /* align-items: flex-end; */
+    /* font-size: 1.8rem; */
+  }
+  
+  .typingTxt {
+    width: 200px;
+    /* font-size: 2.2rem; */
+    font-family: "Black Han Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .typingTxt::after {
+    content: '';
+    margin-left: .4rem;
+    border-right: 2px solid #777;
+    animation: cursor .9s infinite steps(2);
+  }
+  
+  @keyframes cursor {
+    from { border-right: 2px solid #222; }
+    to { border-right: 2px solid #777; }
+  }
+
 
 ::placeholder {
     color: black;
@@ -45,6 +69,8 @@ header {
     height: 200px;
     border-bottom: 1px solid gray;
 }
+
+
 
 /* 미디어 쿼리 - 화면 너비에 따라 헤더의 높이 조정 */
 @media screen and (max-width: 1400px) {
@@ -271,6 +297,20 @@ header nav ul li:last-child {
     display: flex;
     gap: 10px; /* 버튼 사이의 간격 조정 */
 }
+
+#btnCheckId,
+#btnReset,
+#btnCheckCodeSend,
+#btnCheckCode {
+    margin-right: 5px;
+    border: none;
+    padding: 7px 7px;
+    border-radius: 5px;
+    background-color: #ffc064;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 
 /* 회원가입 팝업창 스타일 */
 #signupModal {

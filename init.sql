@@ -1,3 +1,4 @@
+
 -- Active: 1707101284088@@127.0.0.1@3306@cmm
 create database cmm DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 

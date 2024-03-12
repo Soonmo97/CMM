@@ -29,7 +29,7 @@
                         <td colspan="2">
                             <button
                                 type="button"
-                                class="btn btn-success btn-like"
+                                class="btn-sug btn-like"
                                 onclick="like('<%=postInfo.sug_index%>','<%= postInfo.User.user_index%>','<%=loginUser %>')"
                             >
                                 추천 <%= postInfo.dataValues.like_count %>
@@ -39,23 +39,21 @@
                 </table>
             </div>
             <div class="btn-container">
-                <div class="btn-back">
-                    <a href="/suggestion/list?page=1" class="back-link"
-                        ><button class="btn btn-info">목록으로</button></a
-                    >
+                <div class="btn-sug">
+                    <button class="btn-sug" onclick="goback()">목록으로</button>
                 </div>
                 <div class="btn-group">
                     <% if(postInfo.User.user_index===loginUser){ %>
                     <button
                         type="button"
-                        class="btn btn-warning"
+                        class="btn-sug"
                         onclick="editPost('<%= postInfo.sug_index %>')"
                     >
                         수정
                     </button>
                     <button
                         type="button"
-                        class="btn btn-danger"
+                        class="btn-sug"
                         onclick="deletePost('<%= postInfo.sug_index %>')"
                     >
                         삭제
@@ -66,6 +64,17 @@
         </div>
         <%- include('../include/footer.ejs') %>
         <script>
+            function goback() {
+                const pageIdx = document.referrer.lastIndexOf("page=");
+                let page = document.referrer.substring(pageIdx);
+                if (pageIdx > 0) {
+                    page = page.replace("page=", "");
+                    window.location.href = `/suggestion/list?page=${page}`;
+                } else {
+                    window.location.href = "/suggestion/list?page=1";
+                }
+            }
+
             function deletePost(idx) {
                 const isDelete = confirm("게시글을 삭제하시겠습니까?");
                 if (isDelete) {

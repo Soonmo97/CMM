@@ -1,0 +1,75 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    padding-top: 220px;
+    width: 1350px;
+    height: 100%;
+    border-radius: 25px;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* text-align: center; */
+}
+
+.rouletteTitle {
+    border-radius: 25px;
+    padding: 10px;
+}
+
+.roulette {
+    margin-top: 20px;
+    width: 800px;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.roulette canvas {
+    transition: 2s;
+}
+
+.roulette button {
+    background: #febf00;
+    margin-top: 2rem;
+    padding: 0.8rem 1.8rem;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 25px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.roulette button:active {
+    background: #444;
+    color: #f9f9f9;
+}
+
+.roulette div {
+    width: 520px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+}
+
+.roulette div::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 50px;
+    border-radius: 5px;
+    background: #000;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 22;
+}

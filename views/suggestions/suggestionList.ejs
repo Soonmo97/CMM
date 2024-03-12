@@ -25,14 +25,20 @@
                     <th style="width: 120px">등록일</th>
                     <th style="width: 80px">추천</th>
                 </tr>
-                <% for(let i=0; i<sugList.length; i++){ %>
+                <% if(sugList.length===0){%>
                     <tr>
-                        <td><%= sugList[i].sug_index %></td>
-                        <td><a href="post/<%=sugList[i].sug_index%>"><%= sugList[i].title %></a></td>
-                        <td><%= sugList[i].User.nickname %></td>
-                        <td><%= sugList[i].dataValues.created_at %></td>
-                        <td><%= sugList[i].dataValues.like_count %></td>
+                        <td colspan="5">게시글이 없습니다.</td>
                     </tr>
+                <% } else{%>
+                    <% for(let i=0; i<sugList.length; i++){ %>
+                        <tr>
+                            <td><%= sugList[i].sug_index %></td>
+                            <td><a href="post/<%=sugList[i].sug_index%>"><%= sugList[i].title %></a></td>
+                            <td><%= sugList[i].User.nickname %></td>
+                            <td><%= sugList[i].dataValues.created_at %></td>
+                            <td><%= sugList[i].dataValues.like_count %></td>
+                        </tr>
+                        <% } %>
                     <% } %>
                 </table>
             </div>
@@ -59,7 +65,7 @@
                     </ul>
                 </nav>
                 <div class="btn-div">
-                    <button type="button" class="btn btn-info" onclick="writePage('<%- isLogin %>')">글쓰기</button>
+                    <button type="button" class="btn-sug btn-write" onclick="writePage('<%- isLogin %>')">글쓰기</button>
                 </div>
             </div>
         </div>

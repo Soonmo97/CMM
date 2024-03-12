@@ -1,25 +1,29 @@
 const { Restaurant, Category, Menu, User, sequelize } = require("../models/index");
+const bcrypt = require("bcrypt");
 
 // 관리자 페이지 요청
 // 식당 목록 조회
 exports.getAdminPage = async (req, res) => {
     try {
-        // admin 계정 맞는지 판별
-        // if (req.session.user === 'admin') {
-        const result = await Restaurant.findAll({
-            attributes: ["rest_index", "rest_name"],
-        });
-        const restInfo = result.map(({ dataValues: { rest_index, rest_name } }) => ({
-            rest_index,
-            rest_name,
-        }));
-        // console.log(restInfo);
-        res.render("admin/adminRestList", { restInfo });
-        // } else {
-        //     res.send(
-        //         "<script>alert('접근 불가능한 페이지입니다.'); document.location.href='/'</script>"
-        //     );
-        // }
+        if (req.session.user) {
+            // admin 계정 맞는지 판별
+            if (req.session.user === "admin") {
+                const result = await Restaurant.findAll({
+                    attributes: ["rest_index", "rest_name"],
+                });
+                const restInfo = result.map(({ dataValues: { rest_index, rest_name } }) => ({
+                    rest_index,
+                    rest_name,
+                }));
+                res.render("admin/adminRestList", { restInfo });
+            } else {
+                res.send(
+                    "<script>alert('접근 권한이 없습니다.'); document.location.href='/'</script>"
+                );
+            }
+        } else {
+            res.redirect("/admin/login");
+        }
     } catch (error) {
         console.log(error);
         res.status(500).send("정보를 불러오지 못했습니다.");
@@ -29,14 +33,18 @@ exports.getAdminPage = async (req, res) => {
 // 특정 식당 정보 조회
 exports.getRestInfo = async (req, res) => {
     try {
-        const restInfo = await Restaurant.findOne({
-            where: { rest_index: req.body.rest_index },
-            include: [
-                { model: Category, attributes: ["category_index", "category_name"] },
-                { model: Menu, attributes: ["menu", "price"] },
-            ],
-        });
-        res.send({ restInfo: restInfo.dataValues });
+        if (req.session.user === "admin") {
+            const restInfo = await Restaurant.findOne({
+                where: { rest_index: req.body.rest_index },
+                include: [
+                    { model: Category, attributes: ["category_index", "category_name"] },
+                    { model: Menu, attributes: ["menu", "price"] },
+                ],
+            });
+            res.send({ restInfo: restInfo.dataValues });
+        } else {
+            res.send("<script>alert('접근 권한이 없습니다.'); document.location.href='/'</script>");
+        }
     } catch (error) {
         console.log(error);
     }
@@ -45,14 +53,24 @@ exports.getRestInfo = async (req, res) => {
 // 식당 추가 페이지 요청
 exports.getAddPage = async (req, res) => {
     try {
-        const result = await Restaurant.findAll({
-            attributes: ["rest_index", "rest_name"],
-        });
-        const restInfo = result.map(({ dataValues: { rest_index, rest_name } }) => ({
-            rest_index,
-            rest_name,
-        }));
-        res.render("admin/adminAddRest", { restInfo });
+        if (req.session.user) {
+            if (req.session.user === "admin") {
+                const result = await Restaurant.findAll({
+                    attributes: ["rest_index", "rest_name"],
+                });
+                const restInfo = result.map(({ dataValues: { rest_index, rest_name } }) => ({
+                    rest_index,
+                    rest_name,
+                }));
+                res.render("admin/adminAddRest", { restInfo });
+            } else {
+                res.send(
+                    "<script>alert('접근 권한이 없습니다.'); document.location.href='/'</script>"
+                );
+            }
+        } else {
+            res.redirect("/admin/login");
+        }
     } catch (error) {
         console.log(error);
     }
@@ -124,7 +142,17 @@ exports.addRest = async (req, res) => {
 // 식당 메뉴 추가 페이지 요청
 exports.getAddMenuPage = (req, res) => {
     try {
-        res.render("admin/adminAddRestMenu");
+        if (req.session.user) {
+            if (req.session.user === "admin") {
+                res.render("admin/adminAddRestMenu");
+            } else {
+                res.send(
+                    "<script>alert('접근 권한이 없습니다.'); document.location.href='/'</script>"
+                );
+            }
+        } else {
+            res.redirect("/admin/login");
+        }
     } catch (error) {
         console.log(error);
     }
@@ -146,14 +174,14 @@ exports.addMenu = async (req, res) => {
 // 식당 삭제
 exports.deleteRest = async (req, res) => {
     try {
-        // if (req.session.user === 'admin') {
-        const result = await Restaurant.destroy({
-            where: { rest_index: req.body.rest_index },
-        });
-        res.json({ isSuccess: true });
-        // } else {
-        // res.json({ isSuccess: false });
-        // }
+        if (req.session.user === "admin") {
+            const result = await Restaurant.destroy({
+                where: { rest_index: req.body.rest_index },
+            });
+            res.json({ isSuccess: true });
+        } else {
+            res.json({ isSuccess: false });
+        }
     } catch (error) {
         console.log(error);
         res.status(500).json({ isSuccess: false });
@@ -163,21 +191,31 @@ exports.deleteRest = async (req, res) => {
 // 식당 수정 페이지 요청
 exports.getEditPage = async (req, res) => {
     try {
-        const result = await Restaurant.findOne({
-            where: { rest_index: req.query.rest_index },
-            include: [
-                { model: Category, attributes: ["category_index", "category_name"] },
-                { model: Menu, attributes: ["menu_id", "menu", "price"] },
-            ],
-        });
-        const { Categories, Menus } = result.dataValues;
-        const menu = Menus.map((el) => el.dataValues);
-        const category = Categories.map((el) => el.dataValues);
-        res.render("admin/adminEditRest", {
-            restInfo: result.dataValues,
-            category: category,
-            menus: menu,
-        });
+        if (req.session.user) {
+            if (req.session.user === "admin") {
+                const result = await Restaurant.findOne({
+                    where: { rest_index: req.query.rest_index },
+                    include: [
+                        { model: Category, attributes: ["category_index", "category_name"] },
+                        { model: Menu, attributes: ["menu_id", "menu", "price"] },
+                    ],
+                });
+                const { Categories, Menus } = result.dataValues;
+                const menu = Menus.map((el) => el.dataValues);
+                const category = Categories.map((el) => el.dataValues);
+                res.render("admin/adminEditRest", {
+                    restInfo: result.dataValues,
+                    category: category,
+                    menus: menu,
+                });
+            } else {
+                res.send(
+                    "<script>alert('접근 권한이 없습니다.'); document.location.href='/'</script>"
+                );
+            }
+        } else {
+            res.redirect("/admin/login");
+        }
     } catch (error) {
         console.log(error);
         res.status(500).send("페이지를 조회하지 못했습니다.");
@@ -299,13 +337,96 @@ exports.editRestMenu = async (req, res) => {
     }
 };
 
-// 회원 조회
+// 전체 회원 목록 조회
 exports.getAdminUserPage = async (req, res) => {
     try {
-        const result = await User.findAll();
-        res.render("admin/adminDeleteUser", { userInfo: result });
+        if (req.session.user) {
+            if (req.session.user === "admin") {
+                const result = await User.findAll();
+                res.render("admin/adminDeleteUser", { userInfo: result });
+            } else {
+                res.send(
+                    "<script>alert('접근 권한이 없습니다.'); document.location.href='/'</script>"
+                );
+            }
+        } else {
+            res.redirect("/admin/login");
+        }
     } catch (error) {
         console.log(error);
         res.status(500).json({ isSuccess: false });
+    }
+};
+
+// 회원 삭제
+exports.deleteUser = async (req, res) => {
+    try {
+        if (req.session.user) {
+            if (req.session.user === "admin") {
+                const result = await User.destroy({ where: { user_index: req.body.user_index } });
+                res.json({ isSuccess: true, isLogin: true });
+            } else {
+                res.json({ isSuccess: false, isLogin: true });
+            }
+        } else {
+            res.json({ isSuccess: false, isLogin: false });
+        }
+    } catch (error) {
+        res.status(500).json({ isSuccess: false });
+    }
+};
+
+// admin 로그인 페이지 요청
+exports.getLoginPage = async (req, res) => {
+    try {
+        // 세션 있을 경우 - 페이지 렌더
+        if (req.session.user) {
+            if (req.session.user === "admin") {
+                // 관리자 계정일 경우
+                res.redirect("/admin/restaurants");
+            } else {
+                // 관리자 계정 아닐 경우
+                res.send(
+                    "<script>alert('접근 권한이 없습니다.'); window.location.href='/';</script>"
+                );
+            }
+        } else {
+            res.render("admin/login");
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("페이지를 불러올 수 없습니다.");
+    }
+};
+
+// admin 페이지 로그인
+exports.login = async (req, res) => {
+    console.log("세션 정보 >> ", req.session);
+
+    const { id, pw } = req.body;
+
+    try {
+        const user = await User.findOne({ where: { id } });
+        console.log(await bcrypt.compare(pw, user.pw));
+
+        if (user && (await bcrypt.compare(pw, user.pw))) {
+            // 로그인 성공
+            req.session.user = user.id;
+            req.session.index = user.user_index;
+
+            if (user.id === "admin") {
+                // 관리자 계정일 경우
+                res.json({ isSuccess: true, isLogin: true });
+            } else {
+                // 관리자 아님
+                res.json({ isSuccess: false, isLogin: true });
+            }
+        } else {
+            // 로그인 실패
+            res.json({ isSuccess: false, isLogin: false });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send("로그인 오류");
     }
 };

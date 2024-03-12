@@ -18,7 +18,7 @@
                         <button type="button" class="enable-edit-btn" id="b-info" onclick="enable('f-info', this)">수정</button>
                         <button type="button" class="edit-do-btn hidden" id="b-editinfo" onclick="editInfo()">수정완료</button>
                     </div>
-                    <form id="f-info" class="edit edit-restinfo-form" name="restinfo">
+                    <form id="f-info" class="edit edit-restinfo" name="restinfo">
                         <input type="hidden" name="index" class="edit-restinfo" id="i-index" value="<%=restInfo.rest_index%>">
                         <label for="i-name">이름</label>
                         <input type="text" name="name" class="edit-restinfo" id="i-name" value="<%=restInfo.rest_name%>"/><br>
@@ -53,8 +53,10 @@
                             <br id="br<%=i+1%>">
                         <% } %>
                     </form>
-                    <button type="button" id="btn-add" class="hidden" onclick="addCategory()">+</button>
-                    <button type="button" id="btn-rmv" class="hidden" onclick="removeCategory()">-</button>
+                    <div class="btn-group">
+                        <button type="button" id="btn-add" class="hidden" onclick="addCategory()">+</button>
+                        <button type="button" id="btn-rmv" class="hidden" onclick="removeCategory()">-</button>
+                    </div>
                 </div>
                 <div id="menu-div">
                     <div class="title-div">
@@ -193,6 +195,7 @@
                             url:"/admin/editRestMenu",
                             data:data
                         });
+                        console.log(result.data);
                         if(result.data.isSuccess){
                             alert("메뉴를 수정했습니다.");
                             window.location.reload();

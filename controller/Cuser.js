@@ -11,16 +11,11 @@ const { response } = require("express");
 exports.getMain = async (req, res) => {
     const user = req.session.user;
     try {
-        const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
-        const perPage = 6; // 페이지당 항목 수
-        const offset = (currentPage - 1) * perPage; // OFFSET 계산
         const { category } = req.query;
 
         // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행
         const restaurants = await Restaurant.findAll({
             attributes: ["rest_index", "rest_name"],
-            offset: offset,
-            limit: perPage
         });
 
         // 추가적으로 리뷰 데이터도 가져올 수 있도록 설정
@@ -30,8 +25,6 @@ exports.getMain = async (req, res) => {
                 model: Review,
                 attributes: ["review_rating"],
             },
-            offset: offset,
-            limit: perPage
         });
         
        if (user) {

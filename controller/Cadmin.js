@@ -407,8 +407,6 @@ exports.login = async (req, res) => {
 
     try {
         const user = await User.findOne({ where: { id } });
-        console.log(await bcrypt.compare(pw, user.pw));
-
         if (user && (await bcrypt.compare(pw, user.pw))) {
             // 로그인 성공
             req.session.user = user.id;

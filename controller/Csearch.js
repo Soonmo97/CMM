@@ -33,12 +33,14 @@ exports.search = async (req, res) => {
                 user: user,
                 restaurants: restaurants,
                 indexReview: indexReview,
+                category: null,
             });
         } else {
             res.render("index", {
                 isLogin: false,
                 restaurants: restaurants,
                 indexReview: indexReview,
+                category: null,
             });
         }
     } catch (error) {

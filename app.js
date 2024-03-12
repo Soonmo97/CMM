@@ -44,6 +44,10 @@ app.use("/mypage", mypageRouter);
 app.use("/search", searchRouter);
 app.use("/roulette", rouletteRouter);
 
+app.get("*", (req, res) => {
+    res.render("404");
+});
+
 sequelize
     .sync()
     .then(() => {

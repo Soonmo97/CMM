@@ -24,7 +24,14 @@
             "
         >
             <img src="/static/images/CMM-circle.png" alt="" style="width: 70px; height: auto; margin-top: -0.5rem; " />
-            <h1>모든식당</h1>
+            
+            <% if (category) { %>
+                <h1><%=category%></h1>
+            <% } else { %>
+                <h1>모든식당</h1>
+            <% } %>
+           
+           
         </div>
         <br>
         <div>
@@ -33,7 +40,7 @@
 
         <div style="width: 1350px; margin: 0 auto">
             <div style="max-width: 1350px; margin: 0 auto; min-height: 250px;">
-                <div class="restaurantMenu" id="restaurantMenu1" style="padding-top: 50px">
+                <div class="restaurantMenu" id="restaurantMenu1" >
                     <div
                         class="restaurantContainer"
                         style="
@@ -44,14 +51,14 @@
                         "
                     >
                         <% for (let i = 0; i <restaurants.length; i++) { %>
-                        <div class="restaurantItem" style="max-width: 410px" >
+                        <div class="item" style="max-width: 410px" >
                             <a href="/restaurantDetail/<%=restaurants[i].rest_index%>">
-                                <div class="imageContainer">
+                                <div class="polaroid">
                                     <img
                                         src="/static/images/<%= restaurants[i].rest_index %>.png"
                                         alt="Restaurant 1"
                                         class="RestaurantImage"
-                                        style="width: 350px; height: 350px; box-shadow: 10px 5px 5px black;"
+                                        style="width: 350px; height: 350px; "
                                     />
                                     <span class="label"><%= restaurants[i].rest_name %></span>
                                     <span class="labelStar">
@@ -71,6 +78,7 @@
                                         <% } %>
                                     </span>
                                 </div>
+                              
                             </a>
                         </div>
                         <% } %>
@@ -99,30 +107,7 @@
         
         <!-- footer include -->
         <%- include('./include/footer') %>
-        <script>
-            // 검색 버튼에 이벤트 리스너 추가
-            document.getElementById("searchButton").addEventListener("click", searchKeyword);
-
-            // 키워드로 검색하여 테이블을 채우는 함수
-            async function searchKeyword() {
-                try {
-                    const keyword = document.getElementById("searchInput").value.trim(); // 입력값의 앞뒤 공백 제거
-                    if (!keyword) {
-                        return; // 검색어가 없으면 함수 종료
-                    }
-                    document.location.href = `/search?keyword=${keyword}`;
-                } catch (error) {
-                    console.error("데이터 가져오기 오류:", error);
-                }
-            }
-
-            // 엔터 키 입력 시 검색 실행
-            document.getElementById("searchInput").addEventListener("keypress", function (event) {
-                if (event.key === "Enter") {
-                    searchKeyword();
-                }
-            });
-        </script>
+        
 
         <!-- 무한 스크롤 작업 -->
         <script>

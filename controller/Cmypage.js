@@ -274,7 +274,8 @@ exports.updatePw = async (req, res) => {
         userIndex = req.session.index;
         console.log("변경할 pw >> ", updatePw);
         console.log("변경할 유저 인덱스> > >", userIndex);
-        const encryptPw = bcrypt.hash(updatePw, 10);
+        const encryptPw = await bcrypt.hash(updatePw, 10);
+        console.log("암호화 된 pw >>", encryptPw);
         await User.update(
             {
                 pw: encryptPw,
@@ -289,7 +290,8 @@ exports.updatePw = async (req, res) => {
                 res.send();
             })
             .catch((err) => {
-                res.send("비밀번호 변경 서버에러", err);
+                console.log("비밀번호 변경 서버 err", err);
+                res.status(500).send("sever error");
             });
     } catch (err) {
         console.log("err", err);

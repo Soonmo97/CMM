@@ -134,7 +134,7 @@
             const scrollPosition = window.scrollY + window.innerHeight;
             const documentHeight = document.body.offsetHeight;
 
-            // 스크롤이 3분의 2 지점에 도달하면 추가 데이터 로딩
+            // 스크롤이 지점에 도달하면 추가 데이터 로딩
             if (scrollPosition >= documentHeight * 7 / 8 && !isLoading) {
             loadMoreData();
             }

@@ -10,59 +10,52 @@ const { response } = require("express");
 // GET /index
 exports.getMain = async (req, res) => {
     const user = req.session.user;
+    try {
+        const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
+        const perPage = 6; // 페이지당 항목 수
+        const offset = (currentPage - 1) * perPage; // OFFSET 계산
+        const { category } = req.query;
 
-    const restaurants = await Restaurant.findAll({
-        attributes: ["rest_index", "rest_name"],
-    });
+        // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행
+        const restaurants = await Restaurant.findAll({
+            attributes: ["rest_index", "rest_name"],
+            offset: offset,
+            limit: perPage
+        });
 
-    const indexReview = await Restaurant.findAll({
-        attributes: ["rest_index", "rest_name"],
-        include: {
-            model: Review,
-            attributes: ["review_rating"],
-        },
-    });
-
-    const categories = await Category.findAll({
-        include: [
-            {
-                model: Restaurant,
-                attributes: ["rest_index", "rest_name"],
+        // 추가적으로 리뷰 데이터도 가져올 수 있도록 설정
+        const indexReview = await Restaurant.findAll({
+            attributes: ["rest_index", "rest_name"],
+            include: {
+                model: Review,
+                attributes: ["review_rating"],
             },
-        ],
-    });
-
-    console.log("categories", categories);
-    // categories [
-    //     Category {
-    //       dataValues: {
-    //         category_index: 9,
-    //         category_name: '한식',
-    //         rest_index: 10,
-    //         Restaurant: [Restaurant]
-    //       },
-
-    console.log("//////////////////////////////////////");
-    console.log("indexReview", indexReview);
-    console.log("//////////////////////////////////////");
-    console.log("restaurants:", restaurants);
-    console.log("유저 세션 정보>> ", user);
-    if (user) {
+            offset: offset,
+            limit: perPage
+        });
+        
+       if (user) {
         res.render("index", {
             isLogin: true,
             user: user,
-            restaurants: restaurants,
-            indexReview: indexReview,
-            // categories: categories,
-        });
-    } else {
-        res.render("index", {
-            isLogin: false,
-            restaurants: restaurants,
-            indexReview: indexReview,
-            // categories: categories,
-        });
+            restaurants,
+            indexReview,
+            category,
+          });
+       } else {
+          res.render("index", {
+              isLogin: false,
+              restaurants,
+              indexReview,
+              category,
+          });
+       }
+      
+    } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+        res.status(500).send("Internal Server Error");
     }
+
 };
 
 // POST /include/header/form/login
@@ -239,20 +232,19 @@ exports.sendCode = async (req, res) => {
     // const user = await User.findOne({ where: { email: email } });
 
     const emailCk = await User.findOne({ where: { email: email } });
-    console.log("이메일 중복이 있나요? >>", emailCk );
-    if (emailCk ===  null) {
+    console.log("이메일 중복이 있나요? >>", emailCk);
+    if (emailCk === null) {
         await smtpTransport.sendMail(mailOptions, (err, response) => {
             console.log("response", response);
             if (err) {
                 res.send({ ok: false, msg: " 메일 전송에 실패하였습니다." });
             } else {
-                res.send({ ok: true, msg: " 메일 전송에 성공하였습니다."});
+                res.send({ ok: true, msg: " 메일 전송에 성공하였습니다." });
             }
-                smtpTransport.close(); //전송종료
-            }); 
-    }
-    else {
-        res.send({ check : true });
+            smtpTransport.close(); //전송종료
+        });
+    } else {
+        res.send({ check: true });
     }
 };
 // POST /form/checkCode
@@ -266,8 +258,10 @@ exports.checkCode = async (req, res) => {
 
     // 클라이언트로부터 받은 코드 값과 이메일로 전송된 인증번호를 비교
     if (bcrypt.compareSync(codeValue, hashAuth)) {
+        console.log("인증번호 일치");
         res.json({ ok: true, msg: "인증번호가 일치합니다." });
     } else {
+        console.log("인증번호 불일치");
         res.json({ ok: false, msg: "인증번호가 일치하지 않습니다." });
     }
 };
@@ -285,17 +279,16 @@ exports.postSearchId = async (req, res) => {
         const user = await User.findOne({ where: { email: email } });
         if (user === null) {
             console.log("존재하지 않는 이메일 ", email);
-            res.send({ ok:false });
+            res.send({ ok: false });
         } else {
             console.log("가입 이메일과 일치 ", user);
-            res.send({ ok:true , id: user.id });
+            res.send({ ok: true, id: user.id });
         }
     } catch (error) {
         console.error(error);
         return res.status(500).send("서버 오류");
     }
-}
-
+};
 
 // GET /searchPw
 exports.getSearchPw = async (req, res) => {
@@ -310,16 +303,16 @@ exports.postSearchPw = async (req, res) => {
         const user = await User.findOne({ where: { id: id } });
         if (user === null) {
             console.log("존재하지 않는 아이디 ", id);
-            res.send({ ok:false });
+            res.send({ ok: false });
         } else {
             console.log("존재하는 아이디 ", user);
-            res.send({ ok:true , id: user.id });
+            res.send({ ok: true, id: user.id });
         }
     } catch (error) {
         console.error(error);
         return res.status(500).send("서버 오류");
     }
-}
+};
 
 // POST /user/alterPw
 exports.alterPw = async (req, res) => {
@@ -330,19 +323,38 @@ exports.alterPw = async (req, res) => {
         const user = await User.findOne({ where: { id: id } });
 
         if (!user) {
-            return res.status(404).json({ ok: false, error: '사용자를 찾을 수 없습니다.' });
-        }
-        else {
+            return res.status(404).json({ ok: false, error: "사용자를 찾을 수 없습니다." });
+        } else {
             user.password = hashedPassword;
             await user.save();
             console.log("변경된 비번 >> ", user.password);
-            return res.status(200).json({ ok: true, message: '비밀번호 변경 성공' });
+            return res.status(200).json({ ok: true, message: "비밀번호 변경 성공" });
         }
-        
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ ok: false, error: '비밀번호 변경 실패' });
+        return res.status(500).json({ ok: false, error: "비밀번호 변경 실패" });
     }
-
 }
 
+
+// 무한 스크롤
+// GET /load-more
+exports.loadMoreData = async (req, res) => {
+    try {
+        const currentPage = req.query.page || 1; // 쿼리 매개변수에서 현재 페이지를 가져옴
+        const perPage = 9; // 페이지당 항목 수
+        const offset = (currentPage - 1) * perPage; // OFFSET 계산
+
+        // 데이터베이스에서 해당 페이지의 데이터를 가져오는 쿼리 실행
+        const restaurants = await Restaurant.findAll({
+            attributes: ["rest_index", "rest_name"],
+            offset: offset,
+            limit: perPage
+        });
+
+        res.status(200).json({ restaurants: restaurants });
+    } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+        res.status(500).send("Internal Server Error");
+    }
+};

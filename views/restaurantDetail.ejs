@@ -27,9 +27,13 @@
                 <div class="restInfo">
                     <div class="restTitle">
                         <div class="restNameCate">
-                            <span style="font-size: 30px; font-weight: bold;"><%= restaurant.rest_name %></span>
+                            <span style="font-size: 30px; font-weight: bold"
+                                ><%= restaurant.rest_name %></span
+                            >
                             <% for (category of categoryList) { %>
-                            <span style="margin-left: 20px; font-size: 20px; color:gray"><%= category.category_name %></span>
+                            <span style="margin-left: 20px; font-size: 20px; color: gray"
+                                ><%= category.category_name %></span
+                            >
                             <% } %>
                         </div>
                         <div class="restRankLike">
@@ -74,8 +78,8 @@
                         <br />
                         <div class="otherInfo">
                             <div class="timeAndNum">
-                                ⏰  영업시간: <%= restaurant.rest_time%><br /><br />
-                                📞  번호: <%= restaurant.rest_number%><br /><br />  
+                                ⏰ 영업시간: <%= restaurant.rest_time%><br /><br />
+                                📞 번호: <%= restaurant.rest_number%><br /><br />
                             </div>
                             <div class="menu">
                                 📜 대표메뉴:
@@ -152,7 +156,7 @@
             </script>
 
             <div class="reviewAll">
-                <h2>리뷰</h2>
+                <h2 class="reviewTitle">리뷰</h2>
                 <div class="reviews">
                     <% let reviewCount = 0; %>
                     <!-- 리뷰 개수 1개 -->
@@ -209,9 +213,14 @@
                 <div class="createReview">
                     <div class="rating">
                         <span>
-                        <%for (let i=1; i<=5; i++) { %>
-                        <i id="ratingCount<%= i %>" class="fa-regular fa-star fa-2xl" style="color: #FFD43B;" onclick="reviewRating('<%= restaurant.rest_index%>', this)"></i>
-                        <%} %>
+                            <%for (let i=1; i<=5; i++) { %>
+                            <i
+                                id="ratingCount<%= i %>"
+                                class="fa-regular fa-star fa-2xl"
+                                style="color: #ffd43b"
+                                onclick="reviewRating('<%= restaurant.rest_index%>', this)"
+                            ></i>
+                            <%} %>
                         </span>
                     </div>
                     <textarea
@@ -457,23 +466,24 @@
                     return alert("리뷰 내용을 입력해주세요!");
                 }
 
-                if(confirm("리뷰를 등록하시겠습니까?")) {
+                if (confirm("리뷰를 등록하시겠습니까?")) {
                     // 리뷰 등록 요청
                     await axios({
                         url: `/restaurantDetail/${restIndex}/createReview`,
                         method: "post",
-                        data: { restIndex: restIndex, rating: selectRating, content: content}
-                    }).then((response) => {
-                        alert(response.data.message);
-                    }).catch((err) => {
-                                alert('리뷰 등록 실패 err');
-                                console.log("err", err)
+                        data: { restIndex: restIndex, rating: selectRating, content: content },
                     })
+                        .then((response) => {
+                            alert(response.data.message);
+                        })
+                        .catch((err) => {
+                            alert("리뷰 등록 실패 err");
+                            console.log("err", err);
+                        });
 
                     // 현재 페이지를 새로고침
                     location.reload();
                 }
-                
             } else {
                 alert("리뷰를 등록하려면 로그인이 된 상태여야 합니다. 로그인을 해주세요!");
             }

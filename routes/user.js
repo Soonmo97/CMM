@@ -32,5 +32,9 @@ router.get("/user/searchPw", controller.getSearchPw);
 router.post("/user/searchPw", controller.postSearchPw);
 // POST /user/searchPw
 router.post("/user/alterPw", controller.alterPw);
+// GET /load-more
+router.get("/load-more", controller.loadMoreData);
+
+
 
 module.exports = router;

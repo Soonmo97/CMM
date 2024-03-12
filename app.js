@@ -33,14 +33,20 @@ const userRouter = require("./routes/user.js");
 const suggestRouter = require("./routes/suggestion.js");
 const mypageRouter = require("./routes/mypage.js");
 const adminRouter = require("./routes/admin.js");
-const search = require("./routes/search.js");
+const searchRouter = require("./routes/search.js");
+const rouletteRouter = require("./routes/roulette.js");
 
 app.use("/restaurantDetail", restRouter);
 app.use("/suggestion", suggestRouter);
 app.use("/admin", adminRouter);
 app.use("/", userRouter);
 app.use("/mypage", mypageRouter);
-app.use("/search", search);
+app.use("/search", searchRouter);
+app.use("/roulette", rouletteRouter);
+
+app.get("*", (req, res) => {
+    res.render("404");
+});
 
 sequelize
     .sync()

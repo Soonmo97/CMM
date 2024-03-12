@@ -1,11 +1,22 @@
 <header>
     <div class="wrapper">
         <div class="headerLogo">
-            <a href="/">
-                <img src="/static/images/CMM.png" alt="" style="width: auto; height: 200px" />
+            <a href="/?category=모든식당">
+                <img
+                    id="headerImg"
+                    src="/static/images/CMM-circle.png"
+                    alt=""
+                    style="width: auto; height: 150px"
+                />
+            </a>
+            <div class="typing"><h2 class="typingTxt"></h2></div>
+        </div>
+        <div>
+            <a href="/roulette">
+                <img src="" alt="" style="height: auto; width: 50px" />
             </a>
         </div>
-        <div class="searchResponse" style="z-index: 999; margin-right: -7rem">
+        <div class="searchResponse" style="z-index: 999; margin-right: -3rem">
             <div class="search" style="width: 500px">
                 <div
                     class="collapse navbar-collapse d-flex justify-content-center"
@@ -33,42 +44,122 @@
                     </div>
                 </div>
             </div>
+            <script>
+                // 검색 버튼에 이벤트 리스너 추가
+                document.getElementById("searchButton").addEventListener("click", searchKeyword);
+
+                // 키워드로 검색하여 테이블을 채우는 함수
+                async function searchKeyword() {
+                    try {
+                        const keyword = document.getElementById("searchInput").value.trim(); // 입력값의 앞뒤 공백 제거
+                        if (!keyword) {
+                            return; // 검색어가 없으면 함수 종료
+                        }
+                        document.location.href = `/search?keyword=${keyword}`;
+                    } catch (error) {
+                        console.error("데이터 가져오기 오류:", error);
+                    }
+                }
+
+                // 엔터 키 입력 시 검색 실행
+                document
+                    .getElementById("searchInput")
+                    .addEventListener("keypress", function (event) {
+                        if (event.key === "Enter") {
+                            searchKeyword();
+                        }
+                    });
+            </script>
+            <!-- 타이핑 효과 -->
+            <script>
+                const $typingTxt = document.querySelector(".typing .typingTxt");
+
+                // 글자 모음 - 개행문자(\n)로 줄바꿈
+                const letters = ["창동 맛집 모음"];
+
+                // 글자 입력 속도
+                const speed = 100;
+                let i = 0;
+
+                // 줄바꿈을 위한 <br> 치환
+                const changeLineBreak = (letter) => {
+                    return letter.map((typingTxt) => (typingTxt === "\n" ? "<br>" : typingTxt));
+                };
+
+                // 타이핑 효과
+                const typing = async () => {
+                    // 기존코드에서 개행치환코드 추가
+                    const letter = changeLineBreak(letters[i].split(""));
+
+                    while (letter.length) {
+                        await wait(speed);
+                        $typingTxt.innerHTML += letter.shift();
+                    }
+
+                    // 잠시 대기
+                    await wait(800);
+
+                    // 지우는 효과
+                    remove();
+                };
+
+                // 글자 지우는 효과
+                const remove = async () => {
+                    // 기존코드에서 개행치환코드 추가
+                    const letter = changeLineBreak(letters[i].split(""));
+
+                    while (letter.length) {
+                        await wait(speed);
+
+                        letter.pop();
+                        $typingTxt.innerHTML = letter.join("");
+                    }
+
+                    // 다음 순서의 글자로 지정, 타이핑 함수 다시 실행
+                    i = !letters[i + 1] ? 0 : i + 1;
+                    typing();
+                };
+
+                // 딜레이 기능 ( 마이크로초 )
+                function wait(ms) {
+                    return new Promise((res) => setTimeout(res, ms));
+                }
+
+                // 초기 실행
+                setTimeout(typing, 1500);
+            </script>
+
             <br />
             <div>
                 <nav class="menu" style="flex: 0 0 auto; margin-top: -15px">
                     <ul>
-                        <li id="menuHome"><a href="/">홈</a></li>
+                        <li id="menuHome"><a href="/?category=모든식당">홈</a></li>
                         <li id="menu1">
-                            <a href="/search/category?category=한식" onclick="categoryMenu('menu1')"
-                                >한식</a
-                            >
+                            <a href="/search/category?category=한식">한식</a>
                         </li>
                         <li id="menu2">
-                            <a href="/search/category?category=일식" onclick="categoryMenu('menu2')"
-                                >일식</a
-                            >
+                            <a href="/search/category?category=일식">일식</a>
                         </li>
                         <li id="menu3">
-                            <a href="/search/category?category=양식" onclick="categoryMenu('menu3')"
-                                >양식</a
-                            >
+                            <a href="/search/category?category=양식">양식</a>
                         </li>
                         <li id="menu4">
-                            <a href="/search/category?category=중식" onclick="categoryMenu('menu4')"
-                                >중식</a
-                            >
+                            <a href="/search/category?category=중식">중식</a>
                         </li>
                         <li id="menu5">
-                            <a
-                                href="/search/category?category=디저트"
-                                onclick="categoryMenu('menu5')"
-                                >디저트</a
-                            >
+                            <a href="/search/category?category=디저트">디저트</a>
                         </li>
                         <li id="menu6">
-                            <a href="/search/category?category=기타" onclick="categoryMenu('menu6')"
-                                >기타</a
-                            >
+                            <a href="/search/category?category=기타">기타</a>
+                        </li>
+                        <li id="roulette">
+                            <a href="/roulette"
+                                ><img
+                                    src="/static/images/roulette0.png"
+                                    alt=""
+                                    style="width: 45px; height: auto"
+                                />
+                            </a>
                         </li>
                     </ul>
                 </nav>
@@ -124,7 +215,7 @@
                                     text-decoration: none;
                                     color: black;
                                     font-weight: 600;
-                                    padding: 3px;
+                                    padding: 1px 6px;
                                 "
                                 >건의사항</a
                             >
@@ -134,14 +225,12 @@
                 <% } else { %>
                 <button id="signupBtn" class="signBtn" style="font-weight: 600">회원가입</button>
                 <button id="loginBtn" class="signBtn" style="font-weight: 600">로그인</button>
-
                 <a
                     href="/suggestion/list?page=1"
                     class="signBtn"
-                    style="text-decoration: none; color: black; font-weight: 600; padding: 3px"
+                    style="text-decoration: none; color: black; font-weight: 600; padding: 0 5px"
                     >건의사항</a
                 >
-
                 <% } %>
                 <br />
             </div>
@@ -336,7 +425,7 @@
                             required
                         />
                         <span class="stepbutton">
-                            <button type="button" onclick="resetBtn()">리셋</button>
+                            <button type="button" id="btnReset" onclick="resetBtn()">리셋</button>
                             <button type="submit" id="btnCheckCodeSend" onclick="emailCode()">
                                 확인코드전송
                             </button></span
@@ -357,7 +446,7 @@
                             name="emailChk"
                             class="int"
                             maxlength="20"
-                            onkeydown="inputCodeCk()"
+                            oninput="inputCodeCk()"
                             required
                         />
                         <span class="stepbutton">
@@ -376,9 +465,7 @@
                 </div>
                 <!-- 회원가입-->
                 <div class="btnArea">
-                    <button type="submit" id="btnJoin">
-                        <span>가입하기</span>
-                    </button>
+                    <button type="submit" id="btnJoin" onclick="btnRegister()">가입하기</button>
                 </div>
             </form>
         </div>
@@ -473,15 +560,7 @@
 
     <!-- 이메일 코드 확인 -->
     <script>
-        // btnEmailCk 함수 실행 여부를 추적하는 변수
-        let isBtnEmailCkRunning = false;
-
         function btnEmailCk(callback) {
-            // 이미 실행 중인 경우 중복 호출 방지
-            if (isBtnEmailCkRunning) {
-                return;
-            }
-
             const emailChk = document.getElementById("emailChk");
             const codeValue = emailChk.value;
 
@@ -513,14 +592,7 @@
                     if (callback) {
                         callback(false);
                     }
-                })
-                .finally(() => {
-                    // 실행이 끝났으므로 실행 중인 상태를 해제함
-                    isBtnEmailCkRunning = false;
                 });
-
-            // 실행 중으로 표시
-            isBtnEmailCkRunning = true;
         }
 
         document.getElementById("modal_register").addEventListener("submit", function (event) {
@@ -571,8 +643,6 @@
             });
         });
     </script>
-
-    <!-- 아이디 찾기 -->
 
     <!-- 어두운 오버레이 -->
     <div id="overlay"></div>

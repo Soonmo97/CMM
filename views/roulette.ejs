@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>내 정보</title>
+        <%- include('./include/head') %>
+        <link rel="stylesheet" href="/static/css/roulette.css" />
+    </head>
+    <body>
+        <%- include('./include/header'), {isLogin: isLogin, user: user} %>
+        <main>
+            <h1 class="rouletteTitle">식당 룰렛</h1>
+            <hr
+                style="
+                    border: 3px solid#878787;
+                    height: 3px !important;
+                    display: block !important;
+                    width: 100% !important;
+                "
+            />
+            <div class="roulette">
+                <div>
+                    <canvas width="520" height="520"></canvas>
+                    <button onclick="rotate()">룰렛 돌리기</button>
+                </div>
+            </div>
+        </main>
+        <%-include('./include/footer') %>
+        <script>
+            const $c = document.querySelector("canvas");
+            const ctx = $c.getContext(`2d`);
+
+            const numbers = [];
+            while (numbers.length < 9) {
+                const randomNum = Math.floor(Math.random() * 15); // 0부터 14까지의 정수 생성
+                if (!numbers.includes(randomNum)) {
+                    numbers.push(randomNum);
+                }
+            }
+            const restaurants = [
+                "<%=Restaurants[0].rest_name%>",
+                "<%=Restaurants[1].rest_name%>",
+                "<%=Restaurants[2].rest_name%>",
+                "<%=Restaurants[3].rest_name%>",
+                "<%=Restaurants[4].rest_name%>",
+                "<%=Restaurants[5].rest_name%>",
+                "<%=Restaurants[6].rest_name%>",
+                "<%=Restaurants[7].rest_name%>",
+                "<%=Restaurants[8].rest_name%>",
+                "<%=Restaurants[9].rest_name%>",
+                "<%=Restaurants[10].rest_name%>",
+                "<%=Restaurants[11].rest_name%>",
+                "<%=Restaurants[12].rest_name%>",
+                "<%=Restaurants[13].rest_name%>",
+                "<%=Restaurants[14].rest_name%>",
+            ];
+            // console.log(restaurants);
+
+            const product = [];
+            for (let i = 0; i < 9; i++) {
+                product.push(restaurants[numbers[i]]);
+                // product.push(restaurants[i]);
+            }
+            // console.log(product);
+
+            const colors = [
+                "#dc0936",
+                "#e6471d",
+                "#f7a416",
+                "#efe61f ",
+                "#60b236",
+                "#209b6c",
+                "#169ed8",
+                "#3f297e",
+                "#87207b",
+                "#be107f",
+                "#e7167b",
+            ];
+
+            const newMake = () => {
+                const [cw, ch] = [$c.width / 2, $c.height / 2];
+                const arc = Math.PI / (product.length / 2);
+
+                for (let i = 0; i < product.length; i++) {
+                    ctx.beginPath();
+                    ctx.fillStyle = colors[i % (colors.length - 1)];
+                    ctx.moveTo(cw, ch);
+                    ctx.arc(cw, ch, cw, arc * (i - 1), arc * i);
+                    ctx.fill();
+                    ctx.closePath();
+                }
+
+                ctx.fillStyle = "#fff";
+                ctx.font = "18px Pretendard";
+                ctx.textAlign = "center";
+
+                for (let i = 0; i < product.length; i++) {
+                    const angle = arc * i + arc / 2;
+
+                    ctx.save();
+
+                    ctx.translate(
+                        cw + Math.cos(angle) * (cw - 50),
+                        ch + Math.sin(angle) * (ch - 50)
+                    );
+
+                    ctx.rotate(angle + Math.PI / 2);
+
+                    product[i].split(" ").forEach((text, j) => {
+                        ctx.fillText(text, 0, 30 * j);
+                    });
+
+                    ctx.restore();
+                }
+            };
+
+            const rotate = () => {
+                $c.style.transform = `initial`;
+                $c.style.transition = `initial`;
+
+                setTimeout(() => {
+                    const ran = Math.floor(Math.random() * product.length);
+
+                    const arc = 360 / product.length;
+                    const rotate = ran * arc + 3600 + arc * 3 - arc / 4;
+
+                    $c.style.transform = `rotate(-${rotate}deg)`;
+                    $c.style.transition = `2s`;
+
+                    setTimeout(() => alert(`오늘의 식당은?! ${product[ran]} 어떠신가요?`), 2000);
+                }, 1);
+            };
+
+            newMake();
+        </script>
+    </body>
+</html>

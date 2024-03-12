@@ -9,7 +9,6 @@ exports.search = async (req, res) => {
         const user = req.session.user;
 
         const { keyword } = req.query;
-        // const { category } = req.query;
 
         // 키워드로 식당 검색
         const restaurants = await Restaurant.findAll({
@@ -27,7 +26,6 @@ exports.search = async (req, res) => {
         });
 
         console.log("검색 데이터:", restaurants);
-        // console.log("카테고리:", category);
 
         if (user) {
             res.render("index", {
@@ -80,12 +78,14 @@ exports.categoryMenu = async (req, res) => {
         });
         // console.log("-----");
         // console.log(categories[0].Restaurant);
+
         for (let category of categories) {
             category.rest_name = category.Restaurant.rest_name;
         }
 
         // console.log("---new categories");
         // console.log(categories);
+
         const indexReview = await Restaurant.findAll({
             attributes: ["rest_index", "rest_name"], // 식당의 속성
             include: {
@@ -117,8 +117,7 @@ exports.categoryMenu = async (req, res) => {
                 user: user,
                 indexReview,
                 restaurants: categories,
-                // restaurants: restaurants,
-                // categories : categories
+                category,
             });
         } else {
             res.render("index", {
@@ -126,8 +125,7 @@ exports.categoryMenu = async (req, res) => {
                 // categories,
                 indexReview,
                 restaurants: categories,
-                // restaurants: restaurants,
-                // categories : categories
+                category,
             });
         }
     } catch (error) {

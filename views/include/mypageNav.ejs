@@ -1,9 +1,16 @@
 <link rel="stylesheet" href="/static/css/mypage.css" />
 <div class="nav">
-    <h1><%= title %></h1>
+    <div style="display: flex">
+        <img
+            src="/static/images/CMM-circle.png"
+            alt=""
+            style="width: 70px; height: auto; margin-top: -0.5rem"
+        />
+        <h1>&nbsp;&nbsp;<%= title %></h1>
+    </div>
     <ul>
-        <a href="/mypage/likeList"><li>내 좋아요 목록</li></a>
-        <a href="/mypage/reviewList"><li>내 리뷰 목록</li></a>
-        <a href="/mypage/profile"><li>내 정보</li></a>
+        <a href="/mypage/likeList"><li style="font-weight: 600">내 좋아요 목록</li></a>
+        <a href="/mypage/reviewList"><li style="font-weight: 600">내 리뷰 목록</li></a>
+        <a href="/mypage/profile"><li style="font-weight: 600">내 정보</li></a>
     </ul>
 </div>

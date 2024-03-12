@@ -32,7 +32,7 @@ exports.getMain = async (req, res) => {
         ],
     });
 
-    console.log("categories", categories);
+    // console.log("categories", categories);
     // categories [
     //     Category {
     //       dataValues: {
@@ -42,11 +42,11 @@ exports.getMain = async (req, res) => {
     //         Restaurant: [Restaurant]
     //       },
 
-    console.log("//////////////////////////////////////");
-    console.log("indexReview", indexReview);
-    console.log("//////////////////////////////////////");
-    console.log("restaurants:", restaurants);
-    console.log("유저 세션 정보>> ", user);
+    // console.log("//////////////////////////////////////");
+    // console.log("indexReview", indexReview);
+    // console.log("//////////////////////////////////////");
+    // console.log("restaurants:", restaurants);
+    // console.log("유저 세션 정보>> ", user);
     if (user) {
         res.render("index", {
             isLogin: true,
@@ -266,8 +266,10 @@ exports.checkCode = async (req, res) => {
 
     // 클라이언트로부터 받은 코드 값과 이메일로 전송된 인증번호를 비교
     if (bcrypt.compareSync(codeValue, hashAuth)) {
+        console.log("인증번호 일치");
         res.json({ ok: true, msg: "인증번호가 일치합니다." });
     } else {
+        console.log("인증번호 불일치");
         res.json({ ok: false, msg: "인증번호가 일치하지 않습니다." });
     }
 };

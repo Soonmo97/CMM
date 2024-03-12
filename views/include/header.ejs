@@ -2,9 +2,11 @@
     <div class="wrapper">
         <div class="headerLogo">
             <a href="/">
-                <img src="/static/images/CMM.png" alt="" style="width: auto; height: 200px" />
+                <img id="headerImg" src="/static/images/CMM-circle.png" alt="" style="width: auto; height: 150px" />
             </a>
-        </div>
+        
+        <div class='typing'><h2 class="typingTxt"></h2></div>
+    </div>
         <div class="searchResponse" style="z-index: 999; margin-right: -7rem;">
             <div class="search" style="width: 500px">
                 <div
@@ -33,6 +35,67 @@
                     </div>
                 </div>
             </div>
+            <!-- 타이핑 효과 -->
+            <script>
+                const $typingTxt = document.querySelector(".typing .typingTxt");
+
+// 글자 모음 - 개행문자(\n)로 줄바꿈
+const letters = [
+  "창동 맛집 모음"
+];
+
+// 글자 입력 속도
+const speed = 100;
+let i = 0;
+
+// 줄바꿈을 위한 <br> 치환
+const changeLineBreak = (letter) => {
+  return letter.map(typingTxt => typingTxt === "\n" ? "<br>" : typingTxt);
+}
+
+// 타이핑 효과
+const typing = async () => {  
+  // 기존코드에서 개행치환코드 추가
+  const letter = changeLineBreak(letters[i].split(""));
+  
+  while (letter.length) {
+    await wait(speed);
+    $typingTxt.innerHTML += letter.shift(); 
+  }
+  
+  // 잠시 대기
+  await wait(800);
+  
+  // 지우는 효과
+  remove();
+}
+
+// 글자 지우는 효과
+const remove = async () => {
+  // 기존코드에서 개행치환코드 추가
+  const letter = changeLineBreak(letters[i].split(""));
+  
+  while (letter.length) {
+    await wait(speed);
+    
+    letter.pop();
+    $text.innerHTML = letter.join(""); 
+  }
+  
+  // 다음 순서의 글자로 지정, 타이핑 함수 다시 실행
+  i = !letters[i+1] ? 0 : i + 1;
+  typing();
+}
+
+// 딜레이 기능 ( 마이크로초 )
+function wait(ms) {
+  return new Promise(res => setTimeout(res, ms))
+}
+
+// 초기 실행
+setTimeout(typing, 1500);
+            </script>
+
             <br />
             <div>
                 <nav class="menu" style="flex: 0 0 auto; margin-top: -15px">
@@ -274,7 +337,7 @@
                         />
                         <span class="stepbutton"
                             >
-                            <button type="button" onclick="resetBtn()">리셋</button>
+                            <button type="button" id="btnReset" onclick="resetBtn()">리셋</button>
                             <button type="submit" id="btnCheckCodeSend" onclick="emailCode()">
                                 확인코드전송
                             </button></span
@@ -295,7 +358,7 @@
                             name="emailChk"
                             class="int"
                             maxlength="20"
-                            onkeydown="inputCodeCk()"
+                            oninput="inputCodeCk()"
                             required
                         />
                         <span class="stepbutton">
@@ -312,9 +375,7 @@
                 </div>
                 <!-- 회원가입-->
                 <div class="btnArea">
-                    <button type="submit" id="btnJoin">
-                        <span>가입하기</span>
-                    </button>
+                    <button type="button" id="btnJoin" onclick="btnJoin()">가입하기</button>
                 </div>
             </form>
         </div>
@@ -409,17 +470,17 @@
 
     <!-- 이메일 코드 확인 -->
     <script>
-        // btnEmailCk 함수 실행 여부를 추적하는 변수
-        let isBtnEmailCkRunning = false;
+        let isIdChecked = false; // 아이디 중복확인 상태 변수
+        let isCodeChecked = false; // 인증번호 확인 상태 변수
     
-        function btnEmailCk(callback) {
-            // 이미 실행 중인 경우 중복 호출 방지
-            if (isBtnEmailCkRunning) {
-                return;
-            }
-    
+        function btnEmailCk() {
             const emailChk = document.getElementById("emailChk");
             const codeValue = emailChk.value;
+    
+            if (!codeValue) {
+                alert("인증번호를 입력해주세요.");
+                return;
+            }
     
             axios({
                 method: "POST",
@@ -431,81 +492,64 @@
             .then((response) => {
                 if (response.data.ok) {
                     alert("인증번호가 일치합니다.");
-                    // 인증번호 일치시 코드값을 변경하여 회원가입 가능하도록 설정
                     document.getElementById("codeDuplication").value = "btnEmailCk";
-                    if (callback) {
-                        callback(true);
-                    }
-                } else {
+                    isCodeChecked = true; // 인증번호 확인 완료 상태로 변경
+                } 
+                else {
+                    console.log("인증번호 불일치 >> ", response.data.msg);
                     alert("인증번호가 일치하지 않습니다.");
                     emailChk.value = "";
-                    if (callback) {
-                        callback(false);
-                    }
                 }
             })
             .catch((error) => {
                 console.error(error);
-                if (callback) {
-                    callback(false);
-                }
+                alert("오류가 발생했습니다. 다시 시도해주세요.");
             })
-            .finally(() => {
-                // 실행이 끝났으므로 실행 중인 상태를 해제함
-                isBtnEmailCkRunning = false;
-            });
+        };
     
-            // 실행 중으로 표시
-            isBtnEmailCkRunning = true;
-        }
     
-        document.getElementById("modal_register").addEventListener("submit", function (event) {
-            event.preventDefault();
-    
-            const form = document.forms["modal_register"];
-    
-            function inputCodeCk() {
-                document.modal_register.codeDuplication.value = "codeUncheck";
+        function btnJoin() {
+            if (!isIdChecked) {
+                alert("아이디 중복 확인을 해주세요.");
+                return;
             }
     
-            // 중복확인, 이메일 인증 확인
-            btnEmailCk(function(success) {
-                if (!success) {
-                    alert("인증번호 확인을 해주세요.");
-                    return false;
-                }
+            if (!isCodeChecked) {
+                alert("인증번호 확인을 해주세요.");
+                return;
+            }
     
-                if (form.idDuplication.value != "idCheck") {
-                    alert("아이디 중복체크를 해주세요.");
-                    return false;
+            // 회원가입 진행
+            axios({
+                method: "POST",
+                url: "/form/register",
+                data: {
+                    id: form.id.value,
+                    pw: form.pw.value,
+                    nickname: form.nickname.value,
+                    email: form.email.value,
+                },
+            })
+            .then((result) => {
+                if (result) {
+                    alert("회원가입 성공!");
+                    document.location.href = "/";
+                } else {
+                    alert("회원가입 실패");
                 }
-    
-                // 회원가입 진행
-                axios({
-                    method: "POST",
-                    url: "/form/register",
-                    data: {
-                        id: form.id.value,
-                        pw: form.pw.value,
-                        nickname: form.nickname.value,
-                        email: form.email.value,
-                    },
-                })
-                .then((result) => {
-                    console.log(result);
-                    if (result) {
-                        alert("회원가입 성공!");
-                        document.location.href = "/";
-                    } else {
-                        alert("회원가입 실패");
-                    }
-                })
-                .catch((err) => {
-                    console.error(err);
-                    res.status(500).send("회원가입 실패");
-                });
+            })
+            .catch((err) => {
+                console.error(err);
+                alert("회원가입 실패");
             });
-        });
+        }
+
+        function inputCodeCk() {
+    const codeValue = document.getElementById("emailChk").value;
+    // 인증번호를 입력한 경우에만 가입하기 버튼 활성화
+    const btnJoin = document.getElementById("btnJoin");
+    btnJoin.disabled = !codeValue;
+    }
     </script>
     
 

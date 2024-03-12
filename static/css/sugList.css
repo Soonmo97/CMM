@@ -49,14 +49,23 @@ td:not(td:nth-child(2)) {
 .btn-nav {
     width: 10%;
 }
-
+.btn-sug {
+    width: 80px;
+    height: 36px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+}
+.btn-sug:hover {
+    background-color: #dbdbdbec;
+}
 #cmm-logo {
     width: 50px;
     height: 50px;
     margin-left: 20px;
     margin-right: 20px;
 }
-
 .cmm-title {
     display: flex;
     justify-content: center;

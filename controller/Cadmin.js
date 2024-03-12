@@ -309,3 +309,12 @@ exports.getAdminUserPage = async (req, res) => {
         res.status(500).json({ isSuccess: false });
     }
 };
+
+exports.deleteUser = async (req, res) => {
+    try {
+        const result = await User.destroy({ where: { user_index: req.body.user_index } });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ isSuccess: false });
+    }
+};

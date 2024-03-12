@@ -4,8 +4,9 @@ const { sequelize, User, Suggestions, Suggest_Like } = require("../models/index"
 // 게시글 목록 조회
 exports.listPage = async (req, res) => {
     try {
-        const limit = 5;
+        const limit = 8;
         const pageLimit = 3;
+        let offset;
         let { page: currentPage } = req.query;
         let isLogin = false;
         let user = req.session.user;
@@ -26,13 +27,21 @@ exports.listPage = async (req, res) => {
             currentPage = totalPage;
         }
 
-        let offset = 0 + (currentPage - 1) * limit;
+        // 글 없을 경우에도 0부터 조회하도록 설정
+        if (currentPage === 0) {
+            offset = 0;
+        } else {
+            offset = (currentPage - 1) * limit;
+        }
+        console.log(offset);
 
-        const startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1; // 현재 페이지 단위의 시작 페이지
+        let startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1; // 현재 페이지 단위의 시작 페이지
         let endPage = startPage + pageLimit - 1; // 현재 페이지 단위의 끝 페이지
 
         if (endPage > totalPage) {
             endPage = totalPage;
+        } else if (startPage < 0) {
+            startPage = 1;
         }
 
         const pageInfo = {

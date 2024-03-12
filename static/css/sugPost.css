@@ -46,3 +46,14 @@
 .btn-container div button {
     margin: 0 3px;
 }
+.btn-sug {
+    width: 80px;
+    height: 36px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+}
+.btn-sug:hover {
+    background-color: #dbdbdbec;
+}

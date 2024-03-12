@@ -30,5 +30,7 @@ router.post("/editRestInfo", controller.editRestInfo);
 router.post("/editRestCategory", controller.editRestCategory);
 // 식당 메뉴 수정
 router.post("/editRestMenu", controller.editRestMenu);
+// 회원 삭제
+router.delete("/deleteUser", controller.deleteUser);
 
 module.exports = router;

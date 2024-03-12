@@ -1,0 +1,36 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+body * {
+    /* border: 1px solid black; */
+}
+header {
+    height: 80px;
+}
+.admin-main {
+    position: relative;
+    width: 85%;
+    float: right;
+}
+.delete-user-div {
+    width: 80%;
+    margin: 40px auto 0px auto;
+    padding: 0 30px 0 0;
+    text-align: right;
+}
+.user-list-table {
+    width: 80%;
+    margin: 10px auto;
+    text-align: center;
+}
+.user-list-table tr td {
+    width: 100px;
+}
+.user-list-table tr td:nth-child(2):hover {
+    cursor: pointer;
+}

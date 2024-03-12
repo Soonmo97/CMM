@@ -52,6 +52,7 @@
     border: none;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     font-weight: 600;
+    background-color: #ffc064;
 }
 .btn-post:hover {
     background-color: #dbdbdbec;

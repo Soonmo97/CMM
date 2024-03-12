@@ -6,9 +6,6 @@ body {
     margin: 0px;
     padding: 0px;
 }
-body * {
-    /* border: 1px solid black; */
-}
 header {
     height: 80px;
 }

@@ -56,9 +56,10 @@ td:not(td:nth-child(2)) {
     border: none;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     font-weight: 600;
+    background-color: #ffc064;
 }
 .btn-sug:hover {
-    background-color: #dbdbdbec;
+    background-color: #e1a000;
 }
 #cmm-logo {
     width: 50px;

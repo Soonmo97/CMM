@@ -24,7 +24,14 @@
             "
         >
             <img src="/static/images/CMM-circle.png" alt="" style="width: 70px; height: auto; margin-top: -0.5rem; " />
-            <h1>모든식당</h1>
+            
+            <% if (category) { %>
+                <h1><%=category%></h1>
+            <% } else { %>
+                <h1>모든식당</h1>
+            <% } %>
+           
+           
         </div>
         <br>
         <div>
@@ -33,7 +40,7 @@
 
         <div style="width: 1350px; margin: 0 auto">
             <div style="max-width: 1350px; margin: 0 auto; min-height: 250px;">
-                <div class="restaurantMenu" id="restaurantMenu1" style="padding-top: 50px">
+                <div class="restaurantMenu" id="restaurantMenu1" >
                     <div
                         class="restaurantContainer"
                         style="
@@ -44,14 +51,14 @@
                         "
                     >
                         <% for (let i = 0; i <restaurants.length; i++) { %>
-                        <div class="restaurantItem" style="max-width: 410px" >
+                        <div class="item" style="max-width: 410px" >
                             <a href="/restaurantDetail/<%=restaurants[i].rest_index%>">
-                                <div class="imageContainer">
+                                <div class="polaroid">
                                     <img
                                         src="/static/images/<%= restaurants[i].rest_index %>.png"
                                         alt="Restaurant 1"
                                         class="RestaurantImage"
-                                        style="width: 350px; height: 350px; box-shadow: 10px 5px 5px black;"
+                                        style="width: 350px; height: 350px; "
                                     />
                                     <span class="label"><%= restaurants[i].rest_name %></span>
                                     <span class="labelStar">
@@ -71,6 +78,7 @@
                                         <% } %>
                                     </span>
                                 </div>
+                              
                             </a>
                         </div>
                         <% } %>
@@ -99,69 +107,59 @@
         
         <!-- footer include -->
         <%- include('./include/footer') %>
-        <script>
-            // 검색 버튼에 이벤트 리스너 추가
-            document.getElementById("searchButton").addEventListener("click", searchKeyword);
-
-            // 키워드로 검색하여 테이블을 채우는 함수
-            async function searchKeyword() {
-                try {
-                    const keyword = document.getElementById("searchInput").value.trim(); // 입력값의 앞뒤 공백 제거
-                    if (!keyword) {
-                        return; // 검색어가 없으면 함수 종료
-                    }
-                    document.location.href = `/search?keyword=${keyword}`;
-                } catch (error) {
-                    console.error("데이터 가져오기 오류:", error);
-                }
-            }
-
-            // 엔터 키 입력 시 검색 실행
-            document.getElementById("searchInput").addEventListener("keypress", function (event) {
-                if (event.key === "Enter") {
-                    searchKeyword();
-                }
-            });
-        </script>
+        
 
         <!-- 무한 스크롤 작업 -->
-
         <script>
-            // 무한 스크롤 기능
+            let page = 1; // 현재 페이지 번호
+            let isLoading = false; // 데이터 로딩 상태 플래그
+        
             window.addEventListener("scroll", function() {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-                loadMoreData();
+            // 현재 스크롤 위치와 문서 높이를 가져옴
+            const scrollPosition = window.scrollY + window.innerHeight;
+            const documentHeight = document.body.offsetHeight;
+
+            // 스크롤이 지점에 도달하면 추가 데이터 로딩
+            if (scrollPosition >= documentHeight * 7 / 8 && !isLoading) {
+            loadMoreData();
             }
             });
-
+        
             async function loadMoreData() {
-            try {
-                // axios를 사용하여 서버에 추가 데이터 요청 보내기
-                const response = await axios.get('/');
-                const newData = response.data.restaurants;
-
-                console.log("무한 스크롤 작업 중.. " , response.data.restaurants);
-
-                // 받은 데이터를 이용하여 화면에 추가하는 작업 수행
-                restaurants.forEach(restaurants => {
-                const restaurantItem = document.createElement('div');
-                restaurantItem.classList.add('restaurantItem');
-                restaurantItem.innerHTML = `
-                <a href="/restaurantDetail/${restaurants.rest_index}">
-                <div class="imageContainer">
-                    <img src="/static/images/${restaurants.rest_index}.png" alt="${restaurants.rest_name}" class="RestaurantImage" style="width: 300px; height: 300px" />
-                    <span class="label">${restaurants.rest_name}</span>
-                    <span class="labelStar">리뷰</span>
-                </div>
-            </a>
-        `;
-        document.querySelector('.restaurantContainer').appendChild(restaurantItem);
-    });
-            } catch (error) {
-                console.error("데이터 가져오기 오류:", error);
+                try {
+                    isLoading = true; // 데이터 로딩 상태를 true로 설정하여 중복 요청을 방지
+        
+                    // axios를 사용하여 서버에 추가 데이터 요청 보내기
+                    const response = await axios.get(`/load-more?page=${page}`);
+                    const newData = response.data.restaurants;
+        
+                    if (newData.length > 0) {
+                        // 받은 데이터를 이용하여 화면에 추가하는 작업 수행
+                        newData.forEach(restaurant => {
+                            const restaurantItem = document.createElement('div');
+                            restaurantItem.classList.add('restaurantItem');
+                            restaurantItem.innerHTML = `
+                                <a href="/restaurantDetail/${restaurant.rest_index}">
+                                    <div class="imageContainer">
+                                        <img src="/static/images/${restaurant.rest_index}.png" alt="${restaurant.rest_name}" class="RestaurantImage" style="width: 300px; height: 300px" />
+                                        <span class="label">${restaurant.rest_name}</span>
+                                        <span class="labelStar">리뷰</span>
+                                    </div>
+                                </a>
+                            `;
+                            document.querySelector('.restaurantContainer').appendChild(restaurantItem);
+                        });
+        
+                        page++; // 페이지 번호 증가
+                    }
+                } catch (error) {
+                    console.error("데이터 가져오기 오류:", error);
+                } finally {
+                    isLoading = false; // 데이터 로딩 상태를 다시 false로 설정하여 다음 요청이 가능하도록 함
+                }
             }
-        }
-</script>
+        </script>
+        >
 
     </body>
 </html>

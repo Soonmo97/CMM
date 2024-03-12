@@ -33,14 +33,14 @@ exports.search = async (req, res) => {
                 user: user,
                 restaurants: restaurants,
                 indexReview: indexReview,
-                category: null,
+                category: "검색결과",
             });
         } else {
             res.render("index", {
                 isLogin: false,
                 restaurants: restaurants,
                 indexReview: indexReview,
-                category: null,
+                category: "검색결과",
             });
         }
     } catch (error) {

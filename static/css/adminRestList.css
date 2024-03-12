@@ -21,11 +21,9 @@ body {
     text-align: right;
 }
 .rest-list-div {
-    margin: 5px;
-    margin-bottom: 10px;
     width: 100%;
-    padding: 20px;
     border: 1px solid #dadada;
+    padding: 10px;
     border-radius: 25px;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.08);
 }
@@ -33,9 +31,18 @@ body {
     width: 100%;
     margin: 10px auto;
     text-align: center;
+    border-style: none;
 }
-.rest-list-table th:not(th:nth-child(2)) {
+.rest-list-table tr:not(tr:last-child) {
+    width: 100%;
+    border-bottom: 1px solid #dadada;
+}
+.rest-list-table tr th:not(th:nth-child(2)) {
     width: 100px;
+}
+.rest-list-table tr {
+    height: 40px;
+    line-height: 40px;
 }
 .rest-list-table tr td:not(td:nth-child(2)) {
     width: 100px;
@@ -43,6 +50,23 @@ body {
 .rest-list-table tr td:nth-child(2):hover {
     cursor: pointer;
 }
+
+.btn-admin {
+    width: 85px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    background-color: #ffc064;
+}
+
+.btn-admin:hover {
+    cursor: pointer;
+    background-color: #e1a000;
+}
+
 .modal-container {
     display: none;
     position: fixed;
@@ -57,8 +81,8 @@ body {
 }
 .modal-main {
     margin: auto;
-    padding: 20px;
-    width: 60%;
+    padding: 100px;
+    width: 50%;
     border-radius: 15px;
     background-color: #fefefe;
 }
@@ -72,17 +96,21 @@ body {
     padding: 20px;
     display: none;
 }
-.close-modal {
+.close-modal-btn {
     display: inline-block;
-    width: 60px;
-    height: 60px;
-    line-height: 50px;
-    font-size: 40px;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    font-size: 60px;
     font-weight: 900;
     border-radius: 50%;
     text-align: center;
+    color: #333333;
+    background-color: #ffc064;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
-.close-modal:hover {
-    color: grey;
+.close-modal-btn:hover {
+    color: #f0f0f0;
     cursor: pointer;
+    background-color: #e1a000;
 }

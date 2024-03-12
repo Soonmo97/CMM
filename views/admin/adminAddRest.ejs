@@ -9,7 +9,7 @@
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
-        <main class="admin-main">
+        <div class="admin-main">
             <h2>식당 추가</h2>
             <div class="addRestaurants">
                 <form name="form-addRestInfo">
@@ -55,7 +55,7 @@
                     <button type="button" id="btn-addInfo">등록</button>
                 </form>
             </div>
-        </main>
+        </div>
         <script>
             const btnAdd = document.querySelector("#btnAdd");
             const form = document.forms["form-addRestInfo"];

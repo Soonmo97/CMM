@@ -4,12 +4,12 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <%-include('../include/head.ejs')%>
-        <link rel="stylesheet" href="/static/css/adminRestList.css" />
+        <link rel="stylesheet" href="/static/css/adminAddRestMenu.css" />
         <title>관리 페이지</title>
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
-        <main class="admin-main">
+        <div class="admin-main">
             <h2>메뉴 추가</h2>
             <div class="addRestaurants">
                 <form name="menus" id="menuForm">
@@ -23,10 +23,10 @@
                 <button type="button" id="addBtn" onclick="addMenuField()">+</button>
             </div>
             <div id="submitMenuDiv">
-                <button onclick="addMenu()">등록</button>
-                <button onclick="addLater()">다음에 하기</button>
+                <button class="btn-admin" id="submitBtn" onclick="addMenu()">등록</button>
+                <button class="btn-admin" id="backBtn" onclick="addLater()">다음에 하기</button>
             </div>
-        </main>
+        </div>
         <script>
             let menuCount = 2;
 
@@ -94,7 +94,6 @@
                 }
 
                 // 유효성 검사
-
                 try {
                     const result = await axios({
                         method: "post",

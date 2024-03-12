@@ -13,7 +13,7 @@
             <div class="rest-list-container">
                 <h2 class="title">식당 목록</h2>
                 <div class="add-btn-div">
-                    <button type="button" onclick="addPage()">식당 추가</button>
+                    <button type="button" class="btn-admin btn-addRest" onclick="addPage()">식당 추가</button>
                 </div>
                 <div class="rest-list-div">
                     <table class="rest-list-table">
@@ -26,9 +26,9 @@
                         <tr>
                             <td><%=restInfo[i].rest_index%></td>
                             <td onclick="openRestInfo('<%=restInfo[i].rest_index%>')"><%=restInfo[i].rest_name%></td>
-                            <td><button type="button" onclick="addMenuPage('<%=restInfo[i].rest_index%>')">메뉴 추가</button></td>
-                            <td><button type="button" onclick="openEdit('<%=restInfo[i].rest_index%>')">수정</button></td>
-                            <td><button type="button" onclick="deleteRest('<%=restInfo[i].rest_index%>','<%=restInfo[i].rest_name%>')">삭제</button></td>
+                            <td><button type="button" class="btn-admin btn-addMenu" onclick="addMenuPage('<%=restInfo[i].rest_index%>')">메뉴 추가</button></td>
+                            <td><button type="button" class="btn-admin btn-edit" onclick="openEdit('<%=restInfo[i].rest_index%>')">수정</button></td>
+                            <td><button type="button" class="btn-admin btn-delete" onclick="deleteRest('<%=restInfo[i].rest_index%>','<%=restInfo[i].rest_name%>')">삭제</button></td>
                         </tr>
                         <%}%>
                     </table>
@@ -43,7 +43,7 @@
                             <p class="restinfo time">영업시간</p>
                             <p class="restinfo number">전화번호</p>
                         </div>
-                        <div class="restmodal modal-bottom"><span class="close-modal">&times;</span></div>
+                        <div class="restmodal modal-bottom"><span class="close-modal-btn">&times;</span></div>
                     </div>
                 </div>
                 <!-- pagination -->
@@ -52,7 +52,7 @@
         </div>
         <script>
             const modal = document.querySelector('.modal-container')
-            const modalBtn = document.querySelector(".close-modal");
+            const modalBtn = document.querySelector(".close-modal-btn");
 
             function getOneRestInfo(idx){
                 try {

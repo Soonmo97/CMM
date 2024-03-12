@@ -9,31 +9,33 @@
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
-        <main class="admin-main">
-            <h2>회원 삭제</h2>
-            <div class="delete-user-div">
-                <table class="user-list-table">
-                    <tr>
-                        <th>번호</th>
-                        <th>아이디</th>
-                        <th>닉네임</th>
-                        <th>이메일</th>
-                        <th></th>
-                    </tr>
-                    <%for(let i=0; i<userInfo.length; i++){%>
+        <div class="admin-main">
+            <div class="user-list-container">
+                <h2 class="title">회원 삭제</h2>
+                <div class="delete-user-div">
+                    <table class="user-list-table">
                         <tr>
-                            <td><%=userInfo[i].user_index%></td>
-                            <td><%=userInfo[i].id%></td>
-                            <td><%=userInfo[i].nickname%></td>
-                            <td><%=userInfo[i].email%></td>
-                            <td><button type="button" onclick="deleteUser('<%=userInfo[i].user_index%>','<%=userInfo[i].id%>')">삭제</button></td>
+                            <th>번호</th>
+                            <th>아이디</th>
+                            <th>닉네임</th>
+                            <th>이메일</th>
+                            <th></th>
                         </tr>
-                        <%}%>
-                </table>
+                        <%for(let i=0; i<userInfo.length; i++){%>
+                            <tr>
+                                <td><%=userInfo[i].user_index%></td>
+                                <td><%=userInfo[i].id%></td>
+                                <td><%=userInfo[i].nickname%></td>
+                                <td><%=userInfo[i].email%></td>
+                                <td><button type="button" class="btn-admin" onclick="deleteUser('<%=userInfo[i].user_index%>','<%=userInfo[i].id%>')">삭제</button></td>
+                            </tr>
+                            <%}%>
+                    </table>
+                </div>
             </div>
             <!-- pagination -->
             <nav></nav>
-        </main>
+        </div>
         <script>
             const modal = document.querySelector('.modal-container')
             const modalBtn = document.querySelector(".close-modal");

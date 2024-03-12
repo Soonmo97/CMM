@@ -6,31 +6,57 @@ body {
     margin: 0px;
     padding: 0px;
 }
-body * {
-    /* border: 1px solid black; */
-}
-header {
-    height: 80px;
-}
 .admin-main {
     position: relative;
+    padding: 80px;
     width: 85%;
     float: right;
 }
-.delete-user-div {
+.title {
+    margin-bottom: 30px;
+}
+.user-list-container {
     width: 80%;
-    margin: 40px auto 0px auto;
-    padding: 0 30px 0 0;
-    text-align: right;
+}
+.delete-user-div {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dadada;
+    border-radius: 25px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.08);
 }
 .user-list-table {
-    width: 80%;
+    width: 100%;
     margin: 10px auto;
     text-align: center;
+    border-style: none;
 }
-.user-list-table tr td {
+.user-list-table tr:not(tr:last-child) {
+    width: 100%;
+    border-bottom: 1px solid #dadada;
+}
+.user-list-table tr {
+    height: 40px;
+    line-height: 40px;
+}
+.user-list-table tr th:not(th:nth-child(4)) {
     width: 100px;
 }
-.user-list-table tr td:nth-child(2):hover {
+.user-list-table tr td:not(td:nth-child(2)) {
+    width: 100px;
+}
+
+.btn-admin {
+    width: 85px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    background-color: #ffc064;
+}
+.btn-admin:hover {
     cursor: pointer;
+    background-color: #e1a000;
 }

@@ -9,7 +9,7 @@
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
-        <main class="admin-main">
+        <div class="admin-main">
             <h2>식당 정보 수정</h2>
             <div class="edit-form-div">
                 <div id="info-div">
@@ -59,21 +59,29 @@
                 <div id="menu-div">
                     <div class="title-div">
                         <p class="form-title">메뉴</p>
-                        <button type="button" class="enable-edit-btn" id="b-menu" onclick="enable('f-menu', this)">수정</button>
-                        <button type="button" class="edit-do-btn hidden" id="b-editmenu" onclick="editMenu()">수정완료</button>
+                        <% if(menus.length==0){%>
+                            <%}else{%>
+                                <button type="button" class="enable-edit-btn" id="b-menu" onclick="enable('f-menu', this)">수정</button>
+                                <button type="button" class="edit-do-btn hidden" id="b-editmenu" onclick="editMenu()">수정완료</button>
+                        <%}%>
                     </div>
                     <form id="f-menu" class="edit edit-menus">
-                        <% for(let i=0; i<menus.length; i++){%>
-                            <label for="i-menu<%=i+1%>">메뉴 <%=i+1%></label>
-                            <input type="hidden" name="menu_id" value="<%=menus[i].menu_id%>">
-                            <input type="text" name="menu" class="edit-menus" value="<%=menus[i].menu%>"/>
-                            <input type="text" name="price" class="edit-menus" value="<%=menus[i].price%>">
-                            <br>
+                        <% if(menus.length==0){%>
+                            <p>등록된 메뉴가 없습니다.</p>
+                            <a href="/admin/addRestaurantMenu?rest_index=<%=restInfo.rest_index%>">메뉴 추가하러 가기</a>
+                            <%}else{%>
+                                <% for(let i=0; i<menus.length; i++){%>
+                                    <label for="i-menu<%=i+1%>">메뉴 <%=i+1%></label>
+                                    <input type="hidden" name="menu_id" value="<%=menus[i].menu_id%>">
+                                    <input type="text" name="menu" class="edit-menus" value="<%=menus[i].menu%>"/>
+                                    <input type="text" name="price" class="edit-menus" value="<%=menus[i].price%>">
+                                    <br>
                             <%}%>
+                        <%}%>
                     </form>
                 </div>
             </div>
-        </main>
+        </div>
         <script>
             const addBtn = document.querySelector('#btn-add');
             const rmvBtn = document.querySelector('#btn-rmv');

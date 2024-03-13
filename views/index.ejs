@@ -121,9 +121,9 @@
                                     <span class="labelStar">
                                         <span class="reviewCount">리뷰 수: ${
                                             item.reviews ? item.reviews.length : 0
-                                        }</span>
+                                        }</span> -->
                                         <!-- 별점 -->
-                                        /<i class="fa-solid fa-star fa-xl" style="color: #FFD43B;"></i>:
+                                        <!-- /<i class="fa-solid fa-star fa-xl" style="color: #FFD43B;"></i>:
                                         ${
                                             item.reviews && item.reviews.length > 0 ?
                                             (item.reviews.reduce((total, review) => total + review.review_rating, 0) / item.reviews.length).toFixed(1) :
@@ -145,6 +145,6 @@
                 isLoading = false; // 데이터 로딩 상태를 다시 false로 설정하여 다음 요청이 가능하도록 함
             }
         }
-    </script> -->
+    </script>  -->
 </body>
 </html>

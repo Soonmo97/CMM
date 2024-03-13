@@ -205,7 +205,7 @@ exports.sendCode = async (req, res) => {
             "<b><span style='color: #ffc064;'>CMM 인증번호</span></b> 안내입니다." +
             "</h1>" +
             "<p style='font-size: 16px; line-height: 26px; margin-top: 50px; padding: 0 5px;'>" +
-            "<img src='http://115.85.183.171:8080/static/images/CMM-circle.png'/><br /><br /><br />"+
+            "<img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbDgQle%2FbtsFLrbDpSQ%2F5C4uYWS4rOjSPhsryeVtcK%2Fimg.png'/><br /><br /><br />"+
             "안녕하세요.<br />" +
             "요청하신 인증번호가 생성되었습니다.<br />" +
             "감사합니다." +

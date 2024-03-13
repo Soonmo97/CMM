@@ -2,7 +2,6 @@
     box-sizing: border-box;
 }
 body {
-    width: 100%;
     margin: 0px;
     padding: 0px;
 }
@@ -15,13 +14,14 @@ h2 {
     margin: 20px 0px;
 }
 .edit-form-div {
-    width: 70%;
+    width: 80%;
     margin: auto;
 }
 #info-div,
 #category-div,
 #menu-div {
     width: 100%;
+    min-width: 700px;
     border-radius: 25px;
     padding: 20px;
     margin: 5px;
@@ -68,6 +68,13 @@ h2 {
 }
 label {
     width: 100px;
+    height: 32px;
+    margin: 10px;
+    vertical-align: middle;
+    font-weight: 600;
+}
+.edit-restinfo label[for="i-desc"] {
+    width: 100px;
     vertical-align: top;
     font-weight: 600;
 }
@@ -76,22 +83,31 @@ label {
     height: 36px;
     margin-bottom: 5px;
 }
+.edit-category label {
+    vertical-align: middle;
+}
 .edit-category select {
     width: 100px;
     height: 36px;
     border-radius: 5px;
     margin-bottom: 5px;
 }
+.edit-menus label {
+    vertical-align: middle;
+}
 .edit-menus input {
     width: 150px;
     height: 36px;
 }
-.edit-restinfo-form input,
+.edit-restinfo input,
 .edit textarea {
     width: 70%;
 }
 .edit-category select {
     width: 200px;
+}
+.btn-group {
+    padding: 0px 10px;
 }
 #btn-add,
 #btn-rmv {

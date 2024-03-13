@@ -2,7 +2,6 @@
     box-sizing: border-box;
 }
 body {
-    width: 100%;
     margin: 0px;
     padding: 0px;
 }
@@ -17,11 +16,13 @@ body {
 }
 .add-btn-div {
     width: 100%;
+    min-width: 700px;
     margin: 40px auto 30px auto;
     text-align: right;
 }
 .rest-list-div {
     width: 100%;
+    min-width: 700px;
     border: 1px solid #dadada;
     padding: 10px;
     border-radius: 25px;
@@ -53,17 +54,24 @@ body {
 
 .btn-admin {
     width: 85px;
-    height: 36px;
-    line-height: 36px;
-    border-radius: 15px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 10px;
     border: none;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     font-weight: 600;
-    background-color: #ffc064;
+    background-color: #e6e6e6;
 }
-
 .btn-admin:hover {
     cursor: pointer;
+    background-color: #dadada;
+}
+.btn-addRest {
+    width: 100px;
+    height: 36px;
+    background-color: #ffc064;
+}
+.btn-addRest:hover {
     background-color: #e1a000;
 }
 
@@ -101,16 +109,16 @@ body {
     width: 80px;
     height: 80px;
     line-height: 80px;
-    font-size: 60px;
-    font-weight: 900;
+    font-size: 50px;
+    font-weight: 800;
     border-radius: 50%;
     text-align: center;
-    color: #333333;
+    color: #ffffff;
     background-color: #ffc064;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.15);
 }
 .close-modal-btn:hover {
-    color: #f0f0f0;
+    color: #ffffff;
     cursor: pointer;
-    background-color: #e1a000;
+    background-color: #e0b886fa;
 }

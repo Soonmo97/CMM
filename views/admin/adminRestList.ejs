@@ -107,6 +107,7 @@
                     let menu = el.menu+" ----------- "+el.price;
                     let menuP = document.createElement('p');
                     menuP.innerText = menu;
+                    menuP.className = 'restinfo menu';
                     restModal.append(menuP);
                 });
             }
@@ -143,10 +144,19 @@
 
             modalBtn.onclick = () => {
                 modal.style.display = "none";
+                
+                const restInfo = document.getElementsByClassName('restinfo');
+                const menus = document.getElementsByClassName('menu');
+                for(let i=0; i<restInfo.length; i++){
+                    restInfo[i].innerHTML = '';
+                }
+                for(let i=0; i<menus.length; i++){
+                    menus[i].remove();
+                }
             }
-            modal.addEventListener('click', (e)=>{
-                if(e.target === modal) modal.style.display = "none";
-            });
+            // modal.addEventListener('click', (e)=>{
+            //     if(e.target === modal) {modal.style.display = "none";}
+            // });
         </script>
     </body>
 </html>

@@ -10,21 +10,23 @@
     <body>
         <%- include('./sidebar.ejs') %>
         <div class="admin-main">
-            <h2>메뉴 추가</h2>
-            <div class="addRestaurants">
+            <div class="add-menu-div">
+                <h2>메뉴 추가</h2>
                 <form name="menus" id="menuForm">
                     <p>메뉴를 등록해주세요!</p>
                     <label for="menu1">메뉴 1* </label>
                     <input type="text" id="menu1" name="menu1" placeholder="메뉴 이름" required />
                     <input type="number" id="price1" name="price1" placeholder="가격" required />
                 </form>
-            </div>
-            <div id="addMenuFormDiv">
-                <button type="button" id="addBtn" onclick="addMenuField()">+</button>
-            </div>
-            <div id="submitMenuDiv">
-                <button class="btn-admin" id="submitBtn" onclick="addMenu()">등록</button>
-                <button class="btn-admin" id="backBtn" onclick="addLater()">다음에 하기</button>
+                <div id="addMenuBtnDiv">
+                    <button type="button" id="btn-add" onclick="addMenuField()">+</button>
+                </div>
+                <div id="submitMenuDiv">
+                    <button class="btn-admin" id="btn-submit" onclick="addMenu()">등록</button>
+                    <button class="btn-admin" id="btn-back" onclick="addLater()">
+                        다음에 하기
+                    </button>
+                </div>
             </div>
         </div>
         <script>
@@ -61,8 +63,8 @@
 
                     menuCount++;
                 } else {
-                    const addBtn = document.querySelector("#addBtn");
-                    addBtn.remove();
+                    const btnAdd = document.querySelector("#btn-add");
+                    btnAdd.remove();
                     alert("한번에 최대 3개의 메뉴를 입력할 수 있습니다.");
                 }
             }

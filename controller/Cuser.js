@@ -309,19 +309,17 @@ exports.postSearchPw = async (req, res) => {
 // POST /user/alterPw
 exports.alterPw = async (req, res) => {
     const { id, pw } = req.body;
-    const hashedPassword = await bcrypt.hash(pw, 10);
-
     try {
         const user = await User.findOne({ where: { id: id } });
-
         if (!user) {
             return res.status(404).json({ ok: false, error: "사용자를 찾을 수 없습니다." });
-        } else {
-            user.password = hashedPassword;
-            await user.save();
-            console.log("변경된 비번 >> ", user.password);
-            return res.status(200).json({ ok: true, message: "비밀번호 변경 성공" });
         }
+        const hashedPassword = await bcrypt.hash(pw, 10);
+        // Update the user's password
+        user.pw = hashedPassword;
+        await user.save();
+        console.log("변경된 비밀번호 >> ", user.pw);
+        return res.status(200).json({ ok: true, message: "비밀번호 변경 성공" });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ ok: false, error: "비밀번호 변경 실패" });

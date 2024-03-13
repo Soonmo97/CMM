@@ -21,28 +21,31 @@ body {
     justify-content: center;
     /* align-items: flex-end; */
     /* font-size: 1.8rem; */
-  }
-  
-  .typingTxt {
-    width: 200px;
+}
+
+.typingTxt {
+    width: 220px;
     /* font-size: 2.2rem; */
     font-family: "Black Han Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
-  }
-  
-  .typingTxt::after {
-    content: '';
-    margin-left: .4rem;
-    border-right: 2px solid #777;
-    animation: cursor .9s infinite steps(2);
-  }
-  
-  @keyframes cursor {
-    from { border-right: 2px solid #222; }
-    to { border-right: 2px solid #777; }
-  }
+}
 
+.typingTxt::after {
+    content: "";
+    margin-left: 0.4rem;
+    border-right: 2px solid #777;
+    animation: cursor 0.9s infinite steps(2);
+}
+
+@keyframes cursor {
+    from {
+        border-right: 2px solid #222;
+    }
+    to {
+        border-right: 2px solid #777;
+    }
+}
 
 ::placeholder {
     color: black;
@@ -69,8 +72,6 @@ header {
     height: 200px;
     border-bottom: 1px solid gray;
 }
-
-
 
 /* 미디어 쿼리 - 화면 너비에 따라 헤더의 높이 조정 */
 @media screen and (max-width: 1400px) {
@@ -250,7 +251,6 @@ header nav ul li:last-child {
     font-weight: bold;
     cursor: pointer;
 }
-
 
 /* 회원가입 팝업창 스타일 */
 #signupModal {

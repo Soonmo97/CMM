@@ -48,15 +48,15 @@ body {
 
 .btn-admin {
     width: 85px;
-    height: 36px;
-    line-height: 36px;
+    height: 30px;
+    line-height: 30px;
     border-radius: 15px;
     border: none;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     font-weight: 600;
-    background-color: #ffc064;
+    background-color: #e6e6e6;
 }
 .btn-admin:hover {
     cursor: pointer;
-    background-color: #e1a000;
+    background-color: #dadada;
 }

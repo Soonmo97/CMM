@@ -2,7 +2,6 @@
     box-sizing: border-box;
 }
 body {
-    width: 100%;
     margin: 0px;
     padding: 0px;
 }
@@ -15,7 +14,7 @@ body {
     padding: 20px 0px;
 }
 .addRestaurants {
-    width: 70%;
+    width: 80%;
     margin: auto;
 }
 .addRest-form {

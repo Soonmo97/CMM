@@ -2,7 +2,6 @@
     box-sizing: border-box;
 }
 body {
-    width: 100%;
     margin: 0px;
     padding: 0px;
 }
@@ -18,11 +17,29 @@ label {
 input {
     height: 32px;
 }
-#addMenuFormDiv {
+.add-menu-div {
+    width: 80%;
+    margin: auto;
+}
+#addMenuBtnDiv {
+    width: 80%;
     padding: 0px 20px 20px 20px;
 }
 #submitMenuDiv {
     padding: 20px 0px;
+}
+#menuForm {
+    width: 70%;
+}
+#menuForm input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #cbcbcb;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+.hidden {
+    display: none;
 }
 .btn-admin {
     width: 120px;
@@ -38,19 +55,19 @@ input {
     cursor: pointer;
     background-color: #e1a000;
 }
-#addBtn {
+#btn-add {
     width: 36px;
     height: 36px;
     border-radius: 5px;
     border: none;
 }
-#addBtn:hover {
+#btn-add:hover {
     cursor: pointer;
     background-color: #dbdbdbec;
 }
-#backBtn {
+#btn-back {
     background-color: #cfcfcf;
 }
-#backBtn:hover {
+#btn-back:hover {
     background-color: #afafafee;
 }

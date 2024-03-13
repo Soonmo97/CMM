@@ -326,10 +326,10 @@ exports.editRestMenu = async (req, res) => {
             );
             resultArray.push(result[0]);
         }
-        if (resultArray.includes(0)) {
-            res.json({ isSuccess: false });
-        } else {
+        if (resultArray.includes(1)) {
             res.json({ isSuccess: true });
+        } else {
+            res.json({ isSuccess: false });
         }
     } catch (error) {
         console.log(error);

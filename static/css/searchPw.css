@@ -1,0 +1,53 @@
+body {
+    margin-top: 20px;
+    margin-left: 25px;
+    margin-right: 25px;
+    background-color: whitesmoke;
+}
+
+.logoImg {
+    display: flex;
+    align-items: center;
+}
+
+.logoImg p {
+    font-size: 18px;
+    font-weight: bold;
+    color: "gray";
+}
+
+.logoImg img {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+#msg {
+    font-family: "Gowun Dodum", sans-serif;
+    color: #c47500;
+    font-size: 12px;
+}
+
+#idCheck {
+    border: none;
+    padding: 7px 7px;
+    border-radius: 5px;
+    background-color: #ffc064;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.newPw {
+    visibility: hidden;
+}
+
+#pwCheck {
+    border: none;
+    padding: 7px 7px;
+    border-radius: 5px;
+    background-color: #ffc064;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 20px;
+}

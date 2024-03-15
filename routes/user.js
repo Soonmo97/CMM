@@ -14,10 +14,6 @@ router.post("/form/logout", controller.logoutHeader);
 router.post("/form/checkid", controller.checkId);
 // GET /user/idCheckForm
 router.get("/user/idCheckForm", controller.checkWindow);
-// GET /user/login
-router.get("/user/login", controller.getLogin);
-// POST /user/login
-router.post("/user/login", controller.postLogin);
 // POST /form/sendCode
 router.post("/form/sendCode", controller.sendCode);
 // POST /form/checkCode
@@ -32,8 +28,7 @@ router.get("/user/searchPw", controller.getSearchPw);
 router.post("/user/searchPw", controller.postSearchPw);
 // POST /user/searchPw
 router.post("/user/alterPw", controller.alterPw);
-// GET /load-more
-router.get("/load-more", controller.loadMoreData);
+
 
 
 

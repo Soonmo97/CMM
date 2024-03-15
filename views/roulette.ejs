@@ -4,6 +4,10 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="랜덤으로 9개의 식당이 배정된 룰렛을 돌려 식당을 추천해주는 페이지입니다."
+        />
         <title>내 정보</title>
         <%- include('./include/head') %>
         <link rel="stylesheet" href="/static/css/roulette.css" />
@@ -60,9 +64,7 @@
             const product = [];
             for (let i = 0; i < 9; i++) {
                 product.push(restaurants[numbers[i]]);
-                // product.push(restaurants[i]);
             }
-            // console.log(product);
 
             const colors = [
                 "#dc0936",

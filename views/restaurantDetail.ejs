@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="사용자가 선택한 식당의 상세정보를 확인할 수 있는 페이지 입니다. 또한 리뷰 작성 및 좋아요 기능도 로그인 시 사용가능합니다."
+        />
         <title>식당 상세페이지</title>
         <%- include('include/head') %>
         <link rel="stylesheet" href="/static/css/restDetail.css" />
@@ -106,7 +110,6 @@
             <script>
                 const address = "<%=restaurant.rest_address%>";
                 let lat, lng;
-                // console.log(address);
                 function geo() {
                     return new Promise((resolve, reject) => {
                         naver.maps.Service.geocode(
@@ -127,8 +130,6 @@
                     });
                 }
                 function map() {
-                    // console.log("lat, lng >> ",lat, lng);
-
                     // 지도 위치(x:경도, y:위도), 줌, 컨트롤 설정
                     let mapOptions = {
                         center: new naver.maps.LatLng(lng, lat),
@@ -246,10 +247,8 @@
     <script>
         function likePlus(restIndex, isLogin) {
             // 로그인 되어있을 때
-            // console.log("로그인 상태 >> ",isLogin)
             if (isLogin === "true") {
                 const filledHeart = document.querySelector("#filledHeart");
-                // console.log(filledHeart)
                 // 채워진 하트 좋아요 o) 라면
                 if (filledHeart) {
                     // 채워진 하트 fa-solid, 빈 하트 fa-regular
@@ -263,7 +262,6 @@
                             filledHeart.id = "emptyHeart";
                             filledHeart.classList.remove("fa-solid");
                             filledHeart.classList.add("fa-regular");
-                            // console.log(response)
                             alert(response.data.message);
                         })
                         .catch((err) => {
@@ -273,7 +271,6 @@
                 } else {
                     // 빈 하트 (로그인 o 좋아요 x) 라면
                     const emptyHeart = document.querySelector("#emptyHeart");
-                    // console.log(emptyHeart);
                     // 좋아요 등록 후 채워진 하트
                     axios({
                         url: `/restaurantDetail/${restIndex}/createLike`,
@@ -284,7 +281,6 @@
                             emptyHeart.id = "filledHeart";
                             emptyHeart.classList.remove("fa-regular");
                             emptyHeart.classList.add("fa-solid");
-                            // console.log(response)
                             alert(response.data.message);
                         })
                         .catch((err) => {
@@ -308,17 +304,14 @@
                 params: { restIndex: restIndex },
             })
                 .then((response) => {
-                    // console.log(response.data.reviewList);
                     const reviewList = response.data.reviewList;
                     // 리뷰가 더보기 할 리뷰가 없을 때
                     if (reviewCount === reviewList.length) {
                         return alert("리뷰가 더 이상 없습니다!");
                     }
-                    // console.log(reviewList);
                     // 더보기 리뷰가 1개 남았을 때
                     if (reviewList.length - reviewCount === 1) {
                         for (let i = reviewCount; i < reviewCount + 1; i++) {
-                            // console.log(reviewList[i].review_content);
                             // 리뷰 전체 감싸는 div
                             const plusReview = document.createElement("div");
                             plusReview.classList.add("review");
@@ -360,7 +353,6 @@
                             reviewTitle.append(userImage, userNickname, createAt, rating);
                             const reviews = document.querySelector(".reviews");
                             const reviewPlusBtn = document.querySelector("#reviewPlusBtn");
-                            // console.log(reviewPlusBtn)
                             reviews.insertBefore(plusReview, reviewPlusBtn);
                         }
                         reviewCount += 1;
@@ -368,7 +360,6 @@
                     } else {
                         // 3번째 리뷰 부터 2개추가
                         for (let i = reviewCount; i < reviewCount + 2; i++) {
-                            // console.log(reviewList[i].review_content);
                             // 리뷰 전체 감싸는 div
                             const plusReview = document.createElement("div");
                             plusReview.classList.add("review");
@@ -410,7 +401,6 @@
                             reviewTitle.append(userImage, userNickname, createAt, rating);
                             const reviews = document.querySelector(".reviews");
                             const reviewPlusBtn = document.querySelector("#reviewPlusBtn");
-                            // console.log(reviewPlusBtn)
                             reviews.insertBefore(plusReview, reviewPlusBtn);
                         }
                         reviewCount += 2;
@@ -425,9 +415,7 @@
         // 현재 선택한 별점 수
         let selectRating = 0;
         function reviewRating(restIndex, click) {
-            console.log("클릭이 발생한 요소의 id 값:", click.id);
             selectRating = Number(click.id[click.id.length - 1]);
-            console.log("선택한 별점 수 >", selectRating);
 
             // 선택한 별점보다 더 채원진 별 빈 별로
             for (let i = selectRating + 1; i <= 5; i++) {
@@ -455,7 +443,6 @@
 
         async function createReview(restIndex, isLogin) {
             if (isLogin === "true") {
-                // console.log("review 등록");
                 const contentArea = document.querySelector(".createReviewContent");
                 const content = contentArea.value;
                 if (selectRating === 0) {

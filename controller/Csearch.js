@@ -54,21 +54,6 @@ exports.categoryMenu = async (req, res) => {
         const user = req.session.user;
         const { category } = req.query;
 
-        console.log("카테고리 >> ", category);
-        // console.log("user", user);
-        // 카테고리 조회
-
-        /* 
-        category_index: 26,
-      category_name: '일식',
-      rest_index: 5,
-      rest_name:
-      Restaurant: {
-         "rest_index","rest_name"
-      }
-        */
-
-        /*  rest_index,rest_name,rest_desc,rest_address,rest_number,rest_time:  */
         const categories = await Category.findAll({
             include: [
                 {
@@ -78,15 +63,10 @@ exports.categoryMenu = async (req, res) => {
             ],
             where: { category_name: category },
         });
-        // console.log("-----");
-        // console.log(categories[0].Restaurant);
 
         for (let category of categories) {
             category.rest_name = category.Restaurant.rest_name;
         }
-
-        // console.log("---new categories");
-        // console.log(categories);
 
         const indexReview = await Restaurant.findAll({
             attributes: ["rest_index", "rest_name"], // 식당의 속성
@@ -95,23 +75,6 @@ exports.categoryMenu = async (req, res) => {
                 attributes: ["review_rating"], // 리뷰의 속성 중 평점만 가져옴
             },
         });
-
-        // const restaurants = await Restaurant.findAll({
-        //     attributes: ["rest_index", "rest_name"],
-        // });
-
-        // console.log(''categories);
-        // const dataArr = [];
-        // categories.forEach((rest_info) => {
-        //     dataArr.push({
-        //         rest_name: rest_info.Restaurant.rest_name,
-        //     });
-        // });
-        // res.send(newArr);
-
-        console.log("////////////////////////");
-
-        // console.log("category", categories);
 
         if (user) {
             res.render("index", {
@@ -124,7 +87,6 @@ exports.categoryMenu = async (req, res) => {
         } else {
             res.render("index", {
                 isLogin: false,
-                // categories,
                 indexReview,
                 restaurants: categories,
                 category,

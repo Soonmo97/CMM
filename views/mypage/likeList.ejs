@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="로그인 후 자신이 좋아요한 식당들을 조회하고 추가 및 삭제 할 수 있는 페이지입니다.">
         <title>내 좋아요 목록</title>
         <%- include('../include/head') %>
         <link rel="stylesheet" href="/static/css/likeList.css" />
@@ -52,10 +53,8 @@
     <script>
         function likePlus(restIndex, isLogin, index) {
             // 로그인 되어있을 때
-            // console.log("로그인 상태 >> ",isLogin)
             if (isLogin === "true") {
                 const filledHeart = document.querySelector(`#filledHeart${index}`);
-                // console.log(filledHeart)
                 // 채워진 하트 좋아요 o) 라면
                 if (filledHeart) {
                     // 채워진 하트 fa-solid, 빈 하트 fa-regular
@@ -69,7 +68,6 @@
                             filledHeart.id = `emptyHeart${index}`;
                             filledHeart.classList.remove("fa-solid");
                             filledHeart.classList.add("fa-regular");
-                            console.log(response);
                             alert(response.data.message);
                         })
                         .catch((err) => {
@@ -79,7 +77,6 @@
                 } else {
                     // 빈 하트 (로그인 o 좋아요 x) 라면
                     const emptyHeart = document.querySelector(`#emptyHeart${index}`);
-                    console.log(emptyHeart);
                     // 좋아요 등록 후 채워진 하트
                     axios({
                         url: `/mypage/likeList/createLike`,
@@ -90,7 +87,6 @@
                             emptyHeart.id = `filledHeart${index}`;
                             emptyHeart.classList.remove("fa-regular");
                             emptyHeart.classList.add("fa-solid");
-                            console.log(response);
                             alert(response.data.message);
                         })
                         .catch((err) => {

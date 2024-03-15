@@ -6,7 +6,6 @@ const { Category, LikeList, Menu, Restaurant, Review, User } = require("../model
 // restIndex에 해당되는 식당 상세페이지 조회
 exports.getRestDetail = async (req, res) => {
     try {
-        console.log("restIndex >> ", req.params);
         const { restIndex } = req.params;
 
         // 식당 정보 (식당명, 식당정보, 주소, ..)
@@ -31,8 +30,6 @@ exports.getRestDetail = async (req, res) => {
                     rest_index: restIndex,
                 },
             });
-            // console.log("userIndex >>", userIndex);
-            // console.log("likeCheck >>> ", likeCheck);
             // 좋아요 해당 유저가 해당 식당이 좋아요 되어있다면
             if (likeCheck) likeCheckResult = true;
         }
@@ -63,7 +60,6 @@ exports.getRestDetail = async (req, res) => {
             attributes: ["user_index", "review_content", "createdAt", "review_rating"],
         });
 
-        // console.log("resDetail user, is >>", user, isLogin);
         res.render("restaurantDetail", {
             restaurant,
             likeCheckResult,
@@ -83,7 +79,6 @@ exports.getRestDetail = async (req, res) => {
 // POST /restaurantDetail/:restIndex/createLike
 // 좋아요 생성
 exports.postCreateLike = async (req, res) => {
-    console.log(req.body);
     const { restIndex } = req.body;
     const userIndex = req.session.index;
     await LikeList.create({
@@ -99,7 +94,6 @@ exports.postCreateLike = async (req, res) => {
 // 좋아요 삭제
 exports.deleteLike = async (req, res) => {
     try {
-        console.log(req.body);
         const { restIndex } = req.body;
         const userIndex = req.session.index;
         await LikeList.destroy({

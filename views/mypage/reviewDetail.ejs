@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="자신의 리뷰 목록 중 하나를 선택하여 리뷰 상세정보를 확인하고 수정 및 삭제할 수 있는 페이지입니다."
+        />
         <title>내 리뷰 목록</title>
         <%- include('../include/head') %>
         <link rel="stylesheet" href="/static/css/reviewDetail.css" />
@@ -83,8 +87,6 @@
             updateReviewIndex = reviewIndex;
             orgRating = rating;
             const starts = document.querySelectorAll(".fa-star");
-            // console.log("orgRating >> ", orgRating);
-            // console.log(starts);
             starts.forEach((star) => {
                 star.remove();
             });
@@ -97,7 +99,6 @@
                 star.style.color = "#FFD43B";
                 star.setAttribute("onclick", "reviewRating('" + updateReviewIndex + "', this)");
                 const rating = document.querySelector(".rating");
-                // console.log(rating);
                 rating.append(star);
             }
             const p = document.querySelector(".reviewDetailContent");
@@ -150,7 +151,6 @@
                     .then(() => {
                         // 업데이트 정상적으로 완료 된 후 응답(then)
                         const starts = document.querySelectorAll(".fa-star");
-                        // console.log(starts);
                         starts.forEach((star) => {
                             star.remove();
                         });
@@ -199,11 +199,9 @@
         function updateReviewFalse() {
             selectRating = 0;
             const starts = document.querySelectorAll(".fa-star");
-            // console.log(starts);
             starts.forEach((star) => {
                 star.remove();
             });
-            // console.log("orgRating >> ", orgRating);
             for (let i = 1; i <= orgRating; i++) {
                 const star = document.createElement("i");
                 // <i id="filledStar" class="fa-solid fa-star fa-2xl" style="color: #ffd43b">
@@ -236,9 +234,7 @@
         }
 
         function reviewRating(restIndex, click) {
-            console.log("클릭이 발생한 요소의 id 값:", click.id);
             selectRating = Number(click.id[click.id.length - 1]);
-            console.log("선택한 별점 수 >", selectRating);
 
             // 선택한 별점보다 더 채원진 별 빈 별로
             for (let i = selectRating + 1; i <= 5; i++) {

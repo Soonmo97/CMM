@@ -1,150 +1,111 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>창동역 맛집 모음</title>
-    <link rel="stylesheet" href="/static/css/index.css" />
-    <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
-    <!-- head include -->
-    <%- include('./include/head') %>
-</head>
-<body>
-    <!-- header include -->
-    <%- include('./include/header') %>
-    <div class="mainContainer">
-        <div style="
-            padding-top: 70px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            text-align: center;
-        ">
-            <img src="/static/images/CMM-circle.png" alt="CMM-LOGO" style="width: 70px; height: auto; margin-top: -0.5rem; " />
-            
-            <% if (category) { %>
-                <h1><%=category%></h1>
-            <% } else { %>
-                <h1>모든식당</h1>
-            <% } %>
-        </div>
-        <br>
-        <div>
-            <hr style="border: 3px solid#878787; height: 3px; width: 1200px; margin: 0 auto;">
-        </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Meta Description -->
+        <meta
+            name="description"
+            content="홈화면 및 메인페이지 / 로그인 및 회원가입 / 검색 및 카테고리 /"
+        />
+        <title>창동역 맛집 모음</title>
+        <link rel="stylesheet" href="/static/css/index.css" />
+        <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
+        <!-- head include -->
+        <%- include('./include/head') %>
+    </head>
+    <body>
+        <!-- header include -->
+        <%- include('./include/header') %>
+        <div class="mainContainer">
+            <div
+                style="
+                    padding-top: 70px;
+                    display: flex;
+                    justify-content: center;
+                    gap: 20px;
+                    text-align: center;
+                "
+            >
+                <img
+                    src="/static/images/CMM-circle.png"
+                    alt="CMM-LOGO"
+                    style="width: 70px; height: auto; margin-top: -0.5rem"
+                />
 
-        <div style="width: 1350px; margin: 0 auto">
-            <div style="max-width: 1350px; margin: 0 auto; min-height: 250px;">
-                <div class="restaurantMenu" id="restaurantMenu1" >
-                    <div class="restaurantContainer"
-                        style="
-                            display: grid;
-                            grid-template-columns: repeat(3, minmax(0, 1fr));
-                            gap: 35px;
-                            justify-items: center;
-                        ">
-                        <% for (let i = 0; i < restaurants.length; i++) { %>
-                            <div class="item" style="max-width: 410px" >
+                <% if (category) { %>
+                <h1><%=category%></h1>
+                <% } else { %>
+                <h1>모든식당</h1>
+                <% } %>
+            </div>
+            <br />
+            <div>
+                <hr style="border: 3px solid#878787; height: 3px; width: 1200px; margin: 0 auto" />
+            </div>
+
+            <div style="width: 1350px; margin: 0 auto">
+                <div style="max-width: 1350px; margin: 0 auto; min-height: 250px">
+                    <div class="restaurantMenu" id="restaurantMenu1">
+                        <div
+                            class="restaurantContainer"
+                            style="
+                                display: grid;
+                                grid-template-columns: repeat(3, minmax(0, 1fr));
+                                gap: 35px;
+                                justify-items: center;
+                            "
+                        >
+                            <% for (let i = 0; i < restaurants.length; i++) { %>
+                            <div class="item" style="max-width: 410px">
                                 <a href="/restaurantDetail/<%=restaurants[i].rest_index%>">
                                     <div class="polaroid">
-                                        <img src="/static/images/<%= restaurants[i].rest_index %>.png" alt="Restaurant 1" class="RestaurantImage" style="width: 350px; height: 350px;" />
+                                        <img
+                                            src="/static/images/<%= restaurants[i].rest_index %>.png"
+                                            alt="Restaurant 1"
+                                            class="RestaurantImage"
+                                            style="width: 350px; height: 350px"
+                                        />
                                         <span class="label"><%= restaurants[i].rest_name %></span>
                                         <span class="labelStar">
-                                            <span class="reviewCount">리뷰 수: <%= indexReview[i] && indexReview[i].Reviews ? indexReview[i].Reviews.length : 0 %></span>
+                                            <span class="reviewCount"
+                                                >리뷰 수: <%= indexReview[i] &&
+                                                indexReview[i].Reviews ?
+                                                indexReview[i].Reviews.length : 0 %></span
+                                            >
                                             <!-- 별점 -->
-                                            /<i class="fa-solid fa-star fa-xl" style="color: #FFD43B;"></i>:
-                                            <% let rating = 0 %>
+                                            /<i
+                                                class="fa-solid fa-star fa-xl"
+                                                style="color: #ffd43b"
+                                            ></i
+                                            >: <% let rating = 0 %>
                                             <!-- 리뷰가 있을 때 -->
-                                            <% if (indexReview[i].Reviews.length > 0) { %>
-                                                <% for (review of indexReview[i].Reviews) { %>
-                                                    <% rating += review.review_rating %>
-                                                <% } %>
-                                                <!-- 평균, 소수점 첫 번째 자리까지 반올림 -->
-                                                <span class="rating"><%= (rating / indexReview[i].Reviews.length).toFixed(1) %></span>
+                                            <% if (indexReview[i].Reviews.length > 0) { %> <% for
+                                            (review of indexReview[i].Reviews) { %> <% rating +=
+                                            review.review_rating %> <% } %>
+                                            <!-- 평균, 소수점 첫 번째 자리까지 반올림 -->
+                                            <span class="rating"
+                                                ><%= (rating /
+                                                indexReview[i].Reviews.length).toFixed(1) %></span
+                                            >
                                             <% } else { %>
-                                                <span class="rating">0</span>
+                                            <span class="rating">0</span>
                                             <% } %>
                                         </span>
                                     </div>
                                 </a>
                             </div>
-                        <% } %>
+                            <% } %>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <br /><br />
         </div>
 
-        <br /><br />
-    </div>
-        
-    <!-- footer include -->
-    <%- include('./include/footer') %>
-
-    <!-- <script>
-        let page = 2; // 초기 페이지 번호를 2로 설정
-        let isLoading = false; // 데이터 로딩 상태 플래그
-
-        // 스크롤 이벤트 리스너 등록
-        window.addEventListener("scroll", async function() {
-            // 현재 스크롤 위치와 문서 높이를 가져옴
-            const scrollPosition = window.scrollY + window.innerHeight;
-            const documentHeight = document.body.offsetHeight;
-
-            // 스크롤이 7/8 지점에 도달하면 추가 데이터 로딩
-            if (scrollPosition >= documentHeight * 7 / 8 && !isLoading) {
-                await loadMoreData();
-            }
-        });
-
-        async function loadMoreData() {
-            try {
-                isLoading = true; // 데이터 로딩 상태를 true로 설정하여 중복 요청을 방지
-
-                // axios를 사용하여 서버에 추가 데이터 요청 보내기
-                const response = await axios.get(`/load-more?page=${page}`);
-                const newData = response.data.restaurants;
-
-                console.log("식당 데이터 >> ", newData)
-
-                if (newData.length > 0) {
-                    // 받은 데이터를 이용하여 화면에 추가하는 작업 수행
-                    newData.forEach(item => {
-                        const restaurantItem = document.createElement('div');
-                        restaurantItem.classList.add('item');
-                        restaurantItem.style.maxWidth = '410px';
-                        restaurantItem.innerHTML = `
-                            <a href="/restaurantDetail/${item.rest_index}">
-                                <div class="polaroid">
-                                    <img src="/static/images/${item.rest_index}.png" alt="${item.rest_name}" class="RestaurantImage" style="width: 350px; height: 350px;" />
-                                    <span class="label">${item.rest_name}</span>
-                                    <span class="labelStar">
-                                        <span class="reviewCount">리뷰 수: ${
-                                            item.reviews ? item.reviews.length : 0
-                                        }</span> -->
-                                        <!-- 별점 -->
-                                        <!-- /<i class="fa-solid fa-star fa-xl" style="color: #FFD43B;"></i>:
-                                        ${
-                                            item.reviews && item.reviews.length > 0 ?
-                                            (item.reviews.reduce((total, review) => total + review.review_rating, 0) / item.reviews.length).toFixed(1) :
-                                            '0'
-                                        }
-                                    </span>
-
-                                </div>
-                            </a>
-                        `;
-                        document.querySelector('.restaurantContainer').appendChild(restaurantItem);
-                    });
-
-                    page++; // 페이지 번호 증가
-                }
-            } catch (error) {
-                console.error("데이터 가져오기 오류:", error);
-            } finally {
-                isLoading = false; // 데이터 로딩 상태를 다시 false로 설정하여 다음 요청이 가능하도록 함
-            }
-        }
-    </script>  -->
-</body>
+        <!-- footer include -->
+        <%- include('./include/footer') %>
+    </body>
 </html>

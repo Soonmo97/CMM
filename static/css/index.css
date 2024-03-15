@@ -147,7 +147,5 @@ body {
 }
 
 .table1 {
-    /* border-collapse: separate; */
     border-spacing: 50px;
-    /* border-color: black; */
 }

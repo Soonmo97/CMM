@@ -1,4 +1,3 @@
-const { Op } = require("sequelize");
 const { sequelize, User, Suggestions, Suggest_Like } = require("../models/index");
 
 // 게시글 목록 조회
@@ -33,7 +32,6 @@ exports.listPage = async (req, res) => {
         } else {
             offset = (currentPage - 1) * limit;
         }
-        console.log(offset);
 
         let startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1; // 현재 페이지 단위의 시작 페이지
         let endPage = startPage + pageLimit - 1; // 현재 페이지 단위의 끝 페이지
@@ -51,8 +49,6 @@ exports.listPage = async (req, res) => {
             startPage: startPage,
             endPage: endPage,
         };
-
-        console.log("pageInfo:", pageInfo);
 
         const sugList = await Suggestions.findAll({
             limit: limit,

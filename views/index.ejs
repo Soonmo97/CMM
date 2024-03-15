@@ -4,6 +4,11 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Meta Description -->
+        <meta
+            name="description"
+            content="홈화면 및 메인페이지 / 로그인 및 회원가입 / 검색 및 카테고리 /"
+        />
         <title>창동역 맛집 모음</title>
         <link rel="stylesheet" href="/static/css/index.css" />
         <script src="https://kit.fontawesome.com/9ff27f4d50.js" crossorigin="anonymous"></script>
@@ -96,77 +101,10 @@
                     </div>
                 </div>
             </div>
-
             <br /><br />
         </div>
 
         <!-- footer include -->
         <%- include('./include/footer') %>
-
-        <!-- <script>
-        let page = 2; // 초기 페이지 번호를 2로 설정
-        let isLoading = false; // 데이터 로딩 상태 플래그
-
-        // 스크롤 이벤트 리스너 등록
-        window.addEventListener("scroll", async function() {
-            // 현재 스크롤 위치와 문서 높이를 가져옴
-            const scrollPosition = window.scrollY + window.innerHeight;
-            const documentHeight = document.body.offsetHeight;
-
-            // 스크롤이 7/8 지점에 도달하면 추가 데이터 로딩
-            if (scrollPosition >= documentHeight * 7 / 8 && !isLoading) {
-                await loadMoreData();
-            }
-        });
-
-        async function loadMoreData() {
-            try {
-                isLoading = true; // 데이터 로딩 상태를 true로 설정하여 중복 요청을 방지
-
-                // axios를 사용하여 서버에 추가 데이터 요청 보내기
-                const response = await axios.get(`/load-more?page=${page}`);
-                const newData = response.data.restaurants;
-
-                console.log("식당 데이터 >> ", newData)
-
-                if (newData.length > 0) {
-                    // 받은 데이터를 이용하여 화면에 추가하는 작업 수행
-                    newData.forEach(item => {
-                        const restaurantItem = document.createElement('div');
-                        restaurantItem.classList.add('item');
-                        restaurantItem.style.maxWidth = '410px';
-                        restaurantItem.innerHTML = `
-                            <a href="/restaurantDetail/${item.rest_index}">
-                                <div class="polaroid">
-                                    <img src="/static/images/${item.rest_index}.png" alt="${item.rest_name}" class="RestaurantImage" style="width: 350px; height: 350px;" />
-                                    <span class="label">${item.rest_name}</span>
-                                    <span class="labelStar">
-                                        <span class="reviewCount">리뷰 수: ${
-                                            item.reviews ? item.reviews.length : 0
-                                        }</span> -->
-        <!-- 별점 -->
-        <!-- /<i class="fa-solid fa-star fa-xl" style="color: #FFD43B;"></i>:
-                                        ${
-                                            item.reviews && item.reviews.length > 0 ?
-                                            (item.reviews.reduce((total, review) => total + review.review_rating, 0) / item.reviews.length).toFixed(1) :
-                                            '0'
-                                        }
-                                    </span>
-
-                                </div>
-                            </a>
-                        `;
-                        document.querySelector('.restaurantContainer').appendChild(restaurantItem);
-                    });
-
-                    page++; // 페이지 번호 증가
-                }
-            } catch (error) {
-                console.error("데이터 가져오기 오류:", error);
-            } finally {
-                isLoading = false; // 데이터 로딩 상태를 다시 false로 설정하여 다음 요청이 가능하도록 함
-            }
-        }
-    </script>  -->
     </body>
 </html>

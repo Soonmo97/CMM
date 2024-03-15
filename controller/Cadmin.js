@@ -1,5 +1,8 @@
 const { Restaurant, Category, Menu, User, sequelize } = require("../models/index");
 const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
+dotenv.config();
+const { ADMIN_USER: admin } = process.env;
 
 // 관리자 페이지 요청
 // 식당 목록 조회
@@ -7,7 +10,7 @@ exports.getAdminPage = async (req, res) => {
     try {
         if (req.session.user) {
             // admin 계정 맞는지 판별
-            if (req.session.user === "admin") {
+            if (req.session.user === admin) {
                 const result = await Restaurant.findAll({
                     attributes: ["rest_index", "rest_name"],
                 });
@@ -33,7 +36,7 @@ exports.getAdminPage = async (req, res) => {
 // 특정 식당 정보 조회
 exports.getRestInfo = async (req, res) => {
     try {
-        if (req.session.user === "admin") {
+        if (req.session.user === admin) {
             const restInfo = await Restaurant.findOne({
                 where: { rest_index: req.body.rest_index },
                 include: [
@@ -54,7 +57,7 @@ exports.getRestInfo = async (req, res) => {
 exports.getAddPage = async (req, res) => {
     try {
         if (req.session.user) {
-            if (req.session.user === "admin") {
+            if (req.session.user === admin) {
                 const result = await Restaurant.findAll({
                     attributes: ["rest_index", "rest_name"],
                 });
@@ -126,14 +129,11 @@ exports.addRest = async (req, res) => {
             );
         }
         // 식당 정보와 카테고리 정보가 모두 추가된 경우 커밋
-        console.log(insertRestInfo);
-        console.log("커밋!");
         await t.commit();
         res.json({ isSuccess: true, rest_index: insertRestInfo.dataValues.rest_index });
     } catch (error) {
         // 에러가 있을 경우 롤백
         console.log(error);
-        console.log("롤백");
         await t.rollback();
         res.status(500).json({ isSuccess: false });
     }
@@ -143,7 +143,7 @@ exports.addRest = async (req, res) => {
 exports.getAddMenuPage = (req, res) => {
     try {
         if (req.session.user) {
-            if (req.session.user === "admin") {
+            if (req.session.user === admin) {
                 res.render("admin/adminAddRestMenu");
             } else {
                 res.send(
@@ -174,7 +174,7 @@ exports.addMenu = async (req, res) => {
 // 식당 삭제
 exports.deleteRest = async (req, res) => {
     try {
-        if (req.session.user === "admin") {
+        if (req.session.user === admin) {
             const result = await Restaurant.destroy({
                 where: { rest_index: req.body.rest_index },
             });
@@ -192,7 +192,7 @@ exports.deleteRest = async (req, res) => {
 exports.getEditPage = async (req, res) => {
     try {
         if (req.session.user) {
-            if (req.session.user === "admin") {
+            if (req.session.user === admin) {
                 const result = await Restaurant.findOne({
                     where: { rest_index: req.query.rest_index },
                     include: [
@@ -225,8 +225,6 @@ exports.getEditPage = async (req, res) => {
 // 식당 기본 정보 수정
 exports.editRestInfo = async (req, res) => {
     try {
-        // if (req.session.user === 'admin') {
-        console.log("수정 요청!", req.body);
         const [result] = await Restaurant.update(
             {
                 rest_name: req.body.rest_name,
@@ -239,11 +237,7 @@ exports.editRestInfo = async (req, res) => {
                 where: { rest_index: req.body.rest_index },
             }
         );
-        // console.log(result);
         res.send({ result });
-        // } else {
-        //     res.send({ result: 0 });
-        // }
     } catch (error) {
         console.log(error);
         res.status(500).send("정보를 수정하지 못했습니다.");
@@ -258,14 +252,8 @@ exports.editRestCategory = async (req, res) => {
         let isblank2 = category.filter((obj) => obj.category_name === "");
         let resultArray = [];
 
-        console.log(category);
-        console.log("인덱스", isblank1);
-        console.log("이름", isblank2);
-        console.log(isblank1.length == 0 || isblank2.length == 0);
-
         // 빈칸 없음 -> 인덱스 개수와 카테고리명 개수가 같음 -> 추가/삭제X
         if (isblank1.length == 0 && isblank2.length == 0) {
-            console.log("변경! (1개 혹은 2개)");
             for (let i = 0; i < category.length; i++) {
                 let result = await Category.update(
                     {
@@ -274,11 +262,9 @@ exports.editRestCategory = async (req, res) => {
                     { where: { category_index: category[i].category_index } }
                 );
                 resultArray.push(result);
-                console.log(`변경 result${i + 1}: `, result);
             }
         } else {
             if (category[1].category_index === "" && category[1].category_name) {
-                console.log("변경, 추가!");
                 let result1 = await Category.update(
                     { category_name: category[0].category_name },
                     { where: { category_index: category[0].category_index } }
@@ -288,10 +274,7 @@ exports.editRestCategory = async (req, res) => {
                     rest_index: req.body.rest_index,
                 });
                 resultArray.push(result1, result2);
-                console.log("변경 result1: ", result1);
-                console.log("추가 result2: ", result2);
             } else if (category[1].category_name === "" && category[1].category_index) {
-                console.log("변경, 삭제!");
                 let result1 = await Category.update(
                     { category_name: category[0].category_name },
                     { where: { category_index: category[0].category_index } }
@@ -299,11 +282,9 @@ exports.editRestCategory = async (req, res) => {
                 let result2 = await Category.destroy({
                     where: { category_index: category[1].category_index },
                 });
-                console.log("변경 result1: ", result1);
-                console.log("삭제 result2: ", result2);
+                resultArray.push(result1, result2);
             }
         }
-        console.log(resultArray);
         res.json({ isSuccess: true });
     } catch (error) {
         console.log(error);
@@ -341,7 +322,7 @@ exports.editRestMenu = async (req, res) => {
 exports.getAdminUserPage = async (req, res) => {
     try {
         if (req.session.user) {
-            if (req.session.user === "admin") {
+            if (req.session.user === admin) {
                 const result = await User.findAll();
                 res.render("admin/adminDeleteUser", { userInfo: result });
             } else {
@@ -362,7 +343,7 @@ exports.getAdminUserPage = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     try {
         if (req.session.user) {
-            if (req.session.user === "admin") {
+            if (req.session.user === admin) {
                 const result = await User.destroy({ where: { user_index: req.body.user_index } });
                 res.json({ isSuccess: true, isLogin: true });
             } else {
@@ -381,7 +362,7 @@ exports.getLoginPage = async (req, res) => {
     try {
         // 세션 있을 경우 - 페이지 렌더
         if (req.session.user) {
-            if (req.session.user === "admin") {
+            if (req.session.user === admin) {
                 // 관리자 계정일 경우
                 res.redirect("/admin/restaurants");
             } else {
@@ -401,18 +382,14 @@ exports.getLoginPage = async (req, res) => {
 
 // admin 페이지 로그인
 exports.login = async (req, res) => {
-    console.log("세션 정보 >> ", req.session);
-
     const { id, pw } = req.body;
-
     try {
         const user = await User.findOne({ where: { id } });
         if (user && (await bcrypt.compare(pw, user.pw))) {
             // 로그인 성공
             req.session.user = user.id;
             req.session.index = user.user_index;
-
-            if (user.id === "admin") {
+            if (user.id === admin) {
                 // 관리자 계정일 경우
                 res.json({ isSuccess: true, isLogin: true });
             } else {

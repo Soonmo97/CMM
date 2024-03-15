@@ -3,9 +3,13 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <%-include('../include/head.ejs')%>
+        <meta
+            name="description"
+            content="창동역 맛집 모음 웹사이트의 식당 메뉴 추가 페이지입니다."
+        />
         <link rel="stylesheet" href="/static/css/adminAddRestMenu.css" />
-        <title>관리 페이지</title>
+        <title>식당 관리 | 메뉴 추가</title>
+        <%-include('../include/head.ejs')%>
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
@@ -76,15 +80,12 @@
 
                 // 현재 URL의 쿼리 문자열 가져오기
                 const queryString = window.location.search;
-                console.log(queryString);
 
                 // 쿼리 파라미터 추출
                 const urlParams = new URLSearchParams(queryString);
-                console.log(urlParams);
 
                 // 파라미터 값 가져오기
                 const rest_index = urlParams.get("rest_index");
-                console.log(rest_index);
 
                 for (let i = 0; i < form.length; i += 2) {
                     menus[`menu${j}`] = {

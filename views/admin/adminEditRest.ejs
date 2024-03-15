@@ -3,9 +3,10 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <%-include('../include/head.ejs')%>
+        <meta name="description" content="창동역 맛집 모음 웹사이트의 식당 정보 수정 페이지입니다.">
         <link rel="stylesheet" href="/static/css/adminEditRest.css">
-        <title>관리 페이지</title>
+        <title>식당 관리 | 식당 정보 수정</title>
+        <%-include('../include/head.ejs')%>
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
@@ -106,14 +107,9 @@
                 let el = form.elements;
                 const btnAdd = document.querySelector('#btn-add');
                 const btnRmv = document.querySelector('#btn-rmv');
-                console.log(btnAdd);
-                console.log(btnRmv);
-                console.log("<%=category.length%>");
                 if("<%=category.length%>"==="1"){
-                    console.log("add -> display");
                     btnAdd.classList.toggle('hidden');
                 }else if("<%=category.length%>"==="2"){
-                    console.log("rmv -> display");
                     btnRmv.classList.toggle('hidden');
                 }
                 
@@ -195,7 +191,6 @@
                             url:"/admin/editRestMenu",
                             data:data
                         });
-                        console.log(result.data);
                         if(result.data.isSuccess){
                             alert("메뉴를 수정했습니다.");
                             window.location.reload();
@@ -218,14 +213,12 @@
                     
                 if(!select2){   // 데이터 1개일 경우
                     if(!index2){// 인덱스 1, 데이터 1
-                        console.log('인덱스1, 데이터1');
                         const category = { 
                             category_index: index1.value,
                             category_name: select1.value,
                         };
                         data.push(category);
                     }else{  // 인덱스 2, 데이터 1
-                        console.log("인덱스2, 데이터1 (1개 삭제)");
                         const category1 = {category_index:index1.value, category_name:select1.value}
                         data.push(category1);
                         const category2 = {category_index:index2.value, category_name:''};
@@ -234,13 +227,11 @@
                 }else{  // 데이터 2개인 경우
                     // 인덱스 1 데이터 2 
                     if(!index2){
-                        console.log('인덱스1, 데이터2 (1개 추가)');
                         const category1 = {category_index:index1.value, category_name:select1.value}
                         data.push(category1);
                         const category2 = {category_index:'', category_name:select2.value};
                         data.push(category2);
                     }else{  // 인덱스 2 데이터 2
-                        console.log("인덱스2, 데이터2");
                         const category1 = {category_index:index1.value, category_name:select1.value};
                         data.push(category1);
                         const category2 = {category_index:index2.value, category_name:select2.value};
@@ -269,7 +260,6 @@
                             alert('카테고리를 수정했습니다.');
                             location.reload();
                         }
-                        console.log(result);
                     }catch(error){
                         console.log(error);
                             alert('카테고리를 수정하지 못했습니다.');
@@ -289,7 +279,6 @@
                 label2.id = 'label2'
                 category2.id = "s-category2";
                 category2.name = "category2";
-                console.log(category2);
 
                 let categories = [
                     "카테고리를 설정해주세요",

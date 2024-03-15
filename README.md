@@ -23,5 +23,11 @@
 ## <br />
 
 ## 📁 Structure
-<img src="https://github.com/Soonmo97/CMM/assets/133750746/e9df834f-da34-4648-9981-b788d9110dce" width="300">
+<img src="https://github.com/Soonmo97/CMM/assets/133750746/e9df834f-da34-4648-9981-b788d9110dce" width="300"><br />
+<br />
+
+## 📑참조
+> [JS] 룰렛 구현하기 https://gurtn.tistory.com/180 <br />
+> [JS] SunEditor https://github.com/JiHong88/suneditor <br />
+> [JS] NodeMailer https://www.nodemailer.com/
 

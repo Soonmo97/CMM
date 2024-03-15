@@ -52,10 +52,8 @@
     <script>
         function likePlus(restIndex, isLogin, index) {
             // 로그인 되어있을 때
-            // console.log("로그인 상태 >> ",isLogin)
             if (isLogin === "true") {
                 const filledHeart = document.querySelector(`#filledHeart${index}`);
-                // console.log(filledHeart)
                 // 채워진 하트 좋아요 o) 라면
                 if (filledHeart) {
                     // 채워진 하트 fa-solid, 빈 하트 fa-regular
@@ -69,7 +67,6 @@
                             filledHeart.id = `emptyHeart${index}`;
                             filledHeart.classList.remove("fa-solid");
                             filledHeart.classList.add("fa-regular");
-                            console.log(response);
                             alert(response.data.message);
                         })
                         .catch((err) => {
@@ -79,7 +76,6 @@
                 } else {
                     // 빈 하트 (로그인 o 좋아요 x) 라면
                     const emptyHeart = document.querySelector(`#emptyHeart${index}`);
-                    console.log(emptyHeart);
                     // 좋아요 등록 후 채워진 하트
                     axios({
                         url: `/mypage/likeList/createLike`,
@@ -90,7 +86,7 @@
                             emptyHeart.id = `filledHeart${index}`;
                             emptyHeart.classList.remove("fa-regular");
                             emptyHeart.classList.add("fa-solid");
-                            console.log(response);
+
                             alert(response.data.message);
                         })
                         .catch((err) => {

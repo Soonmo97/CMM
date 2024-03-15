@@ -32,7 +32,6 @@ exports.getLikeList = async (req, res) => {
 // 좋아요 삭제
 exports.deleteLike = async (req, res) => {
     try {
-        console.log(req.body);
         const { restIndex } = req.body;
         const userIndex = req.session.index;
         await LikeList.destroy({
@@ -53,7 +52,6 @@ exports.deleteLike = async (req, res) => {
 // POST /mypage/likeList/createLike
 // 좋아요 추가
 exports.createLike = async (req, res) => {
-    console.log(req.body);
     const { restIndex } = req.body;
     const userIndex = req.session.index;
     await LikeList.create({
@@ -103,7 +101,6 @@ exports.getReviewList = async (req, res) => {
 exports.getReviewDetail = async (req, res) => {
     try {
         const { reviewIndex } = req.params;
-        console.log("reviewIndex > ", reviewIndex);
         let isLogin = false;
         const user = req.session.user;
         if (user) isLogin = true;
@@ -137,7 +134,6 @@ exports.getReviewDetail = async (req, res) => {
         }).catch((err) => {
             console.log("내 리뷰 상세 조회 error", err);
         });
-        // console.log("reviewDetail data >>", reviewDetail);
         res.render("./mypage/reviewDetail", {
             reviewDetail: reviewDetail,
             user: user,
@@ -154,7 +150,6 @@ exports.getReviewDetail = async (req, res) => {
 exports.updateReview = async (req, res) => {
     try {
         const { updateRating, updateContent, reviewIndex } = req.body;
-        console.log("reviewIndex >>>> ", reviewIndex);
         let isLogin = false;
         const user = req.session.user;
         if (user) isLogin = true;
@@ -182,7 +177,7 @@ exports.updateReview = async (req, res) => {
     }
 };
 
-// DELETE /mypage/reviewList/:
+// DELETE /mypage/reviewList/delete
 // 내 리뷰 삭제
 exports.deleteReview = async (req, res) => {
     try {
@@ -239,8 +234,6 @@ exports.updateNickname = async (req, res) => {
         const user = req.session.user;
         if (user) isLogin = true;
         userIndex = req.session.index;
-        console.log("변경할 닉네임 >> ", updateNickname);
-        console.log("변경할 유저 인덱스> > >", userIndex);
         await User.update(
             {
                 nickname: updateNickname,
@@ -272,10 +265,7 @@ exports.updatePw = async (req, res) => {
         const user = req.session.user;
         if (user) isLogin = true;
         userIndex = req.session.index;
-        console.log("변경할 pw >> ", updatePw);
-        console.log("변경할 유저 인덱스> > >", userIndex);
         const encryptPw = await bcrypt.hash(updatePw, 10);
-        console.log("암호화 된 pw >>", encryptPw);
         await User.update(
             {
                 pw: encryptPw,

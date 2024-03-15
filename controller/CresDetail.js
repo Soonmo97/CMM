@@ -6,7 +6,6 @@ const { Category, LikeList, Menu, Restaurant, Review, User } = require("../model
 // restIndex에 해당되는 식당 상세페이지 조회
 exports.getRestDetail = async (req, res) => {
     try {
-        console.log("restIndex >> ", req.params);
         const { restIndex } = req.params;
 
         // 식당 정보 (식당명, 식당정보, 주소, ..)

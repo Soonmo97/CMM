@@ -3,9 +3,10 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <%-include('../include/head.ejs')%>
+        <meta name="description" content="창동역 맛집 모음 웹사이트의 식당 관리 페이지입니다.">
         <link rel="stylesheet" href="/static/css/adminRestList.css">
-        <title>관리 페이지</title>
+        <title>식당 관리 | 식당 목록</title>
+        <%-include('../include/head.ejs')%>
     </head>
     <body>
         <%- include('./sidebar.ejs') %>
@@ -81,7 +82,6 @@
             }
 
             async function openRestInfo(idx){
-                console.log("index:", idx);
                 modal.style.display = "block";
                 document.querySelector('.modal-info').style.display = "block";
 
@@ -94,8 +94,6 @@
 
                 const categories = cateInfo.map((category) => category.category_name);
                 let category_name = categories.join(', ');
-
-                // const menuHTML = menuList.join('<br />');
 
                 name.innerHTML = rest_name;
                 desc.innerHTML = rest_desc;
@@ -121,8 +119,6 @@
                             url:'/admin/deleteRestaurant',
                             data: {rest_index:idx}                    
                         });
-                        console.log(result);
-                        console.log(typeof result.data.isSuccess);
                         const {isLogin, isSuccess} = result.data;
                         if(isLogin && isSuccess){
                             alert('삭제되었습니다.');
@@ -154,9 +150,6 @@
                     menus[i].remove();
                 }
             }
-            // modal.addEventListener('click', (e)=>{
-            //     if(e.target === modal) {modal.style.display = "none";}
-            // });
         </script>
     </body>
 </html>

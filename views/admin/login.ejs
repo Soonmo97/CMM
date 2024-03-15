@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="ko">
     <head>
-        <%- include('../include/head', {title: '로그인'}) %>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="창동역 맛집 모음 웹사이트의 관리자 로그인 페이지입니다."
+        />
         <link rel="stylesheet" href="/static/css/login.css" />
+        <title>관리자 로그인</title>
+        <%- include('../include/head') %>
     </head>
     <body>
         <div class="login-box">
             <h1>로그인</h1>
-            <p>
-                참고! 아이디는 <b>admin</b>이고<br />
-                비밀번호는 <b>12345678</b>입니다.
-            </p>
-
-            <!-- 폼전송으로 로그인 진행 -->
+            <p>관리자 계정으로 로그인해주세요.</p>
 
             <form name="form_login">
                 <div class="input-group mb-3">

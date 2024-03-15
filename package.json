@@ -1,8 +1,8 @@
 {
-    "name": "project_1",
+    "name": "창동역 맛집 모음",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
+    "description": "이 프로젝트는 새싹 풀스택 과정에서 진행한 프로젝트로 비플페이(제로페이)로 주로 점심 식사를 하는 수강생들을 위해 식당 정보를 제공하는 사이트를 개발한 프로젝트입니다.",
+    "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "cross-env NODE_ENV=prod pm2 start app.js",
@@ -10,7 +10,7 @@
         "dev": "cross-env NODE_ENV=development nodemon app.js"
     },
     "keywords": [],
-    "author": "",
+    "author": "쌍권강진",
     "license": "ISC",
     "dependencies": {
         "bcrypt": "^5.1.1",

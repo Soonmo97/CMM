@@ -19,30 +19,31 @@ body {
     height: 55px;
     display: flex;
     justify-content: center;
-    /* align-items: flex-end; */
-    /* font-size: 1.8rem; */
-  }
-  
-  .typingTxt {
+}
+
+.typingTxt {
     width: 220px;
     /* font-size: 2.2rem; */
     font-family: "Black Han Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
-  }
-  
-  .typingTxt::after {
-    content: '';
-    margin-left: .4rem;
-    border-right: 2px solid #777;
-    animation: cursor .9s infinite steps(2);
-  }
-  
-  @keyframes cursor {
-    from { border-right: 2px solid #222; }
-    to { border-right: 2px solid #777; }
-  }
+}
 
+.typingTxt::after {
+    content: "";
+    margin-left: 0.4rem;
+    border-right: 2px solid #777;
+    animation: cursor 0.9s infinite steps(2);
+}
+
+@keyframes cursor {
+    from {
+        border-right: 2px solid #222;
+    }
+    to {
+        border-right: 2px solid #777;
+    }
+}
 
 ::placeholder {
     color: black;
@@ -70,12 +71,9 @@ header {
     border-bottom: 1px solid gray;
 }
 
-
-
 /* 미디어 쿼리 - 화면 너비에 따라 헤더의 높이 조정 */
 @media screen and (max-width: 1400px) {
     .InfoResponse {
-        /* position: absolute; */
         right: 0;
     }
 
@@ -251,7 +249,6 @@ header nav ul li:last-child {
     cursor: pointer;
 }
 
-
 /* 회원가입 팝업창 스타일 */
 #signupModal {
     display: none;
@@ -326,8 +323,6 @@ header nav ul li:last-child {
 /* modal창 이미지 */
 .imgLogo {
     margin: 20px;
-    /* width: 300px;
-    height: 300px; */
 }
 
 .modal-content {
@@ -394,10 +389,6 @@ h3 {
     right: 7px;
     font-size: 15px;
 }
-
-/* #btnJoin {
-    left: 100px;
-} */
 
 label {
     margin: 20px;

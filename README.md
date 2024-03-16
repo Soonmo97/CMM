@@ -24,7 +24,7 @@
 
 ## 📁 Structure
 <img src="https://github.com/Soonmo97/CMM/assets/133750746/e9df834f-da34-4648-9981-b788d9110dce" width="300"><br />
-<b>MVC 패턴 및 Sequelize를 활용하여 개발하였다.</b>
+MVC 패턴 및 Sequelize를 활용하여 개발하였다.
 <br />
 
 ## 📑참조

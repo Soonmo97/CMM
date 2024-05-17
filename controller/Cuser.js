@@ -21,7 +21,7 @@ exports.getMain = async (req, res) => {
                 attributes: ["review_rating"],
             },
         });
-        
+
         if (user) {
             res.render("index", {
                 isLogin: true,
@@ -38,13 +38,11 @@ exports.getMain = async (req, res) => {
                 category: category,
             });
         }
-      
     } catch (error) {
         console.error("데이터 불러오기 오류:", error);
         res.status(500).send("Internal Server Error");
     }
 };
-
 
 // POST /include/header/form/login
 exports.loginHeader = async (req, res) => {
@@ -55,6 +53,7 @@ exports.loginHeader = async (req, res) => {
         if (user && (await bcrypt.compare(pw, user.pw))) {
             req.session.user = user.id; // 세션에 유저 정보 저장
             req.session.index = user.user_index; // 세션 인덱스 저장 값
+            res.redirect("/");
         } else {
             res.send(`<script>
             alert("아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -118,14 +117,14 @@ exports.checkId = async (req, res) => {
 
         if (user) {
             // 아이디 사용 불가능
-            res.send({ available: false }); 
+            res.send({ available: false });
         } else {
             // 아이디 사용 가능
-            res.send({ available: true }); 
+            res.send({ available: true });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send({ error: "서버 오류" }); 
+        res.status(500).send({ error: "서버 오류" });
     }
 };
 
@@ -158,7 +157,7 @@ exports.sendCode = async (req, res) => {
             "<b><span style='color: #ffc064;'>CMM 인증번호</span></b> 안내입니다." +
             "</h1>" +
             "<p style='font-size: 16px; line-height: 26px; margin-top: 50px; padding: 0 5px;'>" +
-            "<img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbDgQle%2FbtsFLrbDpSQ%2F5C4uYWS4rOjSPhsryeVtcK%2Fimg.png'/><br /><br /><br />"+
+            "<img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbDgQle%2FbtsFLrbDpSQ%2F5C4uYWS4rOjSPhsryeVtcK%2Fimg.png'/><br /><br /><br />" +
             "안녕하세요.<br />" +
             "요청하신 인증번호가 생성되었습니다.<br />" +
             "감사합니다." +
@@ -261,4 +260,4 @@ exports.alterPw = async (req, res) => {
         console.error(error);
         return res.status(500).json({ ok: false, error: "비밀번호 변경 실패" });
     }
-}
+};

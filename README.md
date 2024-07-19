@@ -9,7 +9,7 @@
 ## 🏃‍♀️ 팀원
 |![잠만보](https://github.com/Soonmo97/CMM/assets/133750746/e7610166-dfe9-442f-8a0f-9fd052ccd389)|![뮤](https://github.com/Soonmo97/CMM/assets/133750746/5f7c20f1-77ae-41b4-9837-a198d4fc527e)|![meta (1)](https://github.com/Soonmo97/CMM/assets/133750746/339acfa4-0760-48a9-96f2-7e2b8d1a1c45)|![이상해씨](https://github.com/Soonmo97/CMM/assets/133750746/7aa30615-e9ac-4acf-8be5-875b4d812765)|
 |---|---|---|---|
-|<b>권순모</b>|<b>강혜인</b>|<b>권태현</b>|<b>진현정</b>|
+|<b>권순모(팀장)</b>|<b>강혜인</b>|<b>권태현</b>|<b>진현정</b>|
 |<a href="https://github.com/Soonmo97">🔗GitHub</a>|<a href="https://github.com/hyein310">🔗GitHub</a>|<a href="https://github.com/Matryoshkaaaa">🔗GitHub</a>|<a href="https://github.com/HJ17J">🔗GitHub</a>|
 ## <br />
 

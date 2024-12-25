@@ -1,6 +1,3 @@
-# CMM
-창동역 근처 맛집 정보를 조회할 수 있는 사이트.
-
 # <img src="https://github.com/Soonmo97/CMM/blob/develop/static/images/CMM-circle.png?raw=true" width="50" height="50" /> &nbsp;창동역 맛집 모음
 #### <img src="https://github.com/Soonmo97/CMM/blob/develop/static/images/CMM.png?raw=true" width="400" height="400" />
 # <br />
